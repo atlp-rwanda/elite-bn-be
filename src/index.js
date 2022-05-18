@@ -1,9 +1,8 @@
 import express from 'express'
 import passport from 'passport'
-//import * as babel from '@babel/core';
+import * as babel from "@babel/core";
 let app=express()
-require('dotenv').config()
-
+import 'dotenv/config'
 
 const port = process.env.PORT || 3000;
 
