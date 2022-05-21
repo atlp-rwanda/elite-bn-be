@@ -1,7 +1,34 @@
 {
+
   "devDependencies": {
     "eslint": "^8.16.0",
     "eslint-plugin-react": "^7.30.0",
     "prettier": "^2.6.2"
+
+  "name": "elite-bn",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": " node ./src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/munyanezaarmel/elite-bn-be.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/atlp-rwanda/elite-bn-be.git"
+  },
+  "homepage": "https://github.com/atlp-rwanda/elite-bn-be.git",
+  "dependencies": {
+    "@babel/core": "^7.17.12",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "passport": "^0.5.3",
+    "sequelize": "^6.19.2"
+
   }
 }
