@@ -1,8 +1,6 @@
-import dotenv from 'dotenv';
-dotenv.config()
+require('dotenv').config()
 
-
-export const dbConnect = {
+module.exports = {
   development: {
     url: process.env.DEV_DATABASE_URL,
     logging: false,

@@ -1,7 +1,7 @@
 import express from 'express'
 import passport from 'passport'
 import * as babel from "@babel/core";
-import db from "../models/index.js"
+import db from "./database/models/index.js"
 
 let app=express()
 import 'dotenv/config'
