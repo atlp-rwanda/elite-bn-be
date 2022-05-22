@@ -19,8 +19,11 @@
   "homepage": "https://github.com/atlp-rwanda/elite-bn-be.git",
   "dependencies": {
     "@babel/core": "^7.17.12",
+    "chai": "^4.3.6",
+    "chai-http": "^4.3.0",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
+    "mocha": "^10.0.0",
     "passport": "^0.5.3",
     "sequelize": "^6.19.2"
   }
