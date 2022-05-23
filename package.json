@@ -8,7 +8,6 @@
     "start": " node ./src/index.js",
     "coveralls": "cross-env NODE_ENV=test nyc report --reporter=text-lcov | coveralls",
     "test": "cross-env NODE_ENV=test mocha --require @babel/register --timeout 30000 --exit"
-    
   },
   "repository": {
     "type": "git",
@@ -38,6 +37,7 @@
     "express": "^4.18.1",
     "mocha": "^10.0.0",
     "nyc": "^15.1.0",
+    "package-lock.json": "^1.0.0",
     "passport": "^0.5.3",
     "sequelize": "^6.19.2",
     "swagger-jsdoc": "^6.2.1",
@@ -45,7 +45,10 @@
   },
   "devDependencies": {
     "eslint": "^8.16.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
     "eslint-plugin-react": "^7.30.0",
-    "prettier": "^2.6.2"
+    "eslint-plugin-react-hooks": "^4.5.0"
   }
 }
