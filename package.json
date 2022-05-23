@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "start": " node ./src/index.js",
-    "coverage": "nyc  npm run test"
+    "test": "echo 'NodeJS:' && npx node -v && nyc --reporter=html --reporter=text --reporter=text-summary mocha",
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
     "type": "git",
@@ -22,11 +23,16 @@
     "@babel/core": "^7.17.12",
     "chai": "^4.3.6",
     "chai-http": "^4.3.0",
+    "coverage": "^0.4.1",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "mocha": "^10.0.0",
     "nyc": "^15.1.0",
     "passport": "^0.5.3",
     "sequelize": "^6.19.2"
+  },
+  "devDependencies": {
+    "coveralls": "^3.1.1",
+    "mocha-lcov-reporter": "^1.3.0"
   }
 }
