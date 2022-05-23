@@ -9,6 +9,9 @@ scss:
 #   config_file: .stylelintrc.json
 #   enabled: true
 
+javascript:
+  enabled: false
+
 eslint:
   enabled: true
   version: 5.7.0
