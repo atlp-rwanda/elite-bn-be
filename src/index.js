@@ -1,9 +1,11 @@
 import express from 'express'
-import passport from 'passport'
 import * as babel from "@babel/core";
-let app=express()
+import swaggerDocs from '../public/api-docs/swagger.js';
 import 'dotenv/config'
+const app=express()
 
 const port = process.env.PORT || 3000;
+
+swaggerDocs(app, port);
 
 app.listen(port, () => console.log(`Listening on ${port}`));
