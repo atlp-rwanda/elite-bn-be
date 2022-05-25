@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-undef */
+
 import express from 'express'
 import babel  from "@babel/core";
 import swaggerDocs from './public/api-docs/swagger.js';
