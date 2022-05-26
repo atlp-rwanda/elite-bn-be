@@ -9,6 +9,11 @@
     "coveralls": "cross-env NODE_ENV=test nyc report --reporter=text-lcov | coveralls",
     "test": "cross-env NODE_ENV=test mocha --require @babel/register --timeout 30000 --exit"
   },
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 6cea740 (ch(precommitscript): Configure ESLint and pre-commit scripts)
   "repository": {
     "type": "git",
     "url": "git+https://github.com/munyanezaarmel/elite-bn-be.git"
@@ -39,9 +44,13 @@
     "nyc": "^15.1.0",
     "package-lock.json": "^1.0.0",
     "passport": "^0.5.3",
+<<<<<<< HEAD
     "sequelize": "^6.19.2",
     "swagger-jsdoc": "^6.2.1",
     "swagger-ui-express": "^4.4.0"
+=======
+    "sequelize": "^6.19.2"
+>>>>>>> 6cea740 (ch(precommitscript): Configure ESLint and pre-commit scripts)
   },
   "devDependencies": {
     "eslint": "^8.16.0",
