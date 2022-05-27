@@ -5,7 +5,10 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": " node ./src/index.js"
+    "start": " node ./src/index.js",
+    "coveralls": "cross-env NODE_ENV=test nyc report --reporter=text-lcov | coveralls",
+    "test": "cross-env NODE_ENV=test mocha --require @babel/register --timeout 30000 --exit"
+    
   },
   "repository": {
     "type": "git",
@@ -18,9 +21,23 @@
   },
   "homepage": "https://github.com/atlp-rwanda/elite-bn-be.git",
   "dependencies": {
-    "@babel/core": "^7.17.12",
+    "@babel/cli": "^7.17.10",
+    "@babel/compat-data": "^7.17.10",
+    "@babel/core": "^7.18.0",
+    "@babel/node": "^7.17.10",
+    "@babel/polyfill": "^7.12.1",
+    "@babel/preset-env": "^7.18.0",
+    "@babel/register": "^7.17.7",
+    "@babel/runtime": "^7.18.0",
+    "babel-eslint": "^10.1.0",
+    "babel-node": "^0.0.1-security",
+    "chai": "^4.3.6",
+    "chai-http": "^4.3.0",
+    "coverage": "^0.4.1",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
+    "mocha": "^10.0.0",
+    "nyc": "^15.1.0",
     "passport": "^0.5.3",
     "sequelize": "^6.19.2",
     "swagger-jsdoc": "^6.2.1",
