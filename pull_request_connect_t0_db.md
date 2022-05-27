@@ -1,11 +1,11 @@
 ####What does this PR do?
-it set up all folders required for backend
+set all tools necesary for connecting to database
 
 ####how should this be manually tested?
 after cloning a repo cd into it and RUN npm run start
 
 ####any background context you want to provide?
-all JavaScript are written in ES6 and it use babel to transpire down to ES5
+can coneect to postgres db and i have provided index for models
 
 ####what are the relevant pivotal tracker stories?
-#182201507
+#182201508
