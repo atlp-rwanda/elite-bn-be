@@ -1,20 +1,19 @@
-**What does this PR do?**
+What does this PR do?
 
-  it set up all folders required for backend
-  
-  **Description of Task to be completed?**
+it set up all folders required for backend
 
-  have all folders required for backend done
+Description of Task to be completed?
 
-  **How should this be manually tested?**
-  
-  after cloning a repo cd into it and RUN npm run start
+have all folders required for backend done
 
-  **Any background context you want to provide?**
+How should this be manually tested?
 
-  all JavaScript are written in ES6 and it use babel to transpire down to ES5
+after cloning a repo cd into it and RUN npm run start
 
-  **What are the relevant pivotal tracker stories?**
+Any background context you want to provide?
 
-[#182201507](https://www.pivotaltracker.com/story/show/182201507)
+all JavaScript are written in ES6 and it use babel to transpire down to ES5
 
+What are the relevant pivotal tracker stories?
+
+#182201507
