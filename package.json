@@ -11,6 +11,7 @@
     "seed": "npx sequelize-cli db:seed:all",
     "coverage": "nyc npm run test | coveralls",
     "test": "cross-env NODE_ENV=test npm run migration && mocha --require @babel/register  --timeout 30000 --exit",
+    "coveralls": "cross-env NODE_ENV=test nyc report --reporter=text-lcov | coveralls",
     "lint": "prettier --check .",
     "format": "prettier --write ."
   },
@@ -43,6 +44,7 @@
     "c8": "^7.11.3",
     "chai": "^4.3.6",
     "chai-http": "^4.3.0",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "coverage": "^0.4.1",
     "cross-env": "^7.0.3",
@@ -53,6 +55,7 @@
     "jsonwebtoken": "^8.5.1",
     "mocha": "^10.0.0",
     "morgan": "^1.10.0",
+    "node": "^17.7.2",
     "nodemon": "^2.0.16",
     "nyc": "^15.1.0",
     "package-lock.json": "^1.0.0",
@@ -109,6 +112,8 @@
       "coverage/*"
     ],
     "sourceMap": true,
-    "instrument": true
+    "instrument": true,
+    "sequelize": "^5.21.6",
+    "sequelize-cli": "^5.5.1"
   }
 }

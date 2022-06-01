@@ -2,6 +2,7 @@ definitions:
   users:
     type: object
     required: 
+<<<<<<< HEAD
       - firstname
       - lastname
       - email
@@ -22,11 +23,28 @@ paths:
       tags:               
         - Users         
       summary: Creates A New User
+=======
+      - email
+      - password
+    properties:
+      email:
+        type: string
+        description: enter your email for signin
+      password:
+        type: string
+        description: enter your password for signin
+/api/v1/user/login:         
+    post:                 
+      tags:             
+        - Users         
+      summary: Login to barefoot via email & password
+>>>>>>> ce7e9cb (feature(user-login): user-login-via-email&password)
       requestBody:
         required: true
         content: 
           application/json:
             schema:
+<<<<<<< HEAD
               $ref: '#/definitions/users'          
       responses:
         '201':
@@ -37,3 +55,26 @@ paths:
           description: Already exists
         '400':
           description: Invalid data in the request
+=======
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  description: user's email 
+                password:
+                  type: string
+                  description: user's password         
+      responses:          
+        '201':
+          description: User logged in successfully 
+        '400':
+          description: Bad request
+        '401':
+          description: Wrong email or password
+        '500':
+          description: Opps! something went wrong
+
+
+>>>>>>> ce7e9cb (feature(user-login): user-login-via-email&password)

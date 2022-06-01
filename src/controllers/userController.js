@@ -47,3 +47,41 @@ const registerNew = async ( requestBody, response ,next)=> {
  export default {registerNew}
 
  
+import {compare}  from 'bcryptjs';
+import applicationErr from '../utils/errors/applicationError';
+import models from '../database/models';
+import createSendToken from '../middleware/createToken';
+
+const { Users } = models;
+
+
+export const login = async (req, res, next) => {
+    if (!req.body.password || !req.body.email) {
+        return next(new applicationErr('Please fill empty fields!',400));
+    }
+
+    try{
+        
+        let currentUser = await Users.findOne({ 
+            where: { email: req.body.email } 
+        });
+        
+        if (!currentUser){
+            return next(new applicationErr("Wrong email or password!", 401));
+        }
+
+        const hashedPassword = await compare(req.body.password, currentUser.password);
+    
+        if (!hashedPassword){
+            return next(new applicationErr("Wrong email or password!", 401))
+        }
+
+        createSendToken(currentUser, 201, res)
+
+    }catch(error){
+        console.log(error)
+        return next(new applicationErr("Opps! something went wrong", 500));
+    }
+   
+};
+

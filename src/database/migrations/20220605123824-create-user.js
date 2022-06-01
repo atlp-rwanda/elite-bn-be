@@ -36,5 +36,9 @@ module.exports = {
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Users');
   }
+<<<<<<< HEAD
 };
 
+=======
+};
+>>>>>>> ce7e9cb (feature(user-login): user-login-via-email&password)
