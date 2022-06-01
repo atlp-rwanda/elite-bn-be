@@ -21,11 +21,29 @@
   },
   "homepage": "https://github.com/atlp-rwanda/elite-bn-be.git",
   "dependencies": {
-    "bcryptjs": "^2.4.3",
+    "@babel/cli": "^7.17.10",
+    "@babel/compat-data": "^7.17.10",
+    "@babel/core": "^7.18.0",
+    "@babel/node": "^7.17.10",
+    "@babel/polyfill": "^7.12.1",
+    "@babel/preset-env": "^7.18.0",
+    "@babel/register": "^7.17.7",
+    "@babel/runtime": "^7.18.0",
+    "babel-eslint": "^10.1.0",
+    "babel-node": "^0.0.1-security",
+    "bcrypt": "^5.0.1",
+    "chai": "^4.3.6",
+    "chai-http": "^4.3.0",
+    "coverage": "^0.4.1",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.21",
+    "mocha": "^10.0.0",
+    "nyc": "^15.1.0",
+    "package-lock.json": "^1.0.0",
     "passport": "^0.5.3",
-    "pg": "^8.7.3",
     "pre-commit": "^1.2.2",
     "sequelize": "^6.19.2",
     "sequelize-cli": "^6.4.1",
@@ -48,5 +66,3 @@
     "sequelize-cli": "^6.4.1"
   }
 }
-
-
