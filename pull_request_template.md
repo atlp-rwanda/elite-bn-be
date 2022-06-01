@@ -1,11 +1,7 @@
-####What does this PR do?
-it set up all folders required for backend
+#### What does this PR do?
 
-####how should this be manually tested?
-after cloning a repo cd into it and RUN npm run start
+#### How should this be manually tested?
 
-####any background context you want to provide?
-all JavaScript are written in ES6 and it use babel to transpire down to ES5
+#### Any background context you want to provide?
 
-####what are the relevant pivotal tracker stories?
-#182201507
+#### What are the relevant pivotal tracker stories?
