@@ -1,28 +1,25 @@
-/* eslint-disable no-undef */
-/* eslint-disable no-unused-vars */
-
 import express from 'express'
-import babel from "@babel/core";
-import swaggerDocs from './public/api-docs/swagger.js';
-import db from "./database/models/index.js"
-import dotenv from 'dotenv'
+import * as babel from '@babel/core'
+import swaggerDocs from '../public/api-docs/swagger.js'
+import userRoute from './'
+import 'dotenv/config'
+const app = express()
+import passport from 'passport'
+import dotenv from "dotenv";
+dotenv.config(".env");
 
+const port = process.env.PORT || 3000
 
-dotenv.config()
+swaggerDocs(app, port)
 
-
-
-swaggerDocs(app, port);
-
-
-db.sequelize
-    .authenticate()
-    .then(() => {
-        console.log("connected to the db");
-    })
-    .catch((err) => {
-        console.log("Error connecting to the db", err);
+app.get('/', (req, res) => {
+    res.status(200).json({ 
+        message: 'Welcome to Barefoot Nomad api.' 
     });
+});
 
-app.listen(port, () => console.log(`Listening on ${port}`));
+// app.use('/api/v1/user', require('./routers/user.router'))
+
+
+app.listen(port, () => console.log(`Listening on ${port}`))
 
