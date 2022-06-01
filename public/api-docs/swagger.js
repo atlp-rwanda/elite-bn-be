@@ -47,3 +47,4 @@ const swaggerDocs = (app) => {
 };
 
 export default swaggerDocs;
+

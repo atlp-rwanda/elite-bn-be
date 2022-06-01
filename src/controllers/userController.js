@@ -5,7 +5,12 @@ import * as ApplicationError from '../utils/errors/AppError';
 import * as alreadyExists from '../utils/errors/alreadyExistError';
 import * as tokenGenerator from '../utils/helpers/generateToken';
 import db from '../database/models/index.js';
+import {compare}  from 'bcryptjs';
+import applicationErr from '../utils/errors/applicationError';
+import models from '../database/models';
+import createSendToken from '../utils/helpers/createToken';
 const User = db['users ']
+const { Users } = models;
     
 const registerNew = async ( requestBody, response ,next)=> {
     try {
@@ -47,3 +52,35 @@ const registerNew = async ( requestBody, response ,next)=> {
  export default {registerNew}
 
  
+
+
+export const login = async (req, res, next) => {
+    if (!req.body.password || !req.body.email) {
+        return next(new applicationErr('Please fill empty fields!',400));
+    }
+
+    try{
+        
+        let currentUser = await Users.findOne({ 
+            where: { email: req.body.email } 
+        });
+        
+        if (!currentUser){
+            return next(new applicationErr("Wrong email or password!", 401));
+        }
+
+        const hashedPassword = await compare(req.body.password, currentUser.password);
+    
+        if (!hashedPassword){
+            return next(new applicationErr("Wrong email or password!", 401))
+        }
+
+        createSendToken(currentUser, 201, res)
+
+    }catch(error){
+        console.log(error)
+        return next(new applicationErr("Opps! something went wrong", 500));
+    }
+   
+};
+

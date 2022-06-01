@@ -4,6 +4,7 @@ definitions:
     required: 
       - firstname
       - lastname
+      - username
       - email
       - password
     properties:
@@ -11,13 +12,15 @@ definitions:
         type: string
       lastname:
         type: string
+      username:
+        type: string
       email:
         type: string
       password:
         type: string
         description: Password for login
 paths:
-  /api/user/register:           
+  /api/v1/user/register:           
     post:                 
       tags:               
         - Users         
@@ -37,3 +40,35 @@ paths:
           description: Already exists
         '400':
           description: Invalid data in the request
+
+/api/v1/user/login:         
+    post:                 
+      tags:             
+        - Users         
+      summary: Login to barefoot via email & password
+      requestBody:
+        required: true
+        content: 
+          application/json:
+            schema:
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  description: user's email 
+                password:
+                  type: string
+                  description: user's password         
+      responses:          
+        '201':
+          description: User logged in successfully 
+        '400':
+          description: Bad request
+        '401':
+          description: Wrong email or password
+        '500':
+          description: Opps! something went wrong
+
+
