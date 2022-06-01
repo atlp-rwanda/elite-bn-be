@@ -17,7 +17,7 @@ app.listen(port, () => console.log(`Listening on ${port}`));
 sequelize
 .authenticate()
 .then(() => {
-  console.log('\nBarefoot Nomad Database Connected! \n');
+  console.log('\n Barefoot Nomad Database Connected! \n');
 }).catch((err) => {
   console.log('\n!!! Barefoot Nomad Database Not Connected !!! \n');
   console.log({ Error_Message: err });
