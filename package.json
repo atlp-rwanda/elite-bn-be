@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "babel ./src/index.js -d build",
-    "start": "npm run build && node dist/index.js",
+    "build": "babel src --out-dir -d build",
+    "start": "npm run build && node build/index.js",
     "migration": "npx sequelize-cli db:migrate",
     "down": "npx sequelize-cli db:migrate:undo:all",
     "seed": "npx sequelize-cli db:seed:all"
@@ -27,7 +27,6 @@
     "passport": "^0.5.3",
     "pg": "^8.7.3",
     "pre-commit": "^1.2.2",
-    "sequelize": "^6.19.2",
     "sequelize-cli": "^6.4.1",
     "swagger-jsdoc": "^6.2.1",
     "swagger-ui-express": "^4.4.0"
@@ -44,9 +43,7 @@
     "pg": "^8.7.3",
     "pg-hstore": "^2.3.4",
     "prettier": "^2.6.2",
-    "sequelize": "^6.19.2",
+    "sequelize": "^5.22.5",
     "sequelize-cli": "^6.4.1"
   }
 }
-
-

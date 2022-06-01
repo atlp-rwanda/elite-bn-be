@@ -1,19 +1,18 @@
-/* eslint-disable no-undef */
-/* eslint-disable no-unused-vars */
 
 import express from 'express'
 import babel from "@babel/core";
 import swaggerDocs from './public/api-docs/swagger.js';
-import db from "./database/models/index.js"
+import { db } from "./database/models/index.js"
 import dotenv from 'dotenv'
+
+
 
 
 dotenv.config()
 
-
-
+const app = express();
+const port = process.env.PORT || 3000;
 swaggerDocs(app, port);
-
 
 db.sequelize
     .authenticate()
