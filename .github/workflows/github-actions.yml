@@ -9,7 +9,7 @@ on:
 jobs:
   build:
 
-    runs-on: ${{matrix.os, matrix.node-version}}
+    runs-on: ${{matrix.os}}
 
     strategy:
       matrix:
