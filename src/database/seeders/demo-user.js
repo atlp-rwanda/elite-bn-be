@@ -15,8 +15,8 @@ export default {
         updatedAt: new Date()
     },
     {
-        firstName: 'armel',
-        lastName: 'munyaneza',
+        firstName: 'kevinnnnnnnnnnnn',
+        lastName: 'mahoro',
         username: 'lorex',
         email: 'test2@gmail.com',
         password: await hash('commentManager@1', 12),
