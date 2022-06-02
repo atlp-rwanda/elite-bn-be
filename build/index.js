@@ -1,12 +1,12 @@
 "use strict";
 
-var _express = _interopRequireDefault(require("express"));
-
 var _core = _interopRequireDefault(require("@babel/core"));
 
 var _swagger = _interopRequireDefault(require("./public/api-docs/swagger.js"));
 
-var _index = _interopRequireDefault(require("./database/models/index.js"));
+var _models = _interopRequireDefault(require("../database/models"));
+
+var _app = _interopRequireDefault(require("./app"));
 
 var _dotenv = _interopRequireDefault(require("dotenv"));
 
@@ -17,12 +17,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 /* eslint-disable no-unused-vars */
 _dotenv.default.config();
 
-(0, _swagger.default)(app, port);
+(0, _swagger.default)(_app.default, port);
 
-_index.default.sequelize.authenticate().then(() => {
+_models.default.sequelize.authenticate().then(() => {
   console.log("connected to the db");
 }).catch(err => {
   console.log("Error connecting to the db", err);
 });
 
-app.listen(port, () => console.log(`Listening on ${port}`));
+_app.default.listen(port, () => console.log(`Listening on ${port}`));

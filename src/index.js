@@ -1,10 +1,10 @@
 /* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 
-import express from 'express'
 import babel from "@babel/core";
 import swaggerDocs from './public/api-docs/swagger.js';
-import db from "./database/models/index.js"
+import db from '../database/models'
+import app from './app';
 import dotenv from 'dotenv'
 
 

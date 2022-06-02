@@ -1,6 +1,7 @@
 
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import User from '../database/models/user';
 import dotenv from 'dotenv';
 const resetSecret = process.env.RESET_SECRET;
 
