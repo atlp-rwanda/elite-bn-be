@@ -3,12 +3,22 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "build": "babel ./src/index.js -d build",
     "start": " nodemon --exec babel-node src/index.js",
     "migration": "npx sequelize-cli db:migrate",
     "down": "npx sequelize-cli db:migrate:undo:all",
-    "seed": "npx sequelize-cli db:seed:all"
+    "seed": "npx sequelize-cli db:seed:all",
+    "coveralls": "cross-env NODE_ENV=test nyc report --reporter=text-lcov | coveralls",
+    "test": "cross-env NODE_ENV=test mocha --require @babel/register  --timeout 30000 --exit",
+    "lint": "prettier --check .",
+    "format": "prettier --write ."
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run format && git add -A ."
+    }
   },
   "repository": {
     "type": "git",
@@ -21,13 +31,28 @@
   },
   "homepage": "https://github.com/atlp-rwanda/elite-bn-be.git",
   "dependencies": {
+    "@babel/polyfill": "^7.12.1",
+    "@babel/preset-env": "^7.18.0",
+    "@babel/register": "^7.17.7",
+    "@babel/runtime": "^7.18.0",
+    "babel-eslint": "^10.1.0",
+    "babel-node": "^0.0.1-security",
     "bcryptjs": "^2.4.3",
+    "chai": "^4.3.6",
+    "chai-http": "^4.3.0",
+    "coverage": "^0.4.1",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
+    "husky": "^8.0.1",
+    "mocha": "^10.0.0",
     "nodemon": "^2.0.16",
+    "nyc": "^15.1.0",
     "passport": "^0.5.3",
     "pg": "^8.7.3",
     "pre-commit": "^1.2.2",
+    "prettier": "^2.6.2",
+    "sequelize": "^6.19.2",
     "sequelize-cli": "^6.4.1",
     "swagger-jsdoc": "^6.2.1",
     "swagger-ui-express": "^4.4.0"
