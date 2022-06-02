@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "build": "babel ./src/index.js -d build",
     "start": "cross-env NODE_ENV=production babel-node ./src/index.js",
