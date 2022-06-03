@@ -9,8 +9,9 @@
     "migration": "npx sequelize-cli db:migrate",
     "down": "npx sequelize-cli db:migrate:undo:all",
     "seed": "npx sequelize-cli db:seed:all",
-    "coveralls": "cross-env NODE_ENV=test nyc report --reporter=text-lcov | coveralls",
     "test": "cross-env NODE_ENV=test mocha --require @babel/register  --timeout 30000 --exit",
+    "coverage": "c8 --r html -r text  -x 'public/**' -x 'coverage/**' --check-coverage npm test",
+    "coveralls": "cross-env NODE_ENV=test nyc report --reporter=text-lcov | coveralls",
     "lint": "prettier --check .",
     "format": "prettier --write ."
   },
