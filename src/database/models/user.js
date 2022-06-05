@@ -5,12 +5,16 @@ const {
 const bcryptjs = require('bcryptjs');
 const { hash } = bcryptjs;
 export default (sequelize, DataTypes) => {
-  class user extends Model {
+  class User extends Model {
     static associate(models) {
       // define association here
     }
   }
-  user.init({
+  User.init({
+    uuid:{
+     type:DataTypes.UUID,
+     defaultValue:DataTypes.UUIDV4
+    },
     firstName: DataTypes.STRING,
     lastName: DataTypes.STRING,
     username: DataTypes.STRING,
@@ -20,7 +24,9 @@ export default (sequelize, DataTypes) => {
     image: DataTypes.STRING,
     passwordChangedAt: DataTypes.DATE,
     passwordResetExpires: DataTypes.DATE,
-    passwordResetToken: DataTypes.STRING,
+    passwordResetToken: {type:DataTypes.STRING,
+    defaultValue:""
+  },
     socialMediaId: DataTypes.STRING,
     provider: DataTypes.STRING,
     isVerified: DataTypes.BOOLEAN,
@@ -37,15 +43,16 @@ export default (sequelize, DataTypes) => {
     )
   }, {
     sequelize,
-    modelName: 'users',
+    tableName:"users",
+    modelName: 'User',
   });
 
-  user.beforeSave(async user => {
+  User.beforeSave(async user => {
     if (user.password) {
       user.password = await hash(user.password, 12);
     }
 
   });
 
-  return user;
+  return User;
 };

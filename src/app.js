@@ -1,9 +1,9 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import resetPasswordRoute from './routes/resetpassword';
+import userRouter from"./routes/userRoutes"
 import cors from 'cors';
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
-app.use(resetPasswordRoute)
+app.use('/api/v1/users',userRouter)
 export default app;

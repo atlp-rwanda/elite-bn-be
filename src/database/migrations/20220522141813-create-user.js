@@ -1,74 +1,78 @@
 'use strict';
 export default {
-  async up(queryInterface, Sequelize) {
+  async up(queryInterface, DataTypes) {
     await queryInterface.createTable('users', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: DataTypes.INTEGER
       },
+      uuid:{
+        type:DataTypes.UUID,
+        defaultValue:DataTypes.UUIDV4
+       },
       firstName: {
-        type: Sequelize.STRING
+        type: DataTypes.STRING
       },
       lastName: {
-        type: Sequelize.STRING
+        type: DataTypes.STRING
       },
       email: {
-        type: Sequelize.STRING
+        type: DataTypes.STRING
       },
       password: {
-        type: Sequelize.STRING
+        type: DataTypes.STRING
       },
       username: {
-        type: Sequelize.STRING
+        type: DataTypes.STRING
       },
       phoneNumber: {
-        type: Sequelize.STRING
+        type: DataTypes.STRING
       },
       image: {
-        type: Sequelize.STRING
+        type: DataTypes.STRING
       },
       passwordChangedAt: {
-        type: Sequelize.DATE
+        type: DataTypes.DATE
       },
       passwordResetExpires: {
-        type: Sequelize.DATE
+        type: DataTypes.DATE
       },
-      passwordResetToken: {
-        type: Sequelize.STRING
+      passwordResetToken: {type:DataTypes.STRING,
+        defaultValue:""
       },
       socialMediaId: {
-        type: Sequelize.STRING
+        type: DataTypes.STRING
       },
       provider: {
-        type: Sequelize.STRING
+        type: DataTypes.STRING
       },
       isVerified: {
-        type: Sequelize.BOOLEAN
+        type: DataTypes.BOOLEAN
       },
       gender: {
-        type: Sequelize.STRING
+        type: DataTypes.STRING
       },
       preferredLanguage: {
-        type: Sequelize.STRING
+        type: DataTypes.STRING
       },
       role: {
-        type: Sequelize.ENUM,
+        type: DataTypes.ENUM,
         values: [ 'super user', 'super admin', 'travel admin', 'travel team member',
           'manager', 'requester', 'accommodation supplier' ]
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: DataTypes.DATE
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: DataTypes.DATE
       }
     });
   },
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface, DataTypes) {
     await queryInterface.dropTable('users');
   }
 };
