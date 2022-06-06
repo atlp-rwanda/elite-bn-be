@@ -1,4 +1,8 @@
-import { expect } from 'chai';
+import chai from 'chai';
+import chaiHttp from 'chai-http';
+
+chai.use(chaiHttp);
+const { expect } = chai;
 
 describe("Simple test",()=>{
     it('Should add two numbers', done => {
@@ -6,4 +10,5 @@ describe("Simple test",()=>{
         expect(number).to.equal(5);
         done();
     })
-})
+
+});
