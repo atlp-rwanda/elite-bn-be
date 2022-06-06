@@ -27,18 +27,19 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true
     },
-    username:{ 
+    username: {
       type: DataTypes.STRING,
-      allowNull: true},
+      allowNull: true
+    },
     email: {
-        unique: true,
-        type: DataTypes.STRING,
-        allowNull: true
-      },
+      unique: true,
+      type: DataTypes.STRING,
+      allowNull: true
+    },
     password: {
-        type: DataTypes.STRING,
-        allowNull: true
-      },
+      type: DataTypes.STRING,
+      allowNull: true
+    },
     isVerified: {
       type: DataTypes.BOOLEAN,
       defaultValue: false
@@ -54,14 +55,7 @@ module.exports = (sequelize, DataTypes) => {
     department: DataTypes.STRING,
     lineManager: DataTypes.STRING,
     location: DataTypes.STRING,
-    googleId: {
-      type: DataTypes.STRING,
-      allowNull: true
-    },
-    facebookId: {
-      type: DataTypes.STRING,
-      allowNull: true
-    },
+
   }, {
     sequelize,
     modelName: 'Users',
@@ -70,4 +64,3 @@ module.exports = (sequelize, DataTypes) => {
   });
   return User;
 };
-

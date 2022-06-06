@@ -16,6 +16,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true
       },
+      username: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
       username:{ 
         type: Sequelize.STRING,
         allowNull: true},
@@ -25,12 +29,18 @@ module.exports = {
           allowNull: true
         },
       password: {
-          type: Sequelize.STRING,
-          allowNull: true
-        },
+         
+        unique: true,
+        type: Sequelize.STRING,
+        allowNull: true
+      },
+      password: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
       role: {
         type: Sequelize.ENUM,
-        values: ['super admin', 'travel admin', 'manager', 'accommodation supplier', 'requester'],
+        values: [ 'super admin', 'travel admin', 'manager', 'accommodation supplier', 'requester' ],
         defaultValue: 'requester'
       },
       gender: {
@@ -63,6 +73,9 @@ module.exports = {
       location: {
         type: Sequelize.STRING
       },
+      isVerified: {
+        type: Sequelize.BOOLEAN
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
@@ -77,4 +90,3 @@ module.exports = {
     await queryInterface.dropTable('Users');
   }
 };
-

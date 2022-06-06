@@ -25,5 +25,21 @@ const updateOrCreate = async (model, where, newItem) => {
   const item = await model.update(newItem, { where });
   return { item, created: false };
 };
-export {addUser,findByEmail, updateOrCreate};
+
+const verifyUser = async (id) => {
+  const user = await Users.findOne({ where: { id: `${id}` } });
+  try {
+    const verified = Users.update(
+      { isVerified: true },
+      { where: { id: `${id}` } }
+      // { where: id }
+    )
+    // console.log(verified);
+    return verified;
+  } catch (error) {
+    return error.json();
+  }
+
+}
+export { addUser, findByEmail, verifyUser, updateOrCreate };
 

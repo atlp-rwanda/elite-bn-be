@@ -21,6 +21,15 @@ userRouter.get('/profile', checkAuth, getProfile);
 userRouter.patch('/profile', checkAuth, updateProfile);
 userRouter.post('/logout', logout);
 
+userRouter.get('/verify/:id', (req, res, next) => {
+    try {
+        userController.default.userVerfication(req, res, next);
+    }
+    catch (error) {
+        res.status(500).json({ 'Error Message:': 'An Error has occured, Something went wrong!', Error: error });
+        next(error);
+    }
+});
 export default userRouter;
 
 

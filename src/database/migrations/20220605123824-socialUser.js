@@ -15,10 +15,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true
       }),
-      queryInterface.addColumn('Users', 'isVerified', {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false
-      }),
+      // queryInterface.addColumn('Users', 'isVerified', {
+      //   type: Sequelize.BOOLEAN,
+      //   defaultValue: false
+      // }),
     ]);
   },
 
