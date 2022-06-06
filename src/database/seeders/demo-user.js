@@ -5,6 +5,7 @@ const { hash } = bcryptjs;
 
 export default {
     up: async (queryInterface, Sequelize) => queryInterface.bulkInsert('users', [ {
+        
         firstName: 'celineeeee',
         lastName: 'eliab',
         username: 'ishimwe',

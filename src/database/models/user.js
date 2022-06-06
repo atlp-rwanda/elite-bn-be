@@ -6,8 +6,9 @@ const bcryptjs = require('bcryptjs');
 const { hash } = bcryptjs;
 export default (sequelize, DataTypes) => {
   class user extends Model {
-    static associate(models) {
+    static associate({request}) {
       // define association here
+      this.hasMany(request, {foreignKey:"id"})
     }
   }
   user.init({
