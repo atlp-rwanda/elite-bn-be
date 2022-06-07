@@ -1,17 +1,17 @@
 'use strict';
-export default {
+module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('users', {
+    await queryInterface.createTable('Users', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      firstName: {
+      name: {
         type: Sequelize.STRING
       },
-      lastName: {
+      username: {
         type: Sequelize.STRING
       },
       email: {
@@ -20,37 +20,31 @@ export default {
       password: {
         type: Sequelize.STRING
       },
-      username: {
+      phoneNumber: {
         type: Sequelize.STRING
       },
-      phoneNumber: {
+      birthdate: {
+        type: Sequelize.STRING
+      },
+      gender: {
+        type: Sequelize.STRING
+      },
+      address: {
+        type: Sequelize.STRING
+      },
+      department: {
         type: Sequelize.STRING
       },
       image: {
         type: Sequelize.STRING
       },
-      passwordChangedAt: {
-        type: Sequelize.DATE
-      },
-      passwordResetExpires: {
-        type: Sequelize.DATE
-      },
-      passwordResetToken: {
-        type: Sequelize.STRING
-      },
-      socialMediaId: {
-        type: Sequelize.STRING
-      },
-      provider: {
-        type: Sequelize.STRING
-      },
-      isVerified: {
-        type: Sequelize.BOOLEAN
-      },
-      gender: {
-        type: Sequelize.STRING
-      },
       preferredLanguage: {
+        type: Sequelize.STRING
+      },
+      preferredCurrency: {
+        type: Sequelize.STRING
+      },
+      lineManager: {
         type: Sequelize.STRING
       },
       role: {
@@ -69,6 +63,6 @@ export default {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('users');
+    await queryInterface.dropTable('Users');
   }
 };
