@@ -1,35 +1,24 @@
 import models from '../database/models';
-import applicationErr from '../utils/applicationError';
+import applicationErr from '../utils/errors/applicationError';
 const { Users } = models;
 
-export const getAlluser = async (req, res,next) => {
-    try{
-        const users = await Users.findAll();
-        res.status(200).json({
-            message: "All Users accounts",
-            users
-        });
-    }catch(err){
-        return next(new applicationErr('Fail to get users!', 500))
-    }
-};
 
 export const getOne =  async (req, res, next) => {
-       const freshUser = await Users.findByPk(req.user.id);
-    if(!freshUser){
-        return next( new applicationErr('user not found', 404))
 
-    }
-    if(freshUser.id!=req.params.id){
-        return next( new applicationErr("This token doesn't belong to this user", 404)
-        )
-    }
-    const user = await Users.findOne({where: {id: req.params.id}});
-        res.status(200).json({
-            message:"Selected User",
+    const freshUser = await Users.findByPk(req.user.id);
+        if(!freshUser){
+            return next( new applicationErr('user not found', 404))
+
+        }
+        if(freshUser.id!=req.params.id){
+            return next( new applicationErr("This token doesn't belong to this user", 404)
+            )
+        }
+        const user = await Users.findOne({where: {id: req.params.id}});
+        res.status(200).json({ 
+            message:"Selected User", 
             user
         });
-  
 };
 
 
@@ -66,6 +55,5 @@ export const updateProfile = async (req, res, next) => {
                 message:"user profile updated successfully!",
                 updateUser
         });
-
 };
 

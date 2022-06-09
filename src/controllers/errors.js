@@ -1,4 +1,4 @@
-import applicationErr from '../utils/applicationError';
+import applicationErr from '../utils/errors/applicationError';
 
 const handleJWTError = () =>
     new applicationErr('Invalid token. Please login again!', 401);

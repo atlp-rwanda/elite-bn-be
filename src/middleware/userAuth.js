@@ -2,10 +2,8 @@ import jwt from 'jsonwebtoken';
 import models from '../database/models';
 const { Users } = models;
 
-
-
 export const userAuth = async (req, res, next) => {
-    console.log(req.headers.jwt);
+    // console.log(req.headers.jwt);
     try{
         let token;
         if( req.headers.jwt){
@@ -24,14 +22,6 @@ export const userAuth = async (req, res, next) => {
             const decoded =  jwt.verify(token, process.env.JWT_SECRET);
 
         const freshUser =  await Users.findByPk(decoded.id); 
-        // if(!freshUser){
-        //     return next(
-        //         res.status(401).json({
-        //             status: "fail",
-        //             message: "the user of this token doesn't work"
-        //         })
-        //     )
-        // }
         req.user = freshUser;
         next()
        
