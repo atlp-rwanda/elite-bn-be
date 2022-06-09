@@ -43,24 +43,44 @@
     "c8": "^7.11.3",
     "chai": "^4.3.6",
     "chai-http": "^4.3.0",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "coverage": "^0.4.1",
     "cross-env": "^7.0.3",
+    "datauri": "^4.1.0",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
+    "express-session": "^1.17.3",
+    "favicons": "^7.0.0-beta.4",
+    "fs": "^0.0.1-security",
+    "google-auth-library": "^8.0.2",
     "husky": "^8.0.1",
+    "install": "^0.13.0",
     "joi": "^17.6.0",
     "jsonwebtoken": "^8.5.1",
+    "method-override": "^3.0.0",
     "mocha": "^10.0.0",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.16",
+    "npm": "^8.12.1",
     "nyc": "^15.1.0",
     "package-lock.json": "^1.0.0",
     "passport": "^0.5.3",
+    "passport-facebook": "^3.0.0",
+    "passport-google-oauth20": "^2.0.0",
+    "path": "^0.12.7",
+    "pg": "^8.7.3",
     "pre-commit": "^1.2.2",
     "prettier": "^2.6.2",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0",
+    "react-scripts": "^5.0.1",
+    "sequelize": "^6.19.2",
+    "sequelize-cli": "^6.4.1",
+    "session-file-store": "^1.5.0",
     "swagger-jsdoc": "^6.2.1",
-    "swagger-ui-express": "^4.4.0"
+    "swagger-ui-express": "^4.4.0",
+    "validator": "^13.7.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.17.10",
@@ -110,5 +130,9 @@
     ],
     "sourceMap": true,
     "instrument": true
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "keywords": []
 }

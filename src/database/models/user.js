@@ -1,7 +1,11 @@
-'use strict';
+/* eslint-disable require-jsdoc */
+/* eslint-disable linebreak-style */
+/* eslint-disable valid-jsdoc */
+/* eslint-disable no-unused-vars */
 const {
   Model
 } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -25,4 +29,3 @@ module.exports = (sequelize, DataTypes) => {
   });
   return User;
 };
-
