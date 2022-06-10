@@ -3,6 +3,9 @@ import express from "express";
 import * as userController from '../controllers/userController';
 import {login, getProfile, updateProfile } from '../controllers/userController';
 import checkAuth from "../middlewares/checkAuth";
+import { login } from '../controllers/userController';
+import { logout } from '../controllers/userController';
+
 
 const userRouter = express.Router();
 const routes = express.Router();
@@ -20,6 +23,8 @@ userRouter.post('/register', (req, res, next ) => {
 userRouter.post('/login', login);
 userRouter.get('/profile', checkAuth, getProfile);
 userRouter.patch('/profile', checkAuth, updateProfile);
+
+userRouter.post('/logout', logout);
 
 export default userRouter;
 

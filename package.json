@@ -12,7 +12,7 @@
     "down": "npx sequelize-cli db:migrate:undo:all",
     "seed": "npx sequelize-cli db:seed:all",
     "coverage": "nyc npm run test | coveralls",
-    "test": "cross-env NODE_ENV=test npm run migration && npm run seed && mocha --require @babel/register  --timeout 30000 --exit",
+    "test": "cross-env NODE_ENV=test npm run migration && mocha --require @babel/register  --timeout 30000 --exit",
     "coveralls": "cross-env NODE_ENV=test nyc report --reporter=text-lcov | coveralls",
     "lint": "prettier --check .",
     "format": "prettier --write ."
@@ -59,6 +59,35 @@
     "coverage": "^0.4.1",
     "cross-env": "^7.0.3",
     "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "husky": "^8.0.1",
+    "joi": "^17.6.0",
+    "jsonwebtoken": "^8.5.1",
+    "mocha": "^10.0.0",
+    "morgan": "^1.10.0",
+    "node": "^17.7.2",
+    "nodemon": "^2.0.16",
+    "npm": "^8.12.1",
+    "nyc": "^15.1.0",
+    "package-lock.json": "^1.0.0",
+    "passport": "^0.5.3",
+    "pre-commit": "^1.2.2",
+    "prettier": "^2.6.2",
+    "swagger-jsdoc": "^6.2.1",
+    "swagger-ui-express": "^4.4.0",
+    "babel-cli": "^6.26.0",
+    "@babel/cli": "^7.17.10",
+    "@babel/core": "^7.18.2",
+    "@babel/node": "^7.17.10",
+    "@babel/plugin-proposal-class-properties": "^7.17.12",
+    "@babel/plugin-transform-runtime": "^7.18.0",
+    "@babel/preset-env": "^7.18.0",
+    "@babel/register": "^7.17.7",
+    "babel-plugin-add-module-exports": "^1.0.4",
+    "babel-plugin-istanbul": "^6.1.1",
+    "babel-register": "^6.26.0",
+    "coveralls": "^3.1.1",
+    "cross-env": "^7.0.3",
     "eslint": "^8.16.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-node": "^4.1.0",
@@ -93,6 +122,9 @@
     "swagger-jsdoc": "^6.2.1",
     "swagger-ui-express": "^4.4.0"
   },
+  "devDependencies": {
+    
+  },
   "nyc": {
     "all": true,
     "include": [
@@ -112,8 +144,6 @@
     "instrument": true,
     "sequelize": "^5.21.6",
     "sequelize-cli": "^5.5.1"
-  },
-  "devDependencies": {
-    "babel-cli": "^6.26.0"
   }
+ 
 }

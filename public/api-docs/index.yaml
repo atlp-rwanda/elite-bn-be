@@ -18,6 +18,3 @@ paths:
             application/json:
               schema: 
                 $ref: '#/definitions/index'
-                
-
-                
