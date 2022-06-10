@@ -1,34 +1,29 @@
 version: '3.9'
 
-services: 
+services:
   node_backend:
-        container_name: elite-bn-be
-        image: elite-bn-be:0.0.1
-        build: 
-            context: .
-            args:
-              - PORT:${PORT}
-        volumes:
-            - ./:/src/app
-        environment: 
-            - PORT=${PORT}
-            - PGPORT=${PGPORT}
-            - POSTGRES_DB=${POSTGRES_DB}
-            - POSTGRES_USER=${POSTGRES_USER}
-            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-            - PGHOST=db
-        depends_on: 
-            - db
+    container_name: elite-bn-be
+    image: elite-bn-be:0.0.1
+    build:
+      context: .
+      args:
+        - PORT:${PORT}
+    volumes:
+      - ./:/src/index
+    environment:
+      - PORT=${PORT}
+      - PGPORT=${PGPORT}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - PGHOST=db
+    depends_on:
+      - db
 
   db:
-    image: postgres:12      
+    image: postgres:12
     restart: always
-    environment: 
+    environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
-  
-
-  
-
-

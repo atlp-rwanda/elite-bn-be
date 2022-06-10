@@ -1,27 +1,29 @@
-
-import express from 'express'
-import babel from "@babel/core";
+import express from 'express';
+import babel from '@babel/core';
+import http from 'http';
+import io from './utils/chat/websocket.io';
+import * as redis from 'redis';
 import swaggerDocs from '../public/api-docs/swagger.js';
-import { db } from "./database/models/index.js"
-import dotenv from 'dotenv'
+import { sequelize } from './database/models';
+import dotenv from 'dotenv';
+dotenv.config();
+import app from './app';
+require('./utils/helpers/initRedis');
 
-
-
-
-dotenv.config()
-
-const app = express();
 const port = process.env.PORT || 3000;
 swaggerDocs(app, port);
+app.emit('appStarted \n');
 
-db.sequelize
-    .authenticate()
-    .then(() => {
-        console.log("connected to the db");
-    })
-    .catch((err) => {
-        console.log("Error connecting to the db", err);
-    });
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log('Barefoot Nomad Database Connected!');
+  })
+  .catch((err) => {
+    console.log('Barefoot Nomad Database Not Connected');
+    console.log({ Error_Message: err });
+  });
 
-app.listen(port, () => console.log(`Listening on ${port}`));
+app.listen(port, () => console.log(`Barefoot Nomad Server Started & Listening on PORT: ${port}`));
 
+export default app;
