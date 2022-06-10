@@ -1,4 +1,4 @@
-/*eslint-disable*/
+
 import express from "express";
 import * as userController from '../controllers/userController';
 import {login, getProfile, updateProfile } from '../controllers/userController';
