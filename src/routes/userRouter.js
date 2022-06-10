@@ -1,7 +1,9 @@
 ;
 import express from "express";
 import * as userController from '../controllers/userController';
-import {login} from '../controllers/userController';
+import { login } from '../controllers/userController';
+import { logout } from '../controllers/userController';
+
 
 const userRouter = express.Router();
 const routes = express.Router();
@@ -17,6 +19,8 @@ userRouter.post('/register', (req, res, next ) => {
 });
 
 userRouter.post('/login', login);
+
+userRouter.post('/logout', logout);
 
 export default userRouter;
 

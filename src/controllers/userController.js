@@ -54,6 +54,7 @@ const registerNew = async ( requestBody, response ,next)=> {
  
 
 
+
 export const login = async (req, res, next) => {
     if (!req.body.password || !req.body.email) {
         return next(new applicationErr('Please fill empty fields!',400));
@@ -75,7 +76,7 @@ export const login = async (req, res, next) => {
             return next(new applicationErr("Wrong email or password!", 401))
         }
 
-        createSendToken(currentUser, 200, res)
+        createSendToken(currentUser, 201, res)
 
     }catch(error){
         console.log(error)
@@ -83,4 +84,12 @@ export const login = async (req, res, next) => {
     }
    
 };
+
+export const logout = (req, res) => {
+    res.cookie('jwt', 'loggedout', {
+        expires: new Date(Date.now() + 10 * 1000),
+        httpOnly: true,
+    });
+    res.status(200).json({ status: 'successfully logged out', data: null });
+}
 

@@ -64,11 +64,19 @@ paths:
       responses:          
         '201':
           description: User logged in successfully 
+
+/api/v1/user/logout:       
+    post:                 
+      tags:             
+        - Users         
+      summary: Logout to barefoot 
+           
+      responses:          
+        '200':
+          description: User logged out successfully 
         '400':
           description: Bad request
         '401':
           description: Wrong email or password
         '500':
-          description: Opps! something went wrong
-
-
+          description: Opps! something went wrong              
