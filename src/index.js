@@ -2,26 +2,27 @@
 import express from 'express'
 import babel from "@babel/core";
 import swaggerDocs from '../public/api-docs/swagger.js';
-import { db } from "./database/models/index.js"
+import { sequelize } from "./database/models"
 import dotenv from 'dotenv'
-
-
-
+import app from './app'
 
 dotenv.config()
 
-const app = express();
-const port = process.env.PORT || 3000;
-swaggerDocs(app, port);
+ const port =  3000;
+ swaggerDocs(app, port);
+ app.emit('appStarted \n');
 
-db.sequelize
-    .authenticate()
-    .then(() => {
-        console.log("connected to the db");
-    })
-    .catch((err) => {
-        console.log("Error connecting to the db", err);
-    });
-
-app.listen(port, () => console.log(`Listening on ${port}`));
+    sequelize
+      .authenticate()
+      .then(() => {
+        console.log('\nBarefoot Nomad Database Connected! \n');
+      }).catch((err) => {
+        console.log('\n!!! Barefoot Nomad Database Not Connected !!! \n');
+        console.log({ Error_Message: err });
+      });
+     
+     
+    
+ app.listen(port, () => console.log(`\nBarefoot Nomad Server Started & Listening on PORT: ${port}\n`));
+ 
 
