@@ -40,7 +40,6 @@ export const updateProfile = async (req, res, next) => {
                { 
                 name: req.body.name,
                 username: req.body.username,
-                email: req.body.email,
                 phoneNumber: req.body.phoneNumber,
                 gender: req.body.gender, 
                 birthdate: req.body.birthdate,

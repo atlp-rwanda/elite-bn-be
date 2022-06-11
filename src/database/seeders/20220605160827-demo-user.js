@@ -8,7 +8,8 @@ module.exports = {
         'Users',
         [
           {
-            name: 'ana avi',
+            firstName: 'eri',
+            lastName: 'manu',
             username: 'anavi14',
             email: 'test1@gmail.com',
             password: await hash('test1', 12),
@@ -20,7 +21,8 @@ module.exports = {
             updatedAt: new Date()
         },
         {
-          name: 'ana avi',
+          firstName: 'emma',
+          lastName: 'benny',
           username: 'anavi14',
           email: 'test2@gmail.com',
           password: await hash('test2', 12),
@@ -32,7 +34,8 @@ module.exports = {
           updatedAt: new Date()
         },
         {
-          name: 'ana avi',
+          firstName: 'emma',
+          lastName: 'benny',
           username: 'anavi14',
           email: 'test3@gmail.com',
           password: await hash('test3', 12),
@@ -44,10 +47,11 @@ module.exports = {
           updatedAt: new Date()
         },
         {
-          name: 'ana avi',
-          username: 'anavi14',
-          email: 'test4@gmail.com',
-          password: await hash('test4', 12),
+          firstName: 'mary',
+          lastName: 'jbri',
+          username: 'mary1',
+          email: 'usertestme@gmail.com',
+          password: await hash('testme123', 12),
           phoneNumber: '+2345849945',
           gender: 'female',
           address: 'kk av 54',

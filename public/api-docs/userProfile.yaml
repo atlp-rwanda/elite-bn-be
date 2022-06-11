@@ -1,0 +1,73 @@
+definitions:       
+  profile:
+    type: object
+    required: 
+      - gender
+      - birthdate
+    properties:
+      name:
+        type: string
+      username:
+        type: string
+      phoneNumber:
+        type: string
+      gender:
+        type: string
+      birthdate:
+        type: string
+      address:
+        type: string
+        description: Where do you live
+      departement:
+        type: string
+      manager:
+        type: string
+      preferredLanguage:
+        type: string
+      preferredCurrency:
+        type: string
+paths:
+  /api/v1/user/{id}:
+    get:                
+      tags:               
+        - User profile       
+      summary: Update Profile
+      parameters:
+        - name: id
+          in: path
+          description: The unique id of the user
+          required: true     
+      responses:
+        '200':
+          description: Success
+        '500':
+          description: Internal server error
+        '404':
+          description: Not found
+        '400':
+          description: Invalid data in the request            
+    patch:                
+      tags:               
+        - User profile        
+      summary: Update Profile
+      parameters:
+        - name: userId
+          in: path
+          description: The unique id of the user
+          required: true
+      requestBody:
+        required: true
+        content: 
+          application/json:
+            schema:
+              $ref: '#/definitions/profile'          
+      responses:
+        '200':
+          description: Profile Updated Successfully
+        '500':
+          description: Internal server error
+        '409':
+          description: Already exists
+        '400':
+          description: Invalid data in the request            
+    

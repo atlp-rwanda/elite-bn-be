@@ -8,11 +8,14 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      name: {
+      firstName: {
+        type: Sequelize.STRING
+      },
+      lastName:{
         type: Sequelize.STRING
       },
       username: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       email: {
         type: Sequelize.STRING
@@ -35,9 +38,6 @@ module.exports = {
       department: {
         type: Sequelize.STRING
       },
-      image: {
-        type: Sequelize.STRING
-      },
       preferredLanguage: {
         type: Sequelize.STRING
       },
@@ -49,8 +49,8 @@ module.exports = {
       },
       role: {
         type: Sequelize.ENUM,
-        values: [ 'super user', 'super admin', 'travel admin', 'travel team member',
-          'manager', 'requester', 'accommodation supplier' ]
+        values: [ 'super admin', 'travel admin', 'travel team member',
+          'manager', 'requester']
       },
       createdAt: {
         allowNull: false,
