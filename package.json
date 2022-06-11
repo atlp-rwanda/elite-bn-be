@@ -12,8 +12,7 @@
     "down": "npx sequelize-cli db:migrate:undo:all",
     "seed": "npx sequelize-cli db:seed:all",
     "coverage": "c8 --reporter=lcov --reporter=text npm test",
-    "test": "cross-env NODE_ENV=test npm run migration && npm run seed && mocha --require @babel/register  --timeout 30000 --exit && npm run down",
-    "coveralls": "nyc npm run test | coveralls",
+    "test": "cross-env NODE_ENV=test npm run migration && mocha --require @babel/register  --timeout 30000 --exit",
     "lint": "prettier --check .",
     "format": "prettier --write ."
   },
