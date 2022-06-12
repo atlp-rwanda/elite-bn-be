@@ -2,6 +2,7 @@ import express from 'express';
 import userRouter from './userRouter';
 import userRoutes from './userRouter';
 import { Router } from 'express';
+import userRoles from './userRoles';
 
 const router = express.Router()
 
@@ -11,5 +12,9 @@ router.get('/',(req, res) => {
 
 router.use('/api/v1', userRouter);
 router.use('/api/v1/user', userRoutes);
+
+router.use('/api/v1/user', userRoles)
+
+
 export default router;
 
