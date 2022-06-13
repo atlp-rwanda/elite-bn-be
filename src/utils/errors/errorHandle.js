@@ -1,4 +1,4 @@
-/*eslint-disable*/
+
 import applicationErr from './applicationError';
 
 const handleJWT = () =>
