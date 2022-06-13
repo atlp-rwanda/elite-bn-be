@@ -30,3 +30,5 @@ export const signupAuthSchema = Joi.object({
 
 })
 
+
+

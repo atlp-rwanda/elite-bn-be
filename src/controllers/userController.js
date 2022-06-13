@@ -46,4 +46,6 @@ const registerNew = async ( requestBody, response ,next)=> {
 }
  export default {registerNew}
 
+
+ 
  
