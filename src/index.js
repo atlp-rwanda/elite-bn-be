@@ -8,21 +8,21 @@ import app from './app'
 
 dotenv.config()
 
- const port =  3000;
+const port = process.env.PORT || 3000;
  swaggerDocs(app, port);
  app.emit('appStarted \n');
 
     sequelize
       .authenticate()
       .then(() => {
-        console.log('\nBarefoot Nomad Database Connected! \n');
+        console.log('Barefoot Nomad Database Connected!');
       }).catch((err) => {
-        console.log('\n!!! Barefoot Nomad Database Not Connected !!! \n');
+        console.log('Barefoot Nomad Database Not Connected !!');
         console.log({ Error_Message: err });
       });
      
      
     
- app.listen(port, () => console.log(`\nBarefoot Nomad Server Started & Listening on PORT: ${port}\n`));
+ app.listen(port, () => console.log(`Barefoot Nomad Server Started & Listening on PORT: ${port}`));
  
 
