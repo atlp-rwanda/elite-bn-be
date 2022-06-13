@@ -2,15 +2,15 @@ definitions:
   users:
     type: object
     required: 
-      - firstname
-      - lastname
+      - firstName
+      - lastName
       - username
       - email
       - password
     properties:
-      firstname:
+      firstName:
         type: string
-      lastname:
+      lastName:
         type: string
       username:
         type: string

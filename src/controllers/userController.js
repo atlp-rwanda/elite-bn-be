@@ -75,7 +75,7 @@ export const login = async (req, res, next) => {
             return next(new applicationErr("Wrong email or password!", 401))
         }
 
-        createSendToken(currentUser, 201, res)
+        createSendToken(currentUser, 200, res)
 
     }catch(error){
         console.log(error)

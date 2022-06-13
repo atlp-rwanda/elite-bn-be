@@ -1,11 +1,11 @@
 import Joi from 'joi';
 
 
-export const roleValidator = (req, res, next) => {
+ const roleValidator = (req, res, next) => {
     const roleValidation = Joi.object({
-        userEmail: Joi.string().min(4).required().email()
-        .trim(),
-        userRole: Joi.string().valid('super_admin', 'travel_admin', 'manager', 'requester')
+        userEmail: Joi.string().email({ minDomainSegments: 2, tlds: { allow: ['com', 'net'] } })
+        .required(),
+        userRole: Joi.string().valid('super admin', 'travel admin', 'manager', 'requester', 'accommodation supplier')
         .trim()
     });
     const done = roleValidation.validate(req.body);

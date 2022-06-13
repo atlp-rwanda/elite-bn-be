@@ -6,7 +6,7 @@ import {login} from '../controllers/userController';
 const userRouter = express.Router();
 const routes = express.Router();
 
-userRouter.post('/user/register', (req, res, next ) => {
+userRouter.post('/register', (req, res, next ) => {
     try{
         userController.default.registerNew(req.body, res,next);
     }
