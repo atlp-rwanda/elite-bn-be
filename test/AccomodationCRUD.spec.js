@@ -303,7 +303,7 @@ describe('/CRUD location  ', () => {
         amenities: ['wifi', 'long', 'late'],
         longitude: 'long',
         latitude: 'late',
-      })
+      });
     expect(res).to.have.status(200);
     expect(res.type).to.equal('application/json');
     expect(res.body).to.have.property('message');

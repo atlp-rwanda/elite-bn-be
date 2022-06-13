@@ -5,8 +5,6 @@ import models from '../database/models';
 
 import storeToken from '../services/googleFacebook';
 
-
-
 const { Users } = models;
 const GoogleStrategy = strategy.OAuth2Strategy;
 const FacebookStrategy = facebookStrategy.Strategy;

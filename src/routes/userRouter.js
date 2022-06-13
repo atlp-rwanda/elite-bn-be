@@ -31,4 +31,8 @@ userRouter.get('/verify/:id', (req, res, next) => {
     next(error);
   }
 });
+
+userRouter.post('/forgotPassword', userController.forgotPassword);
+userRouter.put('/resetPassword/:id/:passwordResetToken', userController.resetPassword);
+
 export default userRouter;

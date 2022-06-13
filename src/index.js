@@ -1,10 +1,12 @@
 import express from 'express';
 import babel from '@babel/core';
+import * as redis from 'redis';
 import swaggerDocs from '../public/api-docs/swagger.js';
 import { sequelize } from './database/models';
 import dotenv from 'dotenv';
 dotenv.config();
 import app from './app';
+require('./utils/helpers/initRedis');
 
 const port = process.env.PORT || 3000;
 swaggerDocs(app, port);
