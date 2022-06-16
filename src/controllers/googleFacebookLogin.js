@@ -134,5 +134,3 @@ class SocialLogin {
 }
 
 export default SocialLogin;
-
-
