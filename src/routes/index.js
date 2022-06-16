@@ -11,5 +11,6 @@ router.get('/',(req, res) => {
 
 router.use('/api/v1', userRouter);
 router.use('/api/v1/user', userRoutes);
+router.get('/favicon.ico', (req, res) => res.status(204));
 export default router;
 

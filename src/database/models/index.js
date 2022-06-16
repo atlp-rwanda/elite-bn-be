@@ -1,16 +1,25 @@
-const fs = require("fs");
-const path = require("path");
-const Sequelize = require("sequelize");
-const envConfigs = require("../config/config.js");
+import { readdirSync } from "fs";
+import { basename as _basename, join } from "path";
+import Sequelize from "sequelize";
+import envConfigs from "../config/config";
+import path from "path";
 
-const basename = path.basename(__filename);
-const env = process.env.NODE_ENV || "development";
-const config = envConfigs[ env ];
-export const db = {};
+const fs = require('fs');
+const basename = _basename(__filename);
+let env;
+if (process.env.NODE_ENV === "test") {
+  env = "test";
+} else {
+  env = "development";
+}
 
+const config = envConfigs[env];
+const db = {};
 let sequelize;
+
 if (config.url) {
   sequelize = new Sequelize(config.url, config);
+  // console.log("DB connected");
 } else {
   sequelize = new Sequelize(
     config.database,
@@ -33,14 +42,13 @@ fs.readdirSync(__dirname)
     );
     db[model.name] = model;
   });
-
 Object.keys(db).forEach((modelName) => {
   if (db[modelName].associate) {
     db[modelName].associate(db);
   }
 });
-
 db.sequelize = sequelize;
+db.Sequelize = Sequelize;
 
 module.exports = db;
 

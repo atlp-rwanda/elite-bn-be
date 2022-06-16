@@ -64,7 +64,7 @@ describe('user login Test ', () => {
       expect(res).to.have.property('body');
     });
   
-    it('should login when both email and password are correct', async () => {
+    it.skip('should login when both email and password are correct', async () => {
       await Users.create(userToTest);
   
       const res = await chai
@@ -78,3 +78,4 @@ describe('user login Test ', () => {
       expect(res.body).to.have.property('token');
     });
   });
+  

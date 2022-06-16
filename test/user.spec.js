@@ -83,4 +83,3 @@ describe('/POST  register endpoint', () => {
     expect(res.body).to.have.property('Error');
   });
 })
-
