@@ -17,7 +17,7 @@ const port = process.env.PORT || 3000;
       .then(() => {
         console.log('Barefoot Nomad Database Connected!');
       }).catch((err) => {
-        console.log('Barefoot Nomad Database Not Connected !!');
+        console.log('Barefoot Nomad Database Not Connected');
         console.log({ Error_Message: err });
       });
      
