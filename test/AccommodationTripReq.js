@@ -682,3 +682,12 @@ describe('Delete tests ', () => {
     expect(res.body).to.have.property('message', 'Trip deleted');
   });
 });
+describe('Travel destination test ', () => {
+  it('It should return 200 for most travelled destinations', async () => {
+    const response = await chai
+      .request(app)
+      .get('/api/v1/trip/dest')
+      .set('Cookie', `jwt=${notTravelAdminT}`);
+    expect(response).to.have.property('status', 200);
+  });
+});

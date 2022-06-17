@@ -5,6 +5,7 @@ import AccommodationMiddleware from '../middlewares/accomodation';
 import checkAuth from '../middlewares/checkAuth';
 import verifyTravelAdmin from '../middlewares/travelAdminAuth';
 
+
 const accomodationRouter = express.Router();
 const { validateNewAccommodation, validateAccommodationUpdate } = AccommodationMiddleware;
 accomodationRouter.post(
@@ -16,10 +17,12 @@ accomodationRouter.post(
   accomodationController.createAccommodation
 );
 accomodationRouter.get('/v1/accomodation', accomodationController.getAllAccommodations);
+
 accomodationRouter.get(
   '/v1/accomodation/:accommodationId',
   accomodationController.getOneAccommodation
 );
+
 accomodationRouter.patch(
   '/v1/accomodation/update/:accommodationId',
   upload.array('accomodationImage', 5),

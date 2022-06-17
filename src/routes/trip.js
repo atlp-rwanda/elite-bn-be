@@ -5,6 +5,7 @@ import {
   allTrips,
   updateTrip,
   deleteTrip,
+  mostTavelledDestinations
 } from '../controllers/tripController';
 import { makeTripComment, getTripComment, deleteTripComment } from '../controllers/tripComment';
 import checkAuth from '../middlewares/checkAuth';
@@ -19,6 +20,7 @@ trip.get('/', checkAuth, getRequestedTrips);
 trip.get('/allTrips', checkAuth, verifyManager, allTrips);
 trip.patch('/update/:tripId', checkAuth, tripValidator, updateTrip);
 trip.delete('/delete/:tripId', checkAuth, deleteTrip);
+trip.get('/dest', checkAuth, mostTavelledDestinations);
 
 trip.post('/:tripId/comment', checkAuth, tripCommentValidation, makeTripComment);
 trip.get('/:tripId/comments', checkAuth, getTripComment);
