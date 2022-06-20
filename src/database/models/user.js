@@ -1,3 +1,4 @@
+/*eslint-disable*/
 'use strict';
 const {
   Model
@@ -19,7 +20,17 @@ module.exports = (sequelize, DataTypes) => {
     username: DataTypes.STRING,
     email: DataTypes.STRING,
     password: DataTypes.STRING,
-    role: DataTypes.ENUM('super admin', 'travel admin', 'accommodation supplier', 'manager', 'requester')
+    role: DataTypes.ENUM('super admin', 'travel admin', 'accommodation supplier', 'manager', 'requester'),
+    gender: DataTypes.STRING,
+    phone: DataTypes.STRING,
+    image: DataTypes.STRING,
+    birthdate: DataTypes.STRING,
+    nationality: DataTypes.STRING,
+    preferredLanguage: DataTypes.STRING,
+    preferredCurrency: DataTypes.STRING,
+    department: DataTypes.STRING,
+    lineManager: DataTypes.STRING,
+    location: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Users',

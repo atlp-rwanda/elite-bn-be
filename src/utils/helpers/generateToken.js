@@ -9,5 +9,17 @@ const generateAccessToken=async (paramsObject) =>{
     return token;
 }
 
-export {generateAccessToken}
+const decodeAccessToken = async (token) => {
+    try {
+      const decodedToken = await jwt.verify(token, jwtToken);
+      return decodedToken;
+    } catch (error) {
+      return null;
+    }
+  };
+
+export {
+    generateAccessToken,
+    decodeAccessToken
+}
 

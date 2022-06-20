@@ -1,6 +1,4 @@
-/* eslint-disable linebreak-style */
-/* eslint-disable require-jsdoc */
-
+/* eslint-disable */
 import models from '../database/models';
 import applicationErr from '../utils/errors/applicationError';
 

@@ -1,3 +1,4 @@
+/* eslint-disable */
 import bcrypt from 'bcrypt';
 import * as validations from '../validations';
 import  * as userService from '../services/userServices';
@@ -9,6 +10,7 @@ import {compare}  from 'bcryptjs';
 import applicationErr from '../utils/errors/applicationError';
 import models from '../database/models';
 import createSendToken from '../utils/helpers/createToken';
+import giveMeProfile from '../utils/helpers/profileInfo';
 const User = db['users ']
 const { Users } = models;
     
@@ -82,5 +84,45 @@ export const login = async (req, res, next) => {
         return next(new applicationErr("Opps! something went wrong", 500));
     }
    
+};
+
+export const getProfile =  async (req, res, next) => {
+
+    const freshUser = await Users.findByPk(req.user.id);
+        if(!freshUser){
+            return next( new applicationErr('user not found', 404))
+        }
+        
+        if(freshUser.id!=req.user.id){
+            return next( new applicationErr("This token doesn't belong to this user", 401)
+            )
+        }
+        const user = await Users.findOne({where: {id: req.user.id}, attributes: {exclude:['id', 'password', 'createdAt', 'updatedAt']}});
+        res.status(200).json({ 
+            message:"my profile", 
+            user
+        });
+};
+
+
+export const updateProfile = async (req, res, next) => {
+
+    const freshUser = await Users.findByPk(req.user.id);
+    if(!freshUser){
+        return next(
+            new applicationErr("user not found", 404)
+        )
+    }
+    if(freshUser.id!=req.user.id){
+        return next(
+            new applicationErr("This token doesn't belong to this user", 401)
+        )
+    }
+
+    await Users.update(req.body, { where:  {id: req.user.id}})
+    .then(() => Users.findOne({where: {id: req.user.id}}))
+    .then((user)=> {
+        res.status(200).json({status: 200, 'message': 'profile updated!', user: giveMeProfile(user) });
+    }).catch((error) => res.status(500).json({error: "internal sever error", error}));
 };
 

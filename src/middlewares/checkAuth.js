@@ -1,8 +1,4 @@
-/* eslint-disable no-trailing-spaces */
-/* eslint-disable padded-blocks */
-/* eslint-disable quotes */
-/* eslint-disable linebreak-style */
-/* eslint-disable indent */
+/* eslint-disable*/
 import jwt from 'jsonwebtoken';
 import models from '../database/models';
 import applicationErr from '../utils/errors/applicationError';
