@@ -1,3 +1,4 @@
+/*eslint-disable*/
 'use strict';
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -27,6 +28,36 @@ module.exports = {
         type: Sequelize.ENUM,
         values: ['super admin', 'travel admin', 'manager', 'accommodation supplier', 'requester'],
         defaultValue: 'requester'
+      },
+      gender: {
+        type: Sequelize.STRING
+      },
+      phone: {
+        type: Sequelize.STRING
+      },
+      image: {
+        type: Sequelize.STRING
+      },
+      birthdate: {
+        type: Sequelize.STRING
+      },
+      nationality: {
+        type: Sequelize.STRING
+      },
+      preferredLanguage: {
+        type: Sequelize.STRING
+      },
+      preferredCurrency: {
+        type: Sequelize.STRING
+      },
+      department: {
+        type: Sequelize.STRING
+      },
+      lineManager: {
+        type: Sequelize.STRING
+      },
+      location: {
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,

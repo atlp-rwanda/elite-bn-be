@@ -18,9 +18,9 @@ module.exports = {
             updatedAt: new Date()
           },
           {
-            firstName: 'kiko',
-            lastName: 'lulu',
-            username: 'kikolulu12',
+            firstName: 'juli',
+            lastName: 'ish',
+            username: 'julishi14',
             email: 'kakamao@gmail.com',
             password: await hash('kakamao@1234', 12),
             role: 'requester',
