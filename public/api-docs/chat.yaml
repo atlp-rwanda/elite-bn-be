@@ -1,0 +1,41 @@
+definitions:
+  chat:
+    type: object
+    required:
+      - message
+    properties:
+      message:
+        type: string
+        description: chat on barefoot
+paths:
+  /api/v1/user/message:
+    post:
+      tags:
+        - Chat
+      summary: chat on barefoot
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/definitions/chat'
+      responses:
+        '200':
+          description: message created sent succesful
+        '500':
+          description: Internal server error
+        '400':
+          description: Invalid data in the request
+
+  /api/v1/user/messages:
+    get:
+      tags:
+        - Chat
+      summary: get all messages on barefoot
+      responses:
+        '200':
+          description: getting all messages
+        '500':
+          description: Internal server error
+        '400':
+          description: Invalid data in the request
