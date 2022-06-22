@@ -3,7 +3,7 @@ import express from "express";
 import * as userController from '../controllers/userController';
 import {login, getProfile, updateProfile } from '../controllers/userController';
 import checkAuth from "../middlewares/checkAuth";
-import { login } from '../controllers/userController';
+
 import { logout } from '../controllers/userController';
 
 

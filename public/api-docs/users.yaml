@@ -147,9 +147,3 @@ paths:
           description: Unauthorized 
         '500':
           description: Internal server error
-       
-                  
-    
-
-
-          description: Opps! something went wrong              
