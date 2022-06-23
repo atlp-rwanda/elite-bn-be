@@ -1,4 +1,3 @@
-/*eslint-disable*/
 import { describe, it,beforeEach, afterEach } from 'mocha';
 import chaiHTTP from 'chai-http';
 import chai, { expect } from 'chai';

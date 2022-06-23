@@ -1,4 +1,3 @@
-/*eslint-disable*/
 import chai, { expect, request, use } from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../src/app.js';
@@ -43,17 +42,8 @@ describe('TEST ROLES.', () => {
   });
 
   it('should not be allowed to change user role', async () => {
-    const salt = await bcrypt.genSalt(10);
-    const psw = await bcrypt.hash('test@123', salt);
-    const userToAssign = {
-      firstname: 'mao',
-      lastname: 'kaka',
-      email: 'kakamao@gmail.com',
-      password: psw
-    };
-
-    const userAdded = await Users.create({...userToAssign});
-    const updateRole = { userEmail: userAdded.email, userRole: 'manager'};
+    const email = 'kakamao@gmail.com'
+    const updateRole = { userEmail: email, userRole: 'manager'};
 
     const res = await request(app)
       .patch('/api/v1/user/role')
@@ -94,17 +84,8 @@ describe('TEST ROLES.', () => {
   });
 
   it('should return bad request for inexistent user role', async () => {
-    const salt = await bcrypt.genSalt(10);
-    const psw = await bcrypt.hash('monbilly@12334', salt);
-
-    const userToAssign = {
-      firstName: 'mon',
-      lastName: 'billy',
-      email: 'kakamao@gmail.com',
-      password: psw
-    } 
-    const user = await Users.create({...userToAssign});
-    const updateRole = { userEmail: user.email, userRole: 'super travel'};
+    const email = 'kakamao@gmail.com'
+    const updateRole = { userEmail: email, userRole: 'super travel'};
 
     const res = await request(app)
       .patch('/api/v1/user/role')
@@ -114,17 +95,8 @@ describe('TEST ROLES.', () => {
   });
 
   it('should be allowed to change user role', async () => {
-    const salt = await bcrypt.genSalt(10);
-    const psw = await bcrypt.hash('monbilly@12334', salt);
-
-    const userToAssign = {
-      firstName: 'mon',
-      lastName: 'billy',
-      email: 'kakamao@gmail.com',
-      password: psw
-    } 
-    const user = await Users.create({...userToAssign});
-    const updateRole = { userEmail: user.email, userRole: 'manager'};
+    const email = 'kakamao@gmail.com'
+    const updateRole = { userEmail: email, userRole: 'manager'};
 
     const res = await request(app)
       .patch('/api/v1/user/role')

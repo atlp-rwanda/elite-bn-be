@@ -1,4 +1,3 @@
-/* eslint-disable*/
 import jwt from 'jsonwebtoken';
 import models from '../database/models';
 import applicationErr from '../utils/errors/applicationError';

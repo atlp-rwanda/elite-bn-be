@@ -1,4 +1,3 @@
-
 import bcrypt from 'bcrypt';
 import * as validations from '../validations';
 import  * as userService from '../services/userServices';

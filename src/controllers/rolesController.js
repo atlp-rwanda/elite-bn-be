@@ -1,4 +1,3 @@
-/* eslint-disable */
 import models from '../database/models';
 import applicationErr from '../utils/errors/applicationError';
 
