@@ -4,6 +4,7 @@ import babel from "@babel/core";
 import swaggerDocs from '../public/api-docs/swagger.js';
 import { sequelize } from "./database/models"
 import dotenv from 'dotenv'
+dotenv.config()
 import app from './app'
 
 
