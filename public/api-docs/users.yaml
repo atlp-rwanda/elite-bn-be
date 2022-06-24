@@ -106,7 +106,7 @@ paths:
 /api/v1/user/profile:
   get:
     tags:
-      - Profile
+      - profile
     summary: Get Profile
     responses:
       '200':
@@ -120,7 +120,7 @@ paths:
 
   patch:
     tags:
-      - Profile
+      - profile
     summary: Update Profile
     requestBody:
       required: true
@@ -151,4 +151,4 @@ paths:
         description: Bad request
 
       '500':
-        description: Opps! something went wrong
+        description: Opps! something went wrongs

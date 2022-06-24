@@ -831,6 +831,27 @@ describe('Like tests ', () => {
     expect(response).to.have.property('status', 200);
     expect(response).to.have.property('body');
   });
+  it('Should submit feedback', async () => {
+    const feedback = {
+      accomodationId,
+      feedback: 'It is good',
+    };
+    const response = await chai
+      .request(app)
+      .post(`/api/v1/accomodation/feedBack/create`)
+      .set('Cookie', `jwt=${token}`)
+      .send(feedback);
+    expect(response).to.have.property('status', 200);
+    expect(response).to.have.property('body');
+  });
+  it('Should get all feedback', async () => {
+    const response = await chai
+      .request(app)
+      .get(`/api/v1/accomodation/feedback/all`)
+      .set('Cookie', `jwt=${token}`);
+    expect(response).to.have.property('status', 200);
+    expect(response).to.have.property('body');
+  });
 
   it('Should get all dislikes for an accommodation', async () => {
     const response = await chai

@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import models from '../database/models';
 import applicationErr from '../utils/errors/applicationError';
+import { deleteToken, setToken, getToken } from '../utils/helpers/initRedis';
 
 const { Users } = models;
 
@@ -14,7 +15,10 @@ const checkAuth = async (req, res, next) => {
     } else if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
       token = req.headers.authorization.split(' ')[1];
     }
-
+    const foundToken = await getToken(token);
+    if (!foundToken) {
+      return next(new AppError('Your token is invalid or expired', 401));
+    }
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     const freshUser = await Users.findByPk(decoded.id);
