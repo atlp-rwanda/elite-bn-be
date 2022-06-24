@@ -1,7 +1,7 @@
 
 import express from "express";
 import * as userController from '../controllers/userController';
-import {login, getProfile, updateProfile } from '../controllers/userController';
+import { login, logout, getProfile, updateProfile } from '../controllers/userController';
 import checkAuth from "../middlewares/checkAuth";
 
 const userRouter = express.Router();
@@ -20,6 +20,7 @@ userRouter.post('/register', (req, res, next ) => {
 userRouter.post('/login', login);
 userRouter.get('/profile', checkAuth, getProfile);
 userRouter.patch('/profile', checkAuth, updateProfile);
+userRouter.post('/logout', logout);
 
 export default userRouter;
 
