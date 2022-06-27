@@ -3,23 +3,28 @@ import jwt from 'jsonwebtoken';
 
 dotenv.config();
 const jwtToken = process.env.JWT_KEY;
+const refreshTokenKey = process.env.REFRESH_TOKEN_KEY;
 
 const generateAccessToken=async (paramsObject) =>{ 
     const token=jwt.sign(paramsObject, jwtToken, { expiresIn: '1h' });
     return token;
 }
-
-const decodeAccessToken = async (token) => {
+const generateRefreshToken = async (paramsObject) => {
     try {
-      const decodedToken = await jwt.verify(token, jwtToken);
+      const token = jwt.sign(paramsObject, refreshTokenKey, { expiresIn: '1d' });
+      return token;
+    } catch (error) {
+      return null;
+    }
+  };
+  const decodeAccessToken = async (accessToken) => {
+    try {
+      const decodedToken = await jwt.verify(accessToken, jwtToken);
       return decodedToken;
     } catch (error) {
       return null;
     }
   };
 
-export {
-    generateAccessToken,
-    decodeAccessToken
-}
+export {generateAccessToken, generateRefreshToken, decodeAccessToken}
 

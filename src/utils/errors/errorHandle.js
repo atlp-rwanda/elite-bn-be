@@ -1,4 +1,3 @@
-
 import applicationErr from './applicationError';
 
 const handleJWT = () =>

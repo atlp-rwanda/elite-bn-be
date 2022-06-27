@@ -1,4 +1,3 @@
-
 import express from "express";
 import * as userController from '../controllers/userController';
 import { login, logout, getProfile, updateProfile } from '../controllers/userController';

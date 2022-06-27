@@ -1,4 +1,3 @@
-
 'use strict';
 const {
   Model
@@ -11,15 +10,39 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
     }
   }
   User.init({
-    firstName: DataTypes.STRING,
-    lastName: DataTypes.STRING,
-    username: DataTypes.STRING,
-    email: DataTypes.STRING,
-    password: DataTypes.STRING,
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      allowNull: false,
+      primaryKey: true
+    },
+    firstName: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    lastName: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    username:{ 
+      type: DataTypes.STRING,
+      allowNull: true},
+    email: {
+        unique: true,
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+    password: {
+        type: DataTypes.STRING,
+        allowNull: true
+      },
+    isVerified: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
     role: DataTypes.ENUM('super admin', 'travel admin', 'accommodation supplier', 'manager', 'requester'),
     gender: DataTypes.STRING,
     phone: DataTypes.STRING,
@@ -30,10 +53,20 @@ module.exports = (sequelize, DataTypes) => {
     preferredCurrency: DataTypes.STRING,
     department: DataTypes.STRING,
     lineManager: DataTypes.STRING,
-    location: DataTypes.STRING
+    location: DataTypes.STRING,
+    googleId: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    facebookId: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
   }, {
     sequelize,
     modelName: 'Users',
+    tableName: 'Users',
+    timestamps: true
   });
   return User;
 };
