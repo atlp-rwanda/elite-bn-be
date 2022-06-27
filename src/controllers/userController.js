@@ -126,3 +126,10 @@ export const updateProfile = async (req, res, next) => {
     }).catch((error) => res.status(500).json({error: "internal sever error", error}));
 };
 
+export const logout = (req, res) => {
+    res.cookie('jwt', 'loggedout', {
+        expires: new Date(Date.now() + 10 * 1000),
+        httpOnly: true,
+    });
+    res.status(200).json({ status: 'successfully logged out', data: null });
+}
