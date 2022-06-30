@@ -1,4 +1,6 @@
 import bcrypt from 'bcrypt';
+import nodemailer from 'nodemailer';
+import { sendEmailOnRegistration } from "../views/email/emailTemplates.js"
 import * as validations from '../validations';
 import  * as userService from '../services/userServices';
 import * as ApplicationError from '../utils/errors/AppError';
@@ -10,6 +12,9 @@ import applicationErr from '../utils/errors/applicationError';
 import models from '../database/models';
 import createSendToken from '../utils/helpers/createToken';
 import giveMeProfile from '../utils/helpers/profileInfo';
+import Email from '../utils/email/userReEmail.js';
+import { sendEmail } from '../utils/email';
+import user from '../database/models/user.js';
 const User = db['users ']
 const { Users } = models;
     
@@ -26,7 +31,8 @@ const registerNew = async ( requestBody, response ,next)=> {
                     lastName:requestBody.lastName,
                     username:requestBody.username,
                     email:requestBody.email,
-                    password:requestBody.password,
+                    password: requestBody.password,
+                    isVerified: false
                 };
 
                 const user = await userService.addUser(userData);
@@ -34,10 +40,11 @@ const registerNew = async ( requestBody, response ,next)=> {
                 user.password = await bcrypt.hash(user.password, salt);
                 await user.save();
                 const token=await tokenGenerator.generateAccessToken({ email: user.email, id: user.id });
-                if (token){
+                if (token) {
+                    sendEmail(requestBody.email, process.env.SENDGRID_USERNAME, "Confirmation Email", sendEmailOnRegistration(requestBody.username,
+                        `${process.env.BASE_URL}/api/v1/user/verify/${user.id}`))
                     response.status(201).json({'accessToken': token, Message: 'User created'});
-                }
-                else {
+                } else {
                     ApplicationError.internalServerError(`An error occured failed`,response);
                 }
             }
@@ -49,8 +56,18 @@ const registerNew = async ( requestBody, response ,next)=> {
         ApplicationError.internalServerError(`${error}`,response);
         next(error);    
     }
+
 }
- export default {registerNew}
+
+const userVerfication = async (req, res, next) => {
+    const verifiedUser = await userService.verifyUser(req.params.id);
+    res.send({
+        message: "Verified Successfully",
+        verifiedUser
+    })
+}
+
+export default { registerNew, userVerfication }
 
  
 
