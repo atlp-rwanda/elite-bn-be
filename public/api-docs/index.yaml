@@ -1,4 +1,4 @@
-definitions:        
+definitions:
   index:
     type: object
     properties:
@@ -8,16 +8,13 @@ definitions:
 paths:
   /:
     get:
-      tags:               
-        - Index         
+      tags:
+        - Index
       summary: Returns A Welcome Message
       responses:
         '200':
           description: A JSON Array Of The
           content:
             application/json:
-              schema: 
+              schema:
                 $ref: '#/definitions/index'
-                
-
-                

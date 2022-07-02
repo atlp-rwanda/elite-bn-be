@@ -6,87 +6,87 @@ module.exports = {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
         allowNull: false,
-        primaryKey: true
+        primaryKey: true,
       },
       firstName: {
         type: Sequelize.STRING,
-        allowNull: true
+        allowNull: true,
       },
       lastName: {
         type: Sequelize.STRING,
-        allowNull: true
+        allowNull: true,
       },
       username: {
         type: Sequelize.STRING,
-        allowNull: true
+        allowNull: true,
       },
-      username:{ 
+      username: {
         type: Sequelize.STRING,
-        allowNull: true},
+        allowNull: true,
+      },
       email: {
-          unique: true,
-          type: Sequelize.STRING,
-          allowNull: true
-        },
-      password: {
-         
         unique: true,
         type: Sequelize.STRING,
-        allowNull: true
+        allowNull: true,
+      },
+      password: {
+        unique: true,
+        type: Sequelize.STRING,
+        allowNull: true,
       },
       password: {
         type: Sequelize.STRING,
-        allowNull: true
+        allowNull: true,
       },
       role: {
         type: Sequelize.ENUM,
-        values: [ 'super admin', 'travel admin', 'manager', 'accommodation supplier', 'requester' ],
-        defaultValue: 'requester'
+        values: ['super admin', 'travel admin', 'manager', 'accommodation supplier', 'requester'],
+        defaultValue: 'requester',
       },
       gender: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       phone: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       image: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       birthdate: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       nationality: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       preferredLanguage: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       preferredCurrency: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       department: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       lineManager: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       location: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       isVerified: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Users');
-  }
+  },
 };

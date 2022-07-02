@@ -1,6 +1,3 @@
 module.exports = {
-    babelrcRoots: [
-        ".",
-        "./src*"
-    ]
+  babelrcRoots: ['.', './src*'],
 };

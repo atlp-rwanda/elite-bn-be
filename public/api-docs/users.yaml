@@ -1,7 +1,7 @@
-definitions:        
+definitions:
   users:
     type: object
-    required: 
+    required:
       - firstName
       - lastName
       - username
@@ -21,7 +21,7 @@ definitions:
         description: Password for login
   profile:
     type: object
-    required: 
+    required:
       - gender
       - birthdate
       - phone
@@ -50,19 +50,19 @@ definitions:
         type: string
       location:
         type: string
-        description: Where do you live  
+        description: Where do you live
 paths:
-  /api/v1/user/register:           
-    post:                 
-      tags:               
-        - Users         
+  /api/v1/user/register:
+    post:
+      tags:
+        - Users
       summary: Creates A New User
       requestBody:
         required: true
-        content: 
+        content:
           application/json:
             schema:
-              $ref: '#/definitions/users'          
+              $ref: '#/definitions/users'
       responses:
         '201':
           description: User is successful registered
@@ -73,71 +73,71 @@ paths:
         '400':
           description: Invalid data in the request
 
-/api/v1/user/login:         
-    post:                 
-      tags:             
-        - Users         
-      summary: Login to barefoot via email & password
-      requestBody:
-        required: true
-        content: 
-          application/json:
-            schema:
-              required:
-                - email
-                - password
-              properties:
-                email:
-                  type: string
-                  description: user's email 
-                password:
-                  type: string
-                  description: user's password         
-      responses:          
-        '201':
-          description: User logged in successfully 
-        '400':
-          description: Bad request
-        '401':
-          description: Wrong email or password
-        '500':
-          description: Opps! something went wrong 
+/api/v1/user/login:
+  post:
+    tags:
+      - Users
+    summary: Login to barefoot via email & password
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            required:
+              - email
+              - password
+            properties:
+              email:
+                type: string
+                description: user's email
+              password:
+                type: string
+                description: user's password
+    responses:
+      '201':
+        description: User logged in successfully
+      '400':
+        description: Bad request
+      '401':
+        description: Wrong email or password
+      '500':
+        description: Opps! something went wrong
 
 /api/v1/user/profile:
-    get:                
-      tags:               
-        - profile       
-      summary: Get Profile   
-      responses:
-        '200':
-          description: Success
-        '401':
-          description:  unauthorized
-        '400':
-          description: Invalid data in the request 
-        '500':
-          description: Internal server error
-                
-    patch:                
-      tags:               
-        - profile        
-      summary: Update Profile
-      requestBody:
-        required: true
-        content: 
-          application/json:
-            schema:
-              $ref: '#/definitions/profile'          
-      responses:
-        '200':
-          description: Profile Updated Successfully
-        '400':
-          description: Invalid data in the request 
-        '401':
-          description: Unauthorized 
-        '500':
-          description: Internal server error
-       
+  get:
+    tags:
+      - profile
+    summary: Get Profile
+    responses:
+      '200':
+        description: Success
+      '401':
+        description: unauthorized
+      '400':
+        description: Invalid data in the request
+      '500':
+        description: Internal server error
+
+  patch:
+    tags:
+      - profile
+    summary: Update Profile
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/definitions/profile'
+    responses:
+      '200':
+        description: Profile Updated Successfully
+      '400':
+        description: Invalid data in the request
+      '401':
+        description: Unauthorized
+      '500':
+        description: Internal server error
+
 /api/v1/user/logout:
   post:
     tags:
@@ -152,8 +152,3 @@ paths:
 
       '500':
         description: Opps! something went wrong
-
-                  
-    
-
-

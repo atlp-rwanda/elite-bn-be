@@ -1,9 +1,5 @@
-export const sendEmailOnRegistration = (
-    name,
-    url,
-    uid
-) => {
-    return `<!DOCTYPE html>
+export const sendEmailOnRegistration = (name, url, uid) => {
+  return `<!DOCTYPE html>
 <html>
 
 <head>

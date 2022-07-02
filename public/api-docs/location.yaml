@@ -1,0 +1,107 @@
+definitions:
+  location:
+    type: object
+    required:
+      - locationName
+      - locationDescription
+      - countryId
+      - currency
+      - link
+    properties:
+      locationName:
+        type: string
+      locationDescription:
+        type: string
+      countryId:
+        type: integer
+      currency:
+        type: string
+      link:
+        type: string
+
+paths:
+  /api/v1/location/create:
+    post:
+      tags:
+        - Location
+      summary: new location
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/definitions/location'
+      responses:
+        '200':
+          description: location is saved
+        '500':
+          description: Internal server error
+        '403':
+          description: Unauthorized
+        '401':
+          description: Unauthenticated
+        '400':
+          description: Bad request
+  /api/v1/location/{locationId}:
+    get:
+      tags:
+        - Location
+      summary: Get single location
+      parameters:
+        - in: path
+          name: locationId
+      responses:
+        '200':
+          description: location is successful saved
+        '500':
+          description: Internal server error
+        '403':
+          description: Unauthorized
+        '401':
+          description: Unauthenticated
+        '400':
+          description: Bad request
+  /api/v1/location/delete/{locationId}:
+    delete:
+      tags:
+        - Location
+      summary: delete location
+      parameters:
+        - in: path
+          name: locationId
+      responses:
+        '200':
+          description: location is successful deleted
+        '500':
+          description: Internal server error
+        '403':
+          description: Unauthorized
+        '401':
+          description: Unauthenticated
+        '400':
+          description: Bad request
+  /api/v1/location/update/{locationId}:
+    patch:
+      tags:
+        - Location
+      summary: update a location
+      parameters:
+        - in: path
+          name: locationId
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/definitions/location'
+      responses:
+        '200':
+          description: room is successful updated
+        '500':
+          description: Internal server error
+        '403':
+          description: Unauthorized
+        '401':
+          description: Unauthenticated
+        '400':
+          description: Bad request

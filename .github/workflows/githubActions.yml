@@ -42,6 +42,7 @@ jobs:
       - run: npm i
       - run: npm run build
       - run: npm test
+      - run: npm run coveralls
 
 env:
   FACEBOOK_CALLBACK_URL: ${{secrets.FACEBOOK_CALLBACK_URL}}
@@ -60,5 +61,8 @@ env:
   SECURE: ${{secrets.SECURE}}
   DEV_DATABASE_URL: ${{secrets.DEV_DATABASE_URL}}
   TEST_DATABASE_URL: ${{secrets.TEST_DATABASE_URL}}
+  SENDGRID_API_KEY: ${{secrets.SENDGRID_API_KEY}}
+  SENDGRID_USERNAME: ${{secrets.SENDGRID_USERNAME}}
+  BASE_URL: ${{secrets.BASE_URL}}
   PORT: ${{secrets.PORT}}
   NODE_ENV: ${{secrets.NODE_ENV}}

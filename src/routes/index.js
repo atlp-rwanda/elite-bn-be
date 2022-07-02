@@ -4,17 +4,25 @@ import userRoutes from './userRouter';
 import { Router } from 'express';
 import userRoles from './userRoles';
 import socialAuthRouter from './googleFacebook';
+import accomodationRouter from './accomodationRouter';
+import roomRouter from './roomRouter';
+import countryRouter from './countryRouter';
+import locationRouter from './locationRouter';
 
-const router = express.Router()
+const indexRouter = express.Router();
 
-router.get('/', (req, res) => {
-    res.send({ message: 'Welcome Team Elite Barefoot Nomad Team Project'});
+indexRouter.get('/', (req, res) => {
+  res.send({ Message: 'Welcome Team Elite Barefoot Nomad Team Project' });
 });
 
-router.use('/api/v1/user', userRouter);
-router.use('/api/v1/user', userRoles);
-router.use('/auth', socialAuthRouter);
+indexRouter.use('/api/v1/user', userRouter);
+indexRouter.use('/api/v1/user', userRoles);
+indexRouter.use('/auth', socialAuthRouter);
+indexRouter.use('/api', accomodationRouter);
+indexRouter.use('/api', countryRouter);
+indexRouter.use('/api', roomRouter);
+indexRouter.use('/api', locationRouter);
+indexRouter.use('/api/v1/user', userRouter);
+indexRouter.use('/api/v1/user', userRoles);
 
-export default router;
-
-
+export default indexRouter;

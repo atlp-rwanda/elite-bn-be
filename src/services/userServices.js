@@ -1,17 +1,17 @@
 import models from '../database/models';
 
 const { Users } = models;
-const addUser=async (newUser)=>{
-  const user=await  Users.create(newUser);
+const addUser = async (newUser) => {
+  const user = await Users.create(newUser);
   return user;
-}
-const findByEmail=async (email)=>{
-  const user = await Users.findOne({where: { email: `${email}` } });
-  if(user){
+};
+const findByEmail = async (email) => {
+  const user = await Users.findOne({ where: { email: `${email}` } });
+  if (user) {
     delete user.dataValues.password;
   }
   return user;
-}
+};
 
 const updateOrCreate = async (model, where, newItem) => {
   // First try to find the refresh token
@@ -33,13 +33,11 @@ const verifyUser = async (id) => {
       { isVerified: true },
       { where: { id: `${id}` } }
       // { where: id }
-    )
+    );
     // console.log(verified);
     return verified;
   } catch (error) {
     return error.json();
   }
-
-}
+};
 export { addUser, findByEmail, verifyUser, updateOrCreate };
-
