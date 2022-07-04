@@ -1,7 +1,6 @@
+import dotenv from 'dotenv'
 
-
-require('dotenv').config()
-
+dotenv.config()
 module.exports = {
   development: {
     url: process.env.DEV_DATABASE_URL,
@@ -17,9 +16,12 @@ module.exports = {
     url: process.env.DATABASE_URL,
     logging: false,
     dialect: "postgres",
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false
+      }
+    }
+
   }
-
-
-
-
 }

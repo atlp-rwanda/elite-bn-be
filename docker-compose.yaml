@@ -9,7 +9,7 @@ services:
             args:
               - PORT:${PORT}
         volumes:
-            - ./:/src/app
+            - ./:/src/index
         environment: 
             - PORT=${PORT}
             - PGPORT=${PGPORT}

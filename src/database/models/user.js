@@ -2,57 +2,65 @@
 const {
   Model
 } = require('sequelize');
-const bcryptjs = require('bcryptjs');
-const { hash } = bcryptjs;
-export default (sequelize, DataTypes) => {
+module.exports = (sequelize, DataTypes) => {
   class User extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
     static associate(models) {
-      // define association here
     }
   }
   User.init({
-    uuid:{
-     type:DataTypes.UUID,
-     defaultValue:DataTypes.UUIDV4
+    id: {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      allowNull: false,
+      primaryKey: true
     },
-    firstName: DataTypes.STRING,
-    lastName: DataTypes.STRING,
-    username: DataTypes.STRING,
-    email: DataTypes.STRING,
-    password: DataTypes.STRING,
-    phoneNumber: DataTypes.STRING,
-    image: DataTypes.STRING,
-    passwordChangedAt: DataTypes.DATE,
-    passwordResetExpires: DataTypes.DATE,
-    passwordResetToken: {type:DataTypes.STRING,
-    defaultValue:""
-  },
-    socialMediaId: DataTypes.STRING,
-    provider: DataTypes.STRING,
-    isVerified: DataTypes.BOOLEAN,
+    firstName: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    lastName: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    username: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    email: {
+      unique: true,
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    isVerified: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
+    role: DataTypes.ENUM('super admin', 'travel admin', 'accommodation supplier', 'manager', 'requester'),
     gender: DataTypes.STRING,
+    phone: DataTypes.STRING,
+    image: DataTypes.STRING,
+    birthdate: DataTypes.STRING,
+    nationality: DataTypes.STRING,
     preferredLanguage: DataTypes.STRING,
-    role: DataTypes.ENUM(
-      'manager',
-      'super user',
-      'requester',
-      'super admin',
-      'travel admin',
-      'travel team member',
-      'accommodation supplier'
-    )
+    preferredCurrency: DataTypes.STRING,
+    department: DataTypes.STRING,
+    lineManager: DataTypes.STRING,
+    location: DataTypes.STRING,
+
   }, {
     sequelize,
-    tableName:"users",
-    modelName: 'User',
+    modelName: 'Users',
+    tableName: 'Users',
+    timestamps: true
   });
-
-  User.beforeSave(async user => {
-    if (user.password) {
-      user.password = await hash(user.password, 12);
-    }
-
-  });
-
   return User;
 };
