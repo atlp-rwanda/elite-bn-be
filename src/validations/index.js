@@ -1,5 +1,3 @@
 import * as userSchema from './userValidation';
 
-export {userSchema};
-
-
+export { userSchema };

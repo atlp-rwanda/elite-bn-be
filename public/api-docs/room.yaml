@@ -1,0 +1,126 @@
+definitions:
+  Rooms:
+    type: object
+    required:
+      - accomodationId
+      - roomNumber
+      - bedType
+      - cost
+      - currency
+      - cost
+    properties:
+      accomodationId:
+        type: integer
+      roomNumber:
+        type: string
+      bedType:
+        type: string
+      currency:
+        type: string
+      cost:
+        type: number
+
+paths:
+  /api/v1/room/create:
+    post:
+      tags:
+        - Rooms
+      summary: New room
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/definitions/Rooms'
+      responses:
+        '200':
+          description: Room  is successfully saved
+        '500':
+          description: Internal server error
+        '403':
+          description: Unauthorized
+        '401':
+          description: Unauthenticated
+        '400':
+          description: Bad request
+  /api/v1/room:
+    get:
+      tags:
+        - Rooms
+      summary: All Rooms
+      responses:
+        '200':
+          description: Room is successfully saved
+        '500':
+          description: Internal server error
+        '403':
+          description: Unauthorized
+        '401':
+          description: Unauthenticated
+        '400':
+          description: Bad request
+  /api/v1/room/delete/{roomId}:
+    delete:
+      tags:
+        - Rooms
+      summary: delete a Room
+      parameters:
+        - in: path
+          name: roomId
+      responses:
+        '200':
+          description: Room is successful deleted
+        '500':
+          description: Internal server error
+        '403':
+          description: Unauthorized
+        '401':
+          description: Unauthenticated
+        '400':
+          description: Bad request
+  /api/v1/room/update/{roomId}:
+    patch:
+      tags:
+        - Rooms
+      summary: update a room
+      parameters:
+        - in: path
+          name: roomId
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/definitions/Rooms'
+      responses:
+        '200':
+          description: room is successful updated
+        '500':
+          description: Internal server error
+        '403':
+          description: Unauthorized
+        '401':
+          description: Unauthenticated
+        '400':
+          description: Bad request
+  /api/v1/room/{roomId}:
+    get:
+      tags:
+        - Rooms
+      summary: Get Room by Id
+      parameters:
+        - in: path
+          name: roomId
+          schema:
+            type: string
+          required: true
+          description: room Id
+      responses:
+        '200':
+          description: Accommodation data
+        '500':
+          description: Internal server error
+        '403':
+          description: Unauthorized
+        '401':
+          description: Unauthenticated

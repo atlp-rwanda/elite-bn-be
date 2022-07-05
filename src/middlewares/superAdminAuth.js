@@ -1,12 +1,10 @@
- const verifySuperAdmin = (req, res, next) =>{
+const verifySuperAdmin = (req, res, next) => {
+  const user = req.user;
+  if (user.role !== 'super admin') {
+    return res.status(401).send({ error: 'You are not super admin' });
+  }
 
-        const user = req.user
-        if(user.role !== "super admin"){
-            return res.status(401).send({ error: 'You are not super admin' });
-        }
-        
- next();
-
+  next();
 };
 
 export default verifySuperAdmin;

@@ -9,11 +9,11 @@ module.exports = {
     return Promise.all([
       queryInterface.addColumn('Users', 'googleId', {
         type: Sequelize.STRING,
-        allowNull: true
+        allowNull: true,
       }),
       queryInterface.addColumn('Users', 'facebookId', {
         type: Sequelize.STRING,
-        allowNull: true
+        allowNull: true,
       }),
       // queryInterface.addColumn('Users', 'isVerified', {
       //   type: Sequelize.BOOLEAN,
@@ -34,5 +34,5 @@ module.exports = {
       queryInterface.removeColumn('Users', 'facebookId'),
       queryInterface.removeColumn('Users', 'isVerified'),
     ]);
-  }
+  },
 };

@@ -1,36 +1,28 @@
-const fs = require("fs");
-const path = require("path");
-const Sequelize = require("sequelize");
-const envConfigs = require("../config/config.js");
-
+const fs = require('fs');
+const path = require('path');
+const Sequelize = require('sequelize');
+const envConfigs = require('../config/config');
+import dotenv from 'dotenv';
 const basename = path.basename(__filename);
-const env = process.env.NODE_ENV || "development";
-const config = envConfigs[ env ];
+const env = process.env.NODE_ENV || 'development';
+const config = envConfigs[env];
 export const db = {};
 
 let sequelize;
 if (config.url) {
   sequelize = new Sequelize(config.url, config);
 } else {
-  sequelize = new Sequelize(
-    config.database,
-    config.username,
-    config.password,
-    config
-  );
+  sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
 
 fs.readdirSync(__dirname)
   .filter((file) => {
-    return (
-      file.indexOf('.') !== 0 && file !== basename && file.slice(-3) === '.js'
-    );
+    return file.indexOf('.') !== 0 && file !== basename && file.slice(-3) === '.js';
   })
   .forEach((file) => {
-    const model = require(path.join(__dirname, file))(
-      sequelize,
-      Sequelize.DataTypes
-    );
+    // const model = require(path.join(__dirname, file));
+    const model = require(path.join(__dirname, file))(sequelize, Sequelize.DataTypes);
+
     db[model.name] = model;
   });
 

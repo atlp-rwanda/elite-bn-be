@@ -1,7 +1,7 @@
-definitions:       
+definitions:
   roles:
     type: object
-    required: 
+    required:
       - userEmail
       - userRole
     properties:
@@ -17,35 +17,34 @@ paths:
         - Roles
       summary: Get all users to get their emails
       responses:
-          '200':
-            description: all registed users
-          '401':
-            description: An unauthorized user     
-          '500':
-            description: Internal server error
-
-/api/v1/user/role:          
-    patch:                 
-      tags:              
-        - Roles        
-      summary: Assign New Role to User
-      requestBody:
-        required: true
-        content: 
-          application/json:
-            schema:
-              $ref: '#/definitions/roles'          
-      responses:
-        '201':
-          description: User role is successfully updated!
-        '400':
-          description: Bad request
-        '402': 
-          description: Anauthorized
+        '200':
+          description: all registed users
         '401':
-          description: Anauthenticated  
-        '404':
-          description: User Not found      
+          description: An unauthorized user
         '500':
           description: Internal server error
 
+/api/v1/user/role:
+  patch:
+    tags:
+      - Roles
+    summary: Assign New Role to User
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/definitions/roles'
+    responses:
+      '201':
+        description: User role is successfully updated!
+      '400':
+        description: Bad request
+      '402':
+        description: Anauthorized
+      '401':
+        description: Anauthenticated
+      '404':
+        description: User Not found
+      '500':
+        description: Internal server error
