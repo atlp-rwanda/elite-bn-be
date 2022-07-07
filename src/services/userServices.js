@@ -1,4 +1,8 @@
 import models from '../database/models';
+import * as userExist from '../utils/errors/doesNotExistError';
+import { errorResponse } from '../utils/errors/errorResponse';
+import { successResponse } from '../utils/responses/successResponse';
+import redisClient from '../utils/helpers/initRedis';
 
 const { Users } = models;
 const addUser = async (newUser) => {
@@ -11,6 +15,34 @@ const findByEmail = async (email) => {
     delete user.dataValues.password;
   }
   return user;
+};
+
+const updatePasswordResetToken = async (token) => {
+  const passwordResetToken = await redisClient.SET('passwordResetToken', token);
+  return passwordResetToken;
+};
+
+const resetPassword = async (token, newPassword, userId, res) => {
+  const result = await redisClient.get('passwordResetToken');
+
+  if (result === token) {
+    const user = await Users.update(
+      {
+        password: newPassword,
+      },
+      { where: { id: `${userId}` } }
+    );
+
+    await redisClient.del('passwordResetToken');
+    if (user) {
+      return successResponse(res, 200, {
+        success: true,
+        message: 'password reset successfully',
+      });
+    }
+  } else {
+    return errorResponse(res, 401, 'unauthorized');
+  }
 };
 
 const updateOrCreate = async (model, where, newItem) => {
@@ -40,4 +72,5 @@ const verifyUser = async (id) => {
     return error.json();
   }
 };
-export { addUser, findByEmail, verifyUser, updateOrCreate };
+export { updateOrCreate };
+export { addUser, findByEmail, updatePasswordResetToken, resetPassword, verifyUser };

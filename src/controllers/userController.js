@@ -3,8 +3,11 @@ import nodemailer from 'nodemailer';
 import { sendEmailOnRegistration } from '../views/email/emailTemplates.js';
 import * as validations from '../validations';
 import * as userService from '../services/userServices';
+
 import * as ApplicationError from '../utils/errors/AppError';
+import { sendEmailOnResetPassword } from '../views/passwordResetTemplate.js';
 import * as alreadyExists from '../utils/errors/alreadyExistError';
+import { errorResponse } from '../utils/errors/errorResponse';
 import * as tokenGenerator from '../utils/helpers/generateToken';
 import db from '../database/models/index.js';
 import { compare } from 'bcryptjs';
@@ -15,6 +18,7 @@ import giveMeProfile from '../utils/helpers/profileInfo';
 import Email from '../utils/email/userReEmail.js';
 import { sendEmail } from '../utils/email';
 import user from '../database/models/user.js';
+
 const User = db['users '];
 const { Users } = models;
 
@@ -74,6 +78,70 @@ const userVerfication = async (req, res, next) => {
 };
 
 export default { registerNew, userVerfication };
+
+export const forgotPassword = async (req, res) => {
+  try {
+    //check if a user exist
+
+    const user = await userService.findByEmail(req.body.email);
+
+    if (!user) {
+      return errorResponse(res, 404, 'user is not registerd');
+    }
+
+    const resetToken = await tokenGenerator.generateAccessToken({ email: user.email, id: user.id });
+
+    await userService.updatePasswordResetToken(resetToken);
+
+    //send token too a user email
+
+    const resetURL = `${req.protocol}://${req.get('host')}/process.env.BASE_URL/resetpassword/${
+      user.id
+    }$/{user.passwordResetToken}`;
+
+    sendEmail(
+      req.body.email,
+      process.env.SENDGRID_USERNAME,
+      ' reset password',
+      sendEmailOnResetPassword(user.firstName, resetURL)
+    );
+    console.log(user.email);
+
+    res.status(200).json({
+      success: true,
+      message: 'email have been sent to a user',
+      id: user.id,
+      resetToken: resetToken,
+    });
+  } catch (error) {
+    ApplicationError.internalServerError(`${error}`, res);
+    next(error);
+  }
+};
+
+export const resetPassword = async (req, res, next) => {
+  try {
+    const validate = validations.userSchema.resetAuthSchema.validate(req.body);
+
+    if (!validate.error) {
+      const token = req.params.passwordResetToken;
+
+      await tokenGenerator.decodeAccessToken(token);
+
+      const { password } = req.body;
+      const userId = req.params.id;
+
+      const salt = await bcrypt.genSalt(10);
+      const newPassword = await bcrypt.hash(password, salt);
+      await userService.resetPassword(token, newPassword, userId, res);
+    } else {
+      ApplicationError.validationError(validate.error.details[0].context.label, res);
+    }
+  } catch (error) {
+    ApplicationError.internalServerError(`${error}`, res);
+    next(error);
+  }
+};
 
 export const login = async (req, res, next) => {
   if (!req.body.password || !req.body.email) {

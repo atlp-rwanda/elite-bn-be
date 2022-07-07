@@ -37,7 +37,6 @@ class AccomodationController {
         message: 'Accommodation added successfully',
         payload: createdAccommodation,
       });
-      
     } catch (error) {
       ApplicationError.internalServerError(
         { message: 'can not created accommodation Try again!!!' },

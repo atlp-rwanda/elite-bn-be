@@ -30,7 +30,7 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         node-version: [12.x, 14.x, 16.x]
-
+        redis-version: [6]
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
@@ -38,6 +38,10 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
+      - name: Start Redis
+        uses: supercharge/redis-github-action@1.4.0
+        with:
+          redis-version: ${{ matrix.redis-version }}
 
       - run: npm i
       - run: npm run build
