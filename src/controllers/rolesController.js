@@ -11,7 +11,6 @@ export const allUser = async (req, res, next) => {
       alluser,
     });
   } catch (err) {
-    console.log(err);
     return next(new applicationErr('Fail to get users', 500));
   }
 };

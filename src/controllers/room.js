@@ -18,7 +18,6 @@ class roomController {
         payload: room,
       });
     } catch (error) {
-      console.log(error);
       ApplicationError.internalServerError({ message: 'can not create Room try again' }, res);
     }
   };
@@ -72,7 +71,6 @@ class roomController {
         payload: roomUpdate,
       });
     } catch (error) {
-      console.log(error);
       ApplicationError.internalServerError({ message: error }, res);
     }
   };
