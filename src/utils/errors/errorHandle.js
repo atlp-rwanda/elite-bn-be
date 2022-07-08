@@ -28,18 +28,6 @@ const sendErrorProd = (err, res, req) => {
     });
   }
 };
-const handleJoi = (err, res, req) => {
-  if (err.message.includes('/^[a-zA-Z]{3,30}$/')) {
-    return res.status(422).json({
-      status: 422,
-      message: 'Please use non alphanumeric password.',
-    });
-  }
-  res.status(422).json({
-    status: 422,
-    message: err.message,
-  });
-};
 
 export default (err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
@@ -51,7 +39,6 @@ export default (err, req, res, next) => {
     let error = { ...err };
     error.message = err.message;
     if (err.name === 'JsonWebTokenError') error = handleJWT();
-    if (err.isJoi) return handleJoi(err, res, req);
     if (err.name === 'TokenExpiredError') error = handleJWTExpiredError();
 
     sendErrorProd(error, res, req);

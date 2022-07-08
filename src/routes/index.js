@@ -8,6 +8,7 @@ import accomodationRouter from './accomodationRouter';
 import roomRouter from './roomRouter';
 import countryRouter from './countryRouter';
 import locationRouter from './locationRouter';
+import trip from './trip';
 
 const indexRouter = express.Router();
 
@@ -24,5 +25,6 @@ indexRouter.use('/api', roomRouter);
 indexRouter.use('/api', locationRouter);
 indexRouter.use('/api/v1/user', userRouter);
 indexRouter.use('/api/v1/user', userRoles);
+indexRouter.use('/api/v1/trip', trip);
 
 export default indexRouter;

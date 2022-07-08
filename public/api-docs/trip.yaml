@@ -1,0 +1,121 @@
+definitions:
+  trip:
+    type: object
+    required:
+      - from
+      - to
+      - departDate
+      - returnDate
+      - tripReasons
+    properties:
+      from:
+        type: string
+      to:
+        type: integer
+      departDate:
+        type: string
+      returnDate:
+        type: string
+      tripReasons:
+        type: string
+      accommodationId:
+        type: integer
+paths:
+  /api/v1/trip:
+    get:
+      tags:
+        - trip request
+      summary: Get single specific trip
+      responses:
+        '200':
+          description: A single pending trip request
+        '401':
+          description: An unauthorized user
+        '500':
+          description: Internal server error
+
+/api/v1/trip/allTrips:
+  get:
+    tags:
+      - trip request
+    summary: Get all trip requests you made
+    responses:
+      '200':
+        description: All trip request
+      '401':
+        description: An unauthorized user
+      '500':
+        description: Internal server error
+
+/api/v1/trip/create:
+  post:
+    tags:
+      - trip request
+    summary: Requester make a trip request
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/definitions/trip'
+    responses:
+      '201':
+        description: trip request created successfully
+      '400':
+        description: Bad request
+      '402':
+        description: Anauthorized
+      '401':
+        description: Anauthenticated
+      '500':
+        description: Internal server error
+
+/api/v1/trip/update/{tripId}:
+  patch:
+    tags:
+      - trip request
+    summary: Update a pending trip request
+    parameters:
+      - in: path
+        name: tripId
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/definitions/trip'
+    responses:
+      '201':
+        description: trip request updated successfully
+      '400':
+        description: Bad request
+      '402':
+        description: Anauthorized
+      '401':
+        description: Anauthenticated
+      '404':
+        description: trip request Not found
+      '500':
+        description: Internal server error
+
+/api/v1/trip/delete/{tripId}:
+  delete:
+    tags:
+      - trip request
+    summary: Delete a pending trip request
+    parameters:
+      - in: path
+        name: tripId
+    responses:
+      '201':
+        description: trip request deleted successfully
+      '400':
+        description: Bad request
+      '402':
+        description: Anauthorized
+      '401':
+        description: Anauthenticated
+      '404':
+        description: trip request Not found
+      '500':
+        description: Internal server error

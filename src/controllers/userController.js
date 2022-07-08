@@ -165,7 +165,6 @@ export const login = async (req, res, next) => {
 
     createSendToken(currentUser, 200, res);
   } catch (error) {
-    console.log(error);
     return next(new applicationErr('Opps! something went wrong', 500));
   }
 };

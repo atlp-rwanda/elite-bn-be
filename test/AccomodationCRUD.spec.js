@@ -1,13 +1,14 @@
 import chai, { expect, use } from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../src/app';
-import { Country } from '../src/database/models';
+import { Country, Users } from '../src/database/models';
 
 chai.should();
 
 use(chaiHttp);
 
-let locationId, accomodationId, roomId, travelAdminA, notTravelAdminT;
+let locationId, accomodationId, roomId, travelAdminA, notTravelAdminT, tripperA;
+const tripId = 1;
 
 const travelAdmin = {
   email: 'kakamao@gmail.com',
@@ -17,6 +18,19 @@ const travelAdmin = {
 const notTravelAdmin = {
   email: 'kikolulu@gmail.com',
   password: 'kikolulu@123',
+};
+
+const tripper = {
+  firstName: 'useme',
+  lastName: 'fortest',
+  surname: 'tripper',
+  email: 'tripper@elite.com',
+  password: '$2a$12$OkrGEhmd4qXHgY694JQPe.pp0ZaxIwshuJ.0bQS/z3SxmXtQxGNVy',
+};
+
+const tripperCred = {
+  email: 'tripper@elite.com',
+  password: 'testme123',
 };
 
 describe('/CRUD location  ', () => {
@@ -318,6 +332,79 @@ describe('/CRUD location  ', () => {
     expect(res.type).to.equal('application/json');
     expect(res.body).to.have.property('error');
   });
+
+  it('TEST TRIP REQUEST: should make trip request', async () => {
+    await Users.create({ ...tripper });
+
+    const result = await chai.request(app).post('/api/v1/user/login').send(tripperCred);
+    expect(result.body).to.have.property('token');
+
+    tripperA = result.body.token;
+
+    const res = await chai
+      .request(app)
+      .post('/api/v1/trip/create')
+      .set('Cookie', `jwt=${tripperA}`)
+      .send({
+        from: 'Kanombe',
+        to: locationId,
+        departDate: '2022-07-07',
+        returnDate: '2022-08-08',
+        tripReasons: 'trip request reason',
+        accommodationId: accomodationId,
+      });
+    expect(res).to.have.status(201);
+    expect(res.body).to.have.property('message', 'trip request created');
+    expect(res.body).to.have.property('tripReq');
+  });
+
+  it('TEST TRIP REQUEST: get requested trip', async () => {
+    const res = await chai.request(app).get('/api/v1/trip').set('Cookie', `jwt=${tripperA}`);
+    expect(res).to.have.status(200);
+    expect(res.body).to.have.property('message', 'requested trips');
+  });
+
+  it('TEST TRIP REQUEST: get all requested trip as manager', async () => {
+    const managerLogin = { email: 'rickrob@gmail.com', password: 'rickrob@1234' };
+    const result = await chai.request(app).post('/api/v1/user/login').send(managerLogin);
+    expect(result.body).to.have.property('token');
+
+    const managerAuth = result.body.token;
+
+    const res = await chai
+      .request(app)
+      .get('/api/v1/trip/allTrips')
+      .set('Cookie', `jwt=${managerAuth}`);
+    expect(res).to.have.status(200);
+    expect(res.body).to.have.property('message', 'All trip request');
+  });
+
+  it('TEST TRIP REQUEST: should update a pending trip request', async () => {
+    const res = await chai
+      .request(app)
+      .patch(`/api/v1/trip/update/${tripId}`)
+      .set('Cookie', `jwt=${tripperA}`)
+      .send({
+        from: 'Kabeza',
+        to: locationId,
+        departDate: '2022-05-07',
+        returnDate: '2022-09-28',
+        tripReasons: 'trip is updated trip request',
+        accommodationId: accomodationId,
+      });
+    expect(res).to.have.status(200);
+    expect(res.body).to.have.property('message', 'Trip updated successfully');
+  });
+
+  it('TEST TRIP REQUEST: should delete a pending trip request', async () => {
+    const res = await chai
+      .request(app)
+      .delete(`/api/v1/trip/delete/${tripId}`)
+      .set('Cookie', `jwt=${tripperA}`);
+    expect(res).to.have.status(200);
+    expect(res.body).to.have.property('message', 'Trip deleted');
+  });
+
   it('It should delete  Accomodation ', async () => {
     const res = await chai
       .request(app)
@@ -356,6 +443,7 @@ describe('/CRUD location  ', () => {
     expect(res.type).to.equal('application/json');
     expect(res.body).to.have.property('error');
   });
+
   it('It should delete  location ', async () => {
     const res = await chai
       .request(app)
