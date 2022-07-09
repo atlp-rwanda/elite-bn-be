@@ -1,4 +1,4 @@
-import { Accomodation, Room } from '../database/models';
+import { Accomodation, Room, Rates, Sequelize } from '../database/models';
 
 class AccommodationService {
   static createAccommodation = async (data) => {
@@ -49,6 +49,16 @@ class AccommodationService {
   static findAccommodation = async (searchParams) => {
     return Accomodation.findOne({ where: searchParams });
   };
+
+  static countRatings = async (accommodationId) => {
+    return Rates.findAll({
+      where: { accommodationId },
+      attributes: [
+        [Sequelize('avg', Sequelize.col('rating')), 'averageRating'],
+      ],
+    });
+  };
 }
+
 
 export default AccommodationService;

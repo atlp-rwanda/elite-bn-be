@@ -4,6 +4,10 @@ import LocationService from '../services/locationServices';
 import * as ApplicationError from '../utils/errors/applicatioErrors';
 import { Accommodation } from '../database/models';
 import changeToArray from '../utils/helpers/changeToArray';
+import ErrorResponse from '../utils/response';
+import { isBeforeToday } from '../validations/timeValidation';
+
+
 
 class AccomodationController {
   static createAccommodation = async (req, res, next) => {
@@ -173,6 +177,49 @@ class AccomodationController {
       });
     } catch (error) {
       ApplicationError.internalServerError({ message: 'can not delete try again' }, res);
+    }
+  };
+   
+  static addRate = async (req, res) => {
+    try {
+      const { accommodationId } = req.params; 
+      const accommodation = await AccommodationService.getOneAccommodation(accommodationId);
+      if (!accommodation) {
+       return ErrorResponse.notFoundError(res, 'Accommodation not found');
+      }
+
+       const trips = await req.user.tripRequest ({
+         where: { accommodationId: req.params },
+       });
+       
+    
+       const hasStayed = trips.find((trip) => isBeforeToday(trip.departureDate));
+       if (!hasStayed) {
+       return ErrorResponse.semanticError(
+           res,
+           `You need to have stayed at least one day in an accommodation to rate it`
+         );
+       }
+      await accommodation.addUser(req.user, {
+        through: { rating: req.body.rating },
+      });
+      res.status(200).json({ message: 'Rate added' });
+    } catch (error) {
+    console.log(error)
+      ApplicationError.internalServerError({ message: 'can not add rate try again' }, res);
+    }
+  };
+
+  static getRates = async (req, res) => {
+    try {
+      const [ratings] = await AccommodationService.countRatings(req.params);
+      const rating = ratings.dataValues.averageRating
+        ? parseFloat(ratings.dataValues.averageRating).toFixed(1)
+        : '0';
+      res.status(200).json({ rating });
+    } catch (error) {
+      console.log(error)
+      ApplicationError.internalServerError({ message: 'can not get rates try again' }, res);
     }
   };
 }

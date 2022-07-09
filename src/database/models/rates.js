@@ -14,11 +14,28 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  Rates.init({
-    accomodationId: DataTypes.INTEGER,
-    userId: DataTypes.UUID,
-    serviceRate: DataTypes.INTEGER
-  }, {
+  Rates.init(
+    {
+
+    like: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
+    rating: {
+      type: DataTypes.DECIMAL(10, 1),
+      validate: { min: 0, max: 5 },
+    },
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    accommodationId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+  },
+  
+  {
     sequelize,
     modelName: 'Rates',
   });

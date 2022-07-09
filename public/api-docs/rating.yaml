@@ -1,5 +1,5 @@
 paths:
-  /api/v1/accommodations/{accom_id}/rating:           
+  /api/v1/accomodation/{accom_id}/rates:        
     post:                 
       tags:               
         - Rating         
@@ -17,9 +17,9 @@ paths:
           application/json:
             schema:
               required:
-                - serviceRating
+                - ratings
               properties:
-                serviceRating:
+                rating:
                   type: integer
                   description: service rating
       responses:          
@@ -29,7 +29,7 @@ paths:
           description: accomodation not found
         '500':
           description: internal server error
-  /api/v1/accommodations/{accomodation_id}/rating:           
+  /api/v1/accomodation/{accomodation_id}/rates:           
     get:                 
       tags:               
         - Rating         
@@ -45,26 +45,6 @@ paths:
       responses:          
         '201':
           description: get all ratings of an accomodation 
-        '404':
-          description: accomodation not found
-        '500':
-          description: internal server error
-  /api/v1/accommodations/{accomodation_id}/getratings:           
-    get:                 
-      tags:              
-        - Rating         
-      summary: getting rating classification of an accomodation
-      parameters:
-        - in: path
-          name: accomodation_id
-          schema:
-            type: integer
-          required: true
-          description: accomodation id
-      
-      responses:          
-        '201':
-          description: get all rating classification of an accomodation 
         '404':
           description: accomodation not found
         '500':

@@ -8,4 +8,7 @@ const validResponse = async (res, code, message, data = null) =>
 const feedbackResponse = async (res, message, data = null) => 
   res.status(201).json({ status: 201, data: { message, data } });
 
-export { notFoundResponse, validResponse, feedbackResponse };
+const semanticError = (res, message, data = null)  => {
+    res.status(422).json({ status: 201, data: { message, data } });
+  };
+export { notFoundResponse, validResponse, feedbackResponse, semanticError };
