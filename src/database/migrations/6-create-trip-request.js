@@ -49,7 +49,7 @@ module.exports = {
       },
       tripStatus: {
         allowNull: false,
-        type: Sequelize.ENUM('pending', 'approved', 'denied'),
+        type: Sequelize.ENUM('pending', 'approved', 'rejected'),
         defaultValue: 'pending',
       },
       accommodationId: {

@@ -8,7 +8,7 @@ const tripValidator = (req, res, next) => {
     returnDate: Joi.date().iso().greater(Joi.ref('departDate')).allow(''),
     tripReasons: Joi.string().min(3).max(1014).required(),
     tripType: Joi.string(),
-    tripStatus: Joi.string().valid('pending', 'approved', 'denied').trim(),
+    tripStatus: Joi.string().valid('pending', 'approved', 'rejected').trim(),
     accommodationId: Joi.number().integer().required(),
   });
   const done = tripValidation.validate(req.body);

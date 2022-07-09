@@ -7,30 +7,29 @@ class approveOrRejectController {
 
   static approveTripRequest = async (req, res) => {
     const { id } = req.params;
-    const changeStatus = { status: 'approved' };
+    const changeStatus = { tripStatus: 'approved' };
 
     try {
       const SingleTrip = await tripRequest.findOne({
-        where: { managerId: req.user.id, id },
+        where: { id: id },
       });
       if (!SingleTrip) {
         return res.status(404).json({ response: 'trip is not found' });
       }
-      if (SingleTrip.status === 'approved') {
+      if (SingleTrip.tripStatus === 'approved') {
         return res
           .status(401)
           .json({ response: 'trip has already been approved' });
       }
-      if (SingleTrip.status === 'rejected') {
+      if (SingleTrip.tripStatus === 'rejected') {
         return res
           .status(401)
           .json({ response: 'you can not approve rejected trip' });
       }
       await tripRequest.update(changeStatus, {
         where: {
-          managerId: req.user.id,
-          status: 'pending',
-          id,
+          id: id,
+          tripStatus: 'pending',
         },
       }).then((data) => {
         res.status(200).json({ response: 'request approved successfully' });
@@ -42,35 +41,36 @@ class approveOrRejectController {
 
   static rejectTripRequest = async (req, res) => {
     const { id } = req.params;
-    const changeStatus = { status: 'rejected' };
+    const changeStatus = { tripStatus: 'rejected' };
 
     try {
       const SingleTrip = await tripRequest.findOne({
-        where: { managerId: req.user.id, id },
+        where: { id: id },
       });
       if (!SingleTrip) {
         return res.status(404).json({ response: 'trip is not found' });
       }
-      if (SingleTrip.status === 'rejected') {
+      if (SingleTrip.tripStatus === 'rejected') {
         return res
           .status(401)
           .json({ response: 'trip has already been rejected' });
       }
-      if (SingleTrip.status === 'approved') {
+      if (SingleTrip.tripStatus === 'approved') {
         return res
           .status(401)
           .json({ response: 'you can not reject approved trip' });
       }
       await tripRequest.update(changeStatus, {
         where: {
-          managerId: req.user.id,
-          status: 'pending',
+          id: id,
+          tripStatus: 'pending',
           id,
         },
       }).then((data) => {
         res.status(200).json({ response: 'request rejected successfully' });
       });
     } catch (error) {
+      console.log(error)
       return ApplicationError.internalServerError({ message: error }, res);
     }
   };

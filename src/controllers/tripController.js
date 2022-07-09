@@ -118,7 +118,7 @@ export const updateTrip = async (req, res, next) => {
       returnDate: req.body.returnDate,
       tripReasons: req.body.tripReasons,
       tripType: type,
-      accommodationId: req.body.accommodationId,
+      accommodationId: req.body.accommodationId, 
     };
     const updateTrip = await models.tripRequest.update(tripReq, {
       where: {

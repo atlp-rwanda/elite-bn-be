@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
       returnDate: DataTypes.STRING,
       tripReasons: DataTypes.STRING,
       tripType: DataTypes.STRING,
-      tripStatus: DataTypes.ENUM('pending', 'approved', 'denied'),
+      tripStatus: DataTypes.ENUM('pending', 'approved', 'rejected'),
       accommodationId: DataTypes.INTEGER,
     },
     {
