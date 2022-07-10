@@ -82,6 +82,4 @@ const allDisLikes = async (req, res) => {
     return ApplicationError.internalServerError(error.message, res);
   }
 };
-export {
-  like, disLike, allLikes, allDisLikes
-};
+export { like, disLike, allLikes, allDisLikes };

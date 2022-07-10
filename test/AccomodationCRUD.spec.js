@@ -455,25 +455,6 @@ describe('/CRUD location  ', () => {
     expect(res.body).to.have.property('message', 'Trip deleted');
   });
 
-  it('It should delete  Accomodation ', async () => {
-    const res = await chai
-      .request(app)
-      .delete(`/api/v1/accomodation/delete/${roomId}`)
-      .set('Cookie', `jwt=${travelAdminA}`);
-    expect(res).to.have.status(200);
-    expect(res.type).to.equal('application/json');
-    expect(res.body).to.have.property('message');
-    expect(res.body.message).to.equal('accommodation deleted successfully');
-  });
-  it('It should not delete  Accomodation ', async () => {
-    const res = await chai
-      .request(app)
-      .delete(`/api/v1/accomodation/delete/${roomId}`)
-      .set('Cookie', `jwt=${notTravelAdminT}`);
-    expect(res).to.have.status(401);
-    expect(res.type).to.equal('application/json');
-    expect(res.body).to.have.property('error');
-  });
   it('It should update location ', async () => {
     const res = await chai
       .request(app)
@@ -493,25 +474,6 @@ describe('/CRUD location  ', () => {
     expect(res.type).to.equal('application/json');
     expect(res.body).to.have.property('error');
   });
-
-  it('It should delete  location ', async () => {
-    const res = await chai
-      .request(app)
-      .delete(`/api/v1/location/delete/${locationId}`)
-      .set('Cookie', `jwt=${travelAdminA}`);
-    expect(res).to.have.status(200);
-    expect(res.type).to.equal('application/json');
-    expect(res.body).to.have.property('message');
-    expect(res.body.message).to.equal('location deleted successfully');
-  });
-  it('It should not delete  location ', async () => {
-    const res = await chai
-      .request(app)
-      .delete(`/api/v1/location/delete/${locationId}`)
-      .set('Cookie', `jwt=${notTravelAdminT}`);
-    expect(res).to.have.status(401);
-    expect(res.type).to.equal('application/json');
-    expect(res.body).to.have.property('error');
   const Requester = {
     email: 'test@gmail.com',
     password: '12@eLOvr',
@@ -555,7 +517,9 @@ describe('/CRUD location  ', () => {
       expect(response).to.have.property('body');
     });
     it('Should get all likes of an accommodation', async () => {
-      const response = await chai.request(app).get(`/api/v1/accomodation/${accomodationId}/likes`);
+      const response = await chai
+        .request(app)
+        .get(`/api/v1/accomodation/${accomodationId}/likes`);
       expect(response).to.have.property('status', 200);
     });
     it('Should not get likes if an accommodations does not exist', async () => {

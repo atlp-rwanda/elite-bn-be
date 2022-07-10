@@ -46,6 +46,10 @@ module.exports = {
           googleId: '',
           facebookId: '',
           isVerified: false,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
           id: '2ae935e0-26cc-403c-a78d-a6f085080cef',
           firstName: 'kycee',
           lastName: 'foo',
