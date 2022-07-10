@@ -7,19 +7,6 @@ module.exports = (sequelize, DataTypes) => {
   class Rates extends Model {
     static associate(models) {
       
-      Rates.belongsTo(models.tripRequest, {
-        foreignKey: {
-          name: 'tripperId',
-        },
-        as: 'requester',
-      });
-
-      Rates.belongsTo(models.Accomodation, {
-        foreignKey: {
-          name: 'accommodationId',
-        },
-        as: 'accommodation',
-      });
     }
   }
   Rates.init(
@@ -27,11 +14,6 @@ module.exports = (sequelize, DataTypes) => {
 
         accomodationId: {
           type: DataTypes.INTEGER,
-          allowNull: false
-        },
-        tripperId: {
-          type: DataTypes.UUID,
-          unique: true,
           allowNull: false
         },
         serviceRating: {
@@ -42,7 +24,6 @@ module.exports = (sequelize, DataTypes) => {
   {
     sequelize,
     modelName: 'Rates',
-    tableName: 'rates'
   });
   return Rates;
 };

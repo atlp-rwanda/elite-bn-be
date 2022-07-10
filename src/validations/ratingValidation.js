@@ -6,6 +6,7 @@ const ratingSchema = Joi.object().keys({
     .integer()
     .min(1)
     .max(5)
+    .required()
     .label('service rate must be an integer between 1 and 5.')
 });
 export { ratingSchema };

@@ -49,7 +49,7 @@ import {
          `You have updated ratings of accommodation with id ${accommodationId} to ${serviceRating} stars`
        );
      } catch (error) {
-      console.log(req.body,'-=-=-=-=-')
+      console.log(error,'-=-=-=-=-')
        return internalServerError(`${error}`, res);
      }
    };
