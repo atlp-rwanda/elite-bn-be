@@ -1,7 +1,6 @@
-import chai, { expect, request, use } from 'chai';
+import chai, { expect, use } from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../src/app';
-import { Country } from '../src/database/models';
 
 chai.should();
 
