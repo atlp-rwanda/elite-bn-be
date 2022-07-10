@@ -98,6 +98,49 @@ paths:
       '500':
         description: Internal server error
 
+/api/v1/request/approve/{tripId}:
+  patch:
+    tags:
+      - trip request
+    summary: approve trip request
+    parameters:
+      - in: path
+        name: tripId
+    responses:
+      '200':
+        description: request approved successfully
+      '400':
+        description: Bad request
+      '402':
+        description: Anauthorized
+      '401':
+        description: Anauthenticated
+      '404':
+        description: trip request Not found
+      '500':
+        description: Internal server error       
+
+/api/v1/request/reject/{tripId}:
+  patch:
+    tags:
+      - trip request
+    summary: reject trip request
+    parameters:
+      - in: path
+        name: tripId
+    responses:
+      '200':
+        description: request rejected successfully
+      '400':
+        description: Bad request
+      '402':
+        description: Anauthorized
+      '401':
+        description: Anauthenticated
+      '404':
+        description: trip request Not found
+      '500':
+        description: Internal server error
 /api/v1/trip/delete/{tripId}:
   delete:
     tags:

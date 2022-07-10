@@ -5,12 +5,12 @@ import checkAuth from '../middlewares/checkAuth';
 const router = express.Router();
 
 router.patch(
-  '/request/approve/:id',verifyManager,checkAuth,
+  '/request/approve/:id',checkAuth,verifyManager,
   approveOrRejectController.approveTripRequest
 );
 
 router.patch(
-  '/request/reject/:id',verifyManager,checkAuth,
+  '/request/reject/:id',checkAuth,verifyManager,
   approveOrRejectController.rejectTripRequest
 );
 
