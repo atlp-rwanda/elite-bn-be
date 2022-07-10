@@ -11,10 +11,10 @@ module.exports = {
       accomodationId: {
         type: Sequelize.INTEGER
       },
-      userId: {
+      tripperId: {
         type: Sequelize.UUID
       },
-      serviceRate: {
+      serviceRating: {
         type: Sequelize.INTEGER
       },
       createdAt: {

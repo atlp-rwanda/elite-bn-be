@@ -36,13 +36,5 @@ accomodationRouter.delete(
   verifyTravelAdmin,
   accomodationController.deleteAccommodation
 );
-accomodationRouter.post(
-  '/v1/accomodation/:accommodationId/rates',
-  checkAuth,
-   RatingValidation.validateRate,
-  accomodationController.addRate
-);
-
-accomodationRouter.get('/v1/accomodation/:accommodationId/rates',accomodationController.getRates);
 
 export default accomodationRouter;
