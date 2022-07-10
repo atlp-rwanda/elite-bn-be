@@ -63,7 +63,7 @@ describe('USER PROFILE TEST ', () => {
 
     const res = await chai
       .request(app)
-      .get(`/api/v1/user/profile`)
+      .get('/api/v1/user/profile')
       .set('Cookie', `jwt=${userToken}`);
     expect(res).to.have.property('status', 200);
     expect(res.body).to.have.property('message', 'my profile');

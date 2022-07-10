@@ -10,6 +10,7 @@ import countryRouter from './countryRouter';
 import locationRouter from './locationRouter';
 import trip from './trip';
 import approveOrRejectRequest from './approveOrRejectRequest';
+import likeRouter from './likeRouter';
 
 const indexRouter = express.Router();
 
@@ -24,6 +25,7 @@ indexRouter.use('/api', accomodationRouter);
 indexRouter.use('/api', countryRouter);
 indexRouter.use('/api', roomRouter);
 indexRouter.use('/api', locationRouter);
+indexRouter.use('/api/v1', likeRouter);
 indexRouter.use('/api/v1/user', userRouter);
 indexRouter.use('/api/v1/user', userRoles);
 indexRouter.use('/api/v1/trip', trip);

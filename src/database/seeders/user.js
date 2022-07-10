@@ -49,6 +49,19 @@ module.exports = {
           createdAt: new Date(),
           updatedAt: new Date(),
         },
+        {
+          id: '2ae935e0-26cc-403c-a78d-a6f085080cef',
+          firstName: 'kycee',
+          lastName: 'foo',
+          email: 'test@gmail.com',
+          password: await hash('12@eLOvr', 12),
+          role: 'requester',
+          isVerified: true,
+          googleId: '',
+          facebookId: '',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
       ],
       {}
     );
