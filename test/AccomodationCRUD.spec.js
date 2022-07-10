@@ -378,6 +378,56 @@ describe('/CRUD location  ', () => {
     expect(res).to.have.status(200);
     expect(res.body).to.have.property('message', 'All trip request');
   });
+  it('Manager should be able to reject trip request', async () => {
+    const managerLogin = { email: 'rickrob@gmail.com', password: 'rickrob@1234' };
+    const result = await chai.request(app).post('/api/v1/user/login').send(managerLogin);
+    expect(result.body).to.have.property('token');
+
+    const managerAuth = result.body.token;
+
+    const res = await chai
+      .request(app)
+      .patch(`/api/v1/request/reject/${tripId}`)
+      .set('Cookie', `jwt=${managerAuth}`);
+    expect(res).to.have.status(200);
+    expect(res.type).to.equal('application/json');
+    expect(res.body).to.have.property('response');
+    expect(res.body.response).to.equal('request rejected successfully');
+
+  })
+  it('Manager should  not be able to reject approved trip request', async () => {
+    const managerLogin = { email: 'rickrob@gmail.com', password: 'rickrob@1234' };
+    const result = await chai.request(app).post('/api/v1/user/login').send(managerLogin);
+    expect(result.body).to.have.property('token');
+
+    const managerAuth = result.body.token;
+
+    const res = await chai
+      .request(app)
+      .patch(`/api/v1/request/reject/${tripId}`)
+      .set('Cookie', `jwt=${managerAuth}`);
+    expect(res).to.have.status(401);
+    expect(res.type).to.equal('application/json');
+    expect(res.body).to.have.property('response');
+
+  })
+
+  it('Manager should  approve rejected request', async () => {
+    const managerLogin = { email: 'rickrob@gmail.com', password: 'rickrob@1234' };
+    const result = await chai.request(app).post('/api/v1/user/login').send(managerLogin);
+    expect(result.body).to.have.property('token');
+
+    const managerAuth = result.body.token;
+
+    const res = await chai
+      .request(app)
+      .patch(`/api/v1/request/approve/${tripId}`)
+      .set('Cookie', `jwt=${managerAuth}`);
+    expect(res).to.have.status(401);
+    expect(res.body).to.have.property('response');
+    expect(res.type).to.equal('application/json');
+
+  });
 
   it('TEST TRIP REQUEST: should update a pending trip request', async () => {
     const res = await chai
