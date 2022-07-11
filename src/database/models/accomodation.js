@@ -7,6 +7,11 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'accomodationId',
         onUpdate: 'CASCADE',
       });
+      Accomodation.hasMany(models.Feedback, {
+        foreignKey: 'accomodationId',
+        onUpdate: 'CASCADE',
+        // as: 'feedbacks'
+      });
       Accomodation.belongsTo(models.Location, {
         foreignKey: 'locationId',
       });

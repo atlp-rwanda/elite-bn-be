@@ -32,7 +32,7 @@ indexRouter.use('/api/v1/user', userRoles);
 indexRouter.use('/api/v1/trip', trip);
 indexRouter.use('/api/v1', approveOrRejectRequest);
 
-indexRouter.use('/api/v1/feedback', feedbackRouter);
+indexRouter.use('/api/v1/accomodation/feedback', feedbackRouter);
 
 
 export default indexRouter;

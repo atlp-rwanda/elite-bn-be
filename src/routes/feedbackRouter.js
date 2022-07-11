@@ -1,10 +1,15 @@
 import express from "express";
-import feedbackController from '../controllers/feedbackController'
+import { getFeedback, sendFeedback } from '../controllers/feedbackController'
+import checkAuth from '../middlewares/checkAuth';
 
 const feedbackRouter = express.Router();
 
-feedbackRouter.get('/', feedbackController.getFeedback)
-feedbackRouter.post('/create', feedbackController.sendFeedback)
+feedbackRouter.get('/all',
+    checkAuth,
+    getFeedback)
+feedbackRouter.post('/create',
+    checkAuth,
+    sendFeedback)
 
 export default feedbackRouter;
 

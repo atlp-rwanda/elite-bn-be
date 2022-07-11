@@ -18,8 +18,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Feedback.init({
+    accomodationId: DataTypes.INTEGER,
     feedback: DataTypes.STRING,
-    userId: DataTypes.INTEGER
+    userId: DataTypes.STRING
+
   }, {
     sequelize,
     modelName: 'Feedback',

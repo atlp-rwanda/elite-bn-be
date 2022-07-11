@@ -136,3 +136,49 @@ paths:
           description: Unauthorized
         '401':
           description: Unauthenticated
+
+/api/v1/accomodation/feedBack/create:
+  post:
+    tags:
+      - feedback
+    summary: visitors will be able to provide feedback on accomodation
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            required:
+              - accomodationId
+              - feedback
+            properties:
+              accomodationId:
+                type: integer
+                description: accomodation Id
+              feedback:
+                type: string
+                description: user's feedback
+    responses:
+      '201':
+        description: User posted feedback successfully
+      '400':
+        description: Bad request
+      '401':
+        description: Wrong
+      '500':
+        description: Opps! something went wrong
+
+/api/v1/accomodation/feedback/all:
+  get:
+    tags:
+      - feedback
+    summary: get feedback on accomodation
+
+    responses:
+      '201':
+        description: get feedback successfully
+      '400':
+        description: Bad request
+      '401':
+        description: Wrong
+      '500':
+        description: Opps! something went wrong
