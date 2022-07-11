@@ -9,6 +9,7 @@ use(chaiHttp);
 
 let locationId, accomodationId, roomId, travelAdminA, notTravelAdminT, tripperA, managerAuth;
 const tripId = 1;
+const newTripId = 2;
 
 const travelAdmin = {
   email: 'kakamao@gmail.com',
@@ -21,9 +22,10 @@ const notTravelAdmin = {
 };
 
 const tripper = {
+  id: 'b92ce142-f8e7-4792-8e45-9949468f772e',
   firstName: 'useme',
   lastName: 'fortest',
-  surname: 'tripper',
+  username: 'tripper',
   email: 'tripper@elite.com',
   password: '$2a$12$OkrGEhmd4qXHgY694JQPe.pp0ZaxIwshuJ.0bQS/z3SxmXtQxGNVy',
 };
@@ -31,6 +33,15 @@ const tripper = {
 const tripperCred = {
   email: 'tripper@elite.com',
   password: 'testme123',
+};
+
+const newTrip = {
+  from: 'Huye',
+  to: 1,
+  departDate: '2022-10-05',
+  returnDate: '2022-11-06',
+  tripReasons: 'trip request reason',
+  accommodationId: 1,
 };
 
 describe('/CRUD location, accommodation, rooms...  ', () => {
@@ -736,6 +747,120 @@ describe('Like tests ', () => {
   });
 });
 
+const date = new Date();
+const departureDate = date.toISOString().split('T')[0];
+const departureDateString = String(departureDate);
+
+describe('TEST A RATING CENTER.', async () => {
+  it('should rate a center', async () => {
+    const re = await chai
+      .request(app)
+      .post('/api/v1/trip/create')
+      .set('Cookie', `jwt=${tripperA}`)
+      .send({
+        from: 'Huye',
+        to: locationId,
+        departDate: '2022-07-15',
+        returnDate: '2022-07-26',
+        tripReasons: 'trip request reason',
+        accommodationId: accomodationId,
+      });
+    expect(re).to.have.status(201);
+
+    const resu = await chai
+      .request(app)
+      .patch(`/api/v1/request/approve/${newTripId}`)
+      .set('Cookie', `jwt=${managerAuth}`);
+    expect(resu).to.have.status(200);
+
+    const res = await chai
+      .request(app)
+      .post('/api/v1/accomodation/rate')
+      .set('Cookie', `jwt=${tripperA}`)
+      .send({
+        tripRequestId: newTripId,
+        serviceRating: 5,
+      });
+    expect(res).to.have.status(201);
+    expect(res.body).to.have.property('message', 'rates added to accomodation!');
+  });
+
+  it('should not rate a center of an unapproved request', async () => {
+    const res = await chai
+      .request(app)
+      .post('/api/v1/accomodation/rate')
+      .set('Cookie', `jwt=${tripperA}`)
+      .send({
+        tripRequestId: tripId,
+        serviceRating: 5,
+      });
+    expect(res).to.have.status(401);
+    expect(res.body).to.have.property('message', 'This trip request is not approved');
+  });
+
+  it('should update rated center', async () => {
+    const res = await chai
+      .request(app)
+      .post('/api/v1/accomodation/rate')
+      .set('Cookie', `jwt=${tripperA}`)
+      .send({
+        tripRequestId: newTripId,
+        serviceRating: 3,
+      });
+    expect(res).to.have.status(201);
+    expect(res.body).to.have.property('message', 'accommodation rated');
+  });
+
+  it('should rate a center of existing trip and belongs to current loggedin user', async () => {
+    const res = await chai
+      .request(app)
+      .post('/api/v1/accomodation/rate')
+      .set('Cookie', `jwt=${travelAdminA}`)
+      .send({
+        tripRequestId: newTripId,
+        serviceRating: 5,
+      });
+    expect(res).to.have.status(404);
+    expect(res.body).to.have.property(
+      'message',
+      "This trip request doesn't either exist or belong to you"
+    );
+  });
+
+  it("should not rate a center on which you didn't spent at least 24hours ", async () => {
+    const re = await chai
+      .request(app)
+      .post('/api/v1/trip/create')
+      .set('Cookie', `jwt=${tripperA}`)
+      .send({
+        from: 'Nyarugunga',
+        to: locationId,
+        departDate: departureDateString,
+        returnDate: '2022-07-20',
+        tripReasons: 'trip request reason',
+        accommodationId: accomodationId,
+      });
+    expect(re).to.have.status(201);
+    const newNTripId = 3;
+
+    const resu = await chai
+      .request(app)
+      .patch(`/api/v1/request/approve/${newNTripId}`)
+      .set('Cookie', `jwt=${managerAuth}`);
+    expect(resu).to.have.status(200);
+
+    const res = await chai
+      .request(app)
+      .post('/api/v1/accomodation/rate')
+      .set('Cookie', `jwt=${tripperA}`)
+      .send({
+        tripRequestId: newNTripId,
+        serviceRating: 3,
+      });
+    expect(res).to.have.status(401);
+    expect(res.body).to.have.property('message', "You can't rate before 24hours, please wait");
+  });
+});
 describe('Delete tests ', () => {
   it('It should delete  room ', async () => {
     const res = await chai

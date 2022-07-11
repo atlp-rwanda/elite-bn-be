@@ -11,6 +11,7 @@ import approveOrRejectRequest from './approveOrRejectRequest';
 import likeRouter from './likeRouter';
 import feedbackRouter from './feedbackRouter';
 import tripStatisticsRouter from './tripStatisticsRouter';
+import ratingRouter from './ratingRouter';
 
 import tripSearchRouter from './searchRouter';
 
@@ -34,7 +35,7 @@ indexRouter.use('/api/v1/trip', trip);
 indexRouter.use('/api/v1', tripSearchRouter);
 indexRouter.use('/api/v1', approveOrRejectRequest);
 indexRouter.use('/api/v1', tripStatisticsRouter);
-
 indexRouter.use('/api/v1/accomodation/feedback', feedbackRouter);
+indexRouter.use('/api/v1/accomodation', ratingRouter);
 
 export default indexRouter;
