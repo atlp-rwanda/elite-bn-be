@@ -1,0 +1,77 @@
+definitions:
+  tripComment:
+    type: object
+    required:
+      - tripId
+      - comment
+    properties:
+      comment:
+        type: string
+paths:
+  /api/v1/trip/{tripId}/comments:
+    get:
+      tags:
+        - trip request comment
+      summary: Get trip request comments
+      parameters:
+        - in: path
+          name: tripId
+      responses:
+        '200':
+          description: Trip request comments
+        '401':
+          description: An unauthorized user
+        '404':
+          description: Not found
+        '500':
+          description: Internal server error
+
+/api/v1/trip/{tripId}/comment/:
+  post:
+    tags:
+      - trip request comment
+    summary: Requester comment on trip request
+    parameters:
+      - in: path
+        name: tripId
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/definitions/tripComment'
+    responses:
+      '201':
+        description: trip request comment created
+      '400':
+        description: Bad request
+      '401':
+        description: Anauthenticated
+      '402':
+        description: Anauthorized
+      '404':
+        description: trip request Not found
+      '500':
+        description: Internal server error
+
+/api/v1/trip/comment/{commentId}:
+  delete:
+    tags:
+      - trip request comment
+    summary: Delete comment on trip request
+    parameters:
+      - in: path
+        name: commentId
+    responses:
+      '200':
+        description: trip request deleted
+      '400':
+        description: Bad request
+      '402':
+        description: Anauthorized
+      '401':
+        description: Anauthenticated
+      '404':
+        description: trip request Not found
+      '500':
+        description: Internal server error
