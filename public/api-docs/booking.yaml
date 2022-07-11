@@ -1,0 +1,66 @@
+definitions:
+  Bookings:
+    type: object
+    required:
+      - tripId
+      - from
+      - to
+    properties:
+      tripId:
+        type: integer
+      from:
+        type: string
+      to:
+        type: string
+
+paths:
+  /api/v1/booking/{roomId}:
+    post:
+      tags:
+        - Bookings
+      summary: It helps travellers to book rooms in an accommodation facility to assure place to stay at the destination.
+      parameters:
+        - in: path
+          name: roomId
+      schema:
+        type: integer
+      description: Room Id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/definitions/Bookings'
+      responses:
+        '200':
+          description: Room Booked Successfully!
+        '500':
+          description: Internal server error
+        '403':
+          description: Unauthorized
+        '401':
+          description: Unauthenticated
+        '400':
+          description: Bad request
+  /api/v1/booking/freeRoom/{roomId}:
+    post:
+      tags:
+        - Bookings
+      summary: It makes room available once it was booked.
+      parameters:
+        - in: path
+          name: roomId
+      schema:
+        type: integer
+      description: Room Id
+      responses:
+        '200':
+          description: Room is set to free now
+        '500':
+          description: Internal server error
+        '403':
+          description: Unauthorized
+        '401':
+          description: Unauthenticated
+        '404':
+          description: Not Found
