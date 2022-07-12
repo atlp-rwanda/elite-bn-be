@@ -1,4 +1,3 @@
-/*eslint-disable*/
 import models from '../database/models';
 import applicationErr from '../utils/errors/applicationError';
 
@@ -92,6 +91,11 @@ export const updateTrip = async (req, res, next) => {
   const freshUser = await models.Users.findByPk(req.user.id);
 
   try {
+    const isTripId = await models.tripRequest.findOne({ where: { id: req.params.tripId } });
+    if (!isTripId) {
+      return res.status(404).json({ message: 'Trip request NOT found' });
+    }
+
     let type;
     if (req.body.returnDate !== '') {
       type = 'return trip';
