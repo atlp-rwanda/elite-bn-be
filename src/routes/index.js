@@ -11,6 +11,7 @@ import locationRouter from './locationRouter';
 import trip from './trip';
 import approveOrRejectRequest from './approveOrRejectRequest';
 import likeRouter from './likeRouter';
+import feedbackRouter from './feedbackRouter';
 
 const indexRouter = express.Router();
 
@@ -31,4 +32,8 @@ indexRouter.use('/api/v1/user', userRoles);
 indexRouter.use('/api/v1/trip', trip);
 indexRouter.use('/api/v1', approveOrRejectRequest);
 
+indexRouter.use('/api/v1/accomodation/feedback', feedbackRouter);
+
+
 export default indexRouter;
+
