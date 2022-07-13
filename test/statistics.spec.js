@@ -16,7 +16,7 @@ describe('Statistics test ', () => {
     const result = await chai.request(app).post('/api/v1/user/login').send(managerLogin);
     expect(result.body).to.have.property('token');
     const managerAuth = result.body.token;
-    const res= await chai
+    const res = await chai
       .request(app)
       .get(`/api/v1/trip/statistics?start=${start}&end=${end}`)
       .set('Cookie', `jwt=${managerAuth}`);
@@ -26,13 +26,13 @@ describe('Statistics test ', () => {
       `You succesfully got all trips you have made between ${start} and ${end} succesfully`
     );
   });
-  
+
   it('The Manager logged in can get the number of trips managed', async () => {
     const managerLogin = { email: 'rickrob@gmail.com', password: 'rickrob@1234' };
     const result = await chai.request(app).post('/api/v1/user/login').send(managerLogin);
     expect(result.body).to.have.property('token');
     const managerAuth = result.body.token;
-    const res= await chai
+    const res = await chai
       .request(app)
       .get(`/api/v1/trip/statistics?start=${start}&end=${end}`)
       .set('Cookie', `jwt=${managerAuth}`);
@@ -49,7 +49,7 @@ describe('Statistics test ', () => {
     const result = await chai.request(app).post('/api/v1/user/login').send(managerLogin);
     expect(result.body).to.have.property('token');
     const managerAuth = result.body.token;
-    const res= await chai
+    const res = await chai
       .request(app)
       .get(`/api/v1/trip/statistics/recent?period=${period}&number=${number}`)
       .set('Cookie', `jwt=${managerAuth}`);
@@ -66,7 +66,7 @@ describe('Statistics test ', () => {
     const result = await chai.request(app).post('/api/v1/user/login').send(managerLogin);
     expect(result.body).to.have.property('token');
     const managerAuth = result.body.token;
-    const res= await chai
+    const res = await chai
       .request(app)
       .get(`/api/v1/trip/statistics/recent?period=${period}&number=${number}`)
       .set('Cookie', `jwt=${managerAuth}`);

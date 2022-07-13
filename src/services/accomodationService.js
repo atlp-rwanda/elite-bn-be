@@ -1,8 +1,4 @@
-import {
-  Accomodation,
-  Room,
-  Feedback
-} from '../database/models';
+import { Accomodation, Room, Feedback } from '../database/models';
 
 class AccommodationService {
   static createAccommodation = async (data) => {
@@ -18,7 +14,7 @@ class AccommodationService {
           attributes: { exclude: ['createdAt', 'updatedAt'] },
         },
         {
-          model: Feedback
+          model: Feedback,
         },
       ],
       attributes: { exclude: ['createdAt', 'updatedAt'] },
@@ -47,9 +43,9 @@ class AccommodationService {
     return Accomodation.findAll({
       include: [
         {
-          model: Feedback
+          model: Feedback,
         },
-      ]
+      ],
     });
   };
 

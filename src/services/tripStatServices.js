@@ -1,27 +1,24 @@
 import { Op } from 'sequelize';
 import models from '../database/models';
 
-
-const { tripRequest, Accomodation, Users} = models;
+const { tripRequest, Accomodation, Users } = models;
 
 export const countTrips = async (userId, start, end, userRole) => {
   try {
     if (userRole.role === 'requester') {
       const trips = await tripRequest.findAndCountAll({
-       where: {
+        where: {
           [Op.and]: [
             { id: userId },
             { createdAt: { [Op.between]: [start, end] } },
-            { tripStatus: 'approved' }
-          ]
-        }
-        
+            { tripStatus: 'approved' },
+          ],
+        },
       });
       return trips;
     }
     if (userRole.role === 'manager') {
-      const accomodations = await models.Accomodation.findAll({
-      });
+      const accomodations = await models.Accomodation.findAll({});
       const ids = accomodations.map((accom) => accom.id);
       if (!ids.length) {
         return { count: 0 };
@@ -29,11 +26,11 @@ export const countTrips = async (userId, start, end, userRole) => {
       const trips = await tripRequest.findAndCountAll({
         where: {
           accommodationId: {
-            [Op.or]: ids
+            [Op.or]: ids,
           },
           createdAt: { [Op.between]: [start, end] },
-          tripStatus: 'approved'
-        }
+          tripStatus: 'approved',
+        },
       });
       return trips;
     }
@@ -41,11 +38,10 @@ export const countTrips = async (userId, start, end, userRole) => {
     return { error };
   }
 };
-export const getUserRole = async (role) => { 
-    const user = await Users.findOne({
-      where: {
-        role: role
-      }
-    });
-}
-    
+export const getUserRole = async (role) => {
+  const user = await Users.findOne({
+    where: {
+      role: role,
+    },
+  });
+};

@@ -36,6 +36,4 @@ indexRouter.use('/api/v1', tripStatisticsRouter);
 
 indexRouter.use('/api/v1/accomodation/feedback', feedbackRouter);
 
-
 export default indexRouter;
-

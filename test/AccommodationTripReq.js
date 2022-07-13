@@ -345,8 +345,7 @@ describe('TRIP request TEST... ', () => {
     expect(res.type).to.equal('application/json');
     expect(res.body).to.have.property('response');
     expect(res.body.response).to.equal('request rejected successfully');
-
-  })
+  });
   it('Manager should  not be able to reject approved trip request', async () => {
     const managerLogin = { email: 'rickrob@gmail.com', password: 'rickrob@1234' };
     const result = await chai.request(app).post('/api/v1/user/login').send(managerLogin);
@@ -361,8 +360,7 @@ describe('TRIP request TEST... ', () => {
     expect(res).to.have.status(401);
     expect(res.type).to.equal('application/json');
     expect(res.body).to.have.property('response');
-
-  })
+  });
 
   it('Manager should  approve rejected request', async () => {
     const managerLogin = { email: 'rickrob@gmail.com', password: 'rickrob@1234' };
@@ -378,7 +376,6 @@ describe('TRIP request TEST... ', () => {
     expect(res).to.have.status(401);
     expect(res.body).to.have.property('response');
     expect(res.type).to.equal('application/json');
-
   });
 
   it('should not update a inexistent trip request', async () => {
@@ -589,9 +586,7 @@ describe('Like tests ', () => {
     expect(response).to.have.property('body');
   });
   it('Should get all likes of an accommodation', async () => {
-    const response = await chai
-      .request(app)
-      .get(`/api/v1/accomodation/${accomodationId}/likes`);
+    const response = await chai.request(app).get(`/api/v1/accomodation/${accomodationId}/likes`);
     expect(response).to.have.property('status', 200);
   });
   it('Should not get likes if an accommodations does not exist', async () => {

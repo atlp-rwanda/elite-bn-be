@@ -3,4 +3,4 @@ import * as accomodationController from './accomodation';
 import * as userController from './userController';
 import * as tripStatController from './tripStatistics';
 
-export { roomController, accomodationController, userController,tripStatController };
+export { roomController, accomodationController, userController, tripStatController };
