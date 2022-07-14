@@ -3,13 +3,11 @@ import { tripStatServices } from '../services';
 import { successResponse } from '../utils/helpers/responseHandler';
 import models from '../database/models';
 export const tripStatistics = async (req, res) => {
- 
   let { start } = req.query;
   let { end } = req.query;
   const startString = start;
   const endString = end;
-  const isToday =
-    new Date(end).toLocaleDateString() === new Date().toLocaleDateString();
+  const isToday = new Date(end).toLocaleDateString() === new Date().toLocaleDateString();
   if (isToday) {
     end = new Date();
   } else {
@@ -17,13 +15,12 @@ export const tripStatistics = async (req, res) => {
     end.setDate(end.getDate() + 1);
   }
   start = new Date(start);
-  const userRole = await models.Users.findByPk(req.user.id)
-  const userId =req.user.id
+  const userRole = await models.Users.findByPk(req.user.id);
+  const userId = req.user.id;
   if (userRole.role !== 'requester' && userRole.role !== 'manager') {
- 
     return res.status(404).json({
-        message: 'Statistics of travel are  available for requester and Manager',
-      });
+      message: 'Statistics of travel are  available for requester and Manager',
+    });
   }
   const trips = await tripStatServices.countTrips(userId, start, end, userRole);
   if (trips?.count !== undefined) {
@@ -52,11 +49,14 @@ export const recentTripStatistic = async (req, res) => {
   } else if (period === 'year' || period === 'years') {
     start.setYear(start.getYear() - number);
   } else {
-    return res.status(400).json({message:'Put valid period'});
+    return res.status(400).json({ message: 'Put valid period' });
   }
-  const userRole = await models.Users.findByPk(req.user.id)
+  const userRole = await models.Users.findByPk(req.user.id);
   if (userRole.role !== 'requester' && userRole.role !== 'manager') {
-    return ApplicationError.internalServerError({ message: 'Statistics of travel are available for requester and Manager' }, res)
+    return ApplicationError.internalServerError(
+      { message: 'Statistics of travel are available for requester and Manager' },
+      res
+    );
   }
 
   const trips = await tripStatServices.countTrips(userId, start, end, userRole);
@@ -71,4 +71,3 @@ export const recentTripStatistic = async (req, res) => {
 
   return ApplicationError.internalServerError(`${trips.error}`, res);
 };
-

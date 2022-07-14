@@ -345,8 +345,7 @@ describe('TRIP request TEST... ', () => {
     expect(res.type).to.equal('application/json');
     expect(res.body).to.have.property('response');
     expect(res.body.response).to.equal('request rejected successfully');
-
-  })
+  });
   it('Manager should  not be able to reject approved trip request', async () => {
     const managerLogin = { email: 'rickrob@gmail.com', password: 'rickrob@1234' };
     const result = await chai.request(app).post('/api/v1/user/login').send(managerLogin);
@@ -361,8 +360,7 @@ describe('TRIP request TEST... ', () => {
     expect(res).to.have.status(401);
     expect(res.type).to.equal('application/json');
     expect(res.body).to.have.property('response');
-
-  })
+  });
 
   it('Manager should  approve rejected request', async () => {
     const managerLogin = { email: 'rickrob@gmail.com', password: 'rickrob@1234' };
@@ -378,7 +376,6 @@ describe('TRIP request TEST... ', () => {
     expect(res).to.have.status(401);
     expect(res.body).to.have.property('response');
     expect(res.type).to.equal('application/json');
-
   });
 
   it('should not update a inexistent trip request', async () => {
@@ -546,49 +543,6 @@ describe('TEST comment on Trip Request... ', () => {
   });
 });
 
-describe('TEST REJECT, APPROVE TRIP REQUEST ', () => {
-  // it('Manager should be able to reject trip request', async () => {
-  //   const managerLogin = { email: 'rickrob@gmail.com', password: 'rickrob@1234' };
-  //   const result = await chai.request(app).post('/api/v1/user/login').send(managerLogin);
-  //   expect(result.body).to.have.property('token');
-  //   const managerAuth = result.body.token;
-  //   const res = await chai
-  //     .request(app)
-  //     .patch(`/api/v1/request/reject/${tripId}`)
-  //     .set('Cookie', `jwt=${managerAuth}`);
-  //   expect(res).to.have.status(200);
-  //   expect(res.type).to.equal('application/json');
-  //   expect(res.body).to.have.property('response');
-  //   expect(res.body.response).to.equal('request rejected successfully');
-  // });
-  // it('Manager should  not be able to reject approved trip request', async () => {
-  //   const managerLogin = { email: 'rickrob@gmail.com', password: 'rickrob@1234' };
-  //   const result = await chai.request(app).post('/api/v1/user/login').send(managerLogin);
-  //   expect(result.body).to.have.property('token');
-  //   const managerAuth = result.body.token;
-  //   const res = await chai
-  //     .request(app)
-  //     .patch(`/api/v1/request/reject/${tripId}`)
-  //     .set('Cookie', `jwt=${managerAuth}`);
-  //   expect(res).to.have.status(401);
-  //   expect(res.type).to.equal('application/json');
-  //   expect(res.body).to.have.property('response');
-  // });
-  // it('Manager should  approve rejected request', async () => {
-  //   const managerLogin = { email: 'rickrob@gmail.com', password: 'rickrob@1234' };
-  //   const result = await chai.request(app).post('/api/v1/user/login').send(managerLogin);
-  //   expect(result.body).to.have.property('token');
-  //   const managerAuth = result.body.token;
-  //   const res = await chai
-  //     .request(app)
-  //     .patch(`/api/v1/request/approve/${tripId}`)
-  //     .set('Cookie', `jwt=${managerAuth}`);
-  //   expect(res).to.have.status(401);
-  //   expect(res.body).to.have.property('response');
-  //   expect(res.type).to.equal('application/json');
-  // });
-});
-
 const Requester = {
   email: 'test@gmail.com',
   password: '12@eLOvr',
@@ -597,46 +551,44 @@ const Requester = {
 let token = 0;
 
 describe('Like tests ', () => {
-  // it('should login as requster', async () => {
-  //   const res = await chai.request(app).post('/api/v1/user/login').send(Requester);
-  //   expect(res).to.have.status(200);
-  //   expect(res.body).to.have.property('token');
-  //   expect(res.body).to.have.property('message', 'User logged in successfully');
+  it('should login as requster', async () => {
+    const res = await chai.request(app).post('/api/v1/user/login').send(Requester);
+    expect(res).to.have.status(200);
+    expect(res.body).to.have.property('token');
+    expect(res.body).to.have.property('message', 'User logged in successfully');
 
-  //   token = res.body.token;
-  // });
+    token = res.body.token;
+  });
 
-  // it('Should like an accommodation', async () => {
-  //   const response = await chai
-  //     .request(app)
-  //     .post(`/api/v1/accomodation/${accomodationId}/like`)
-  //     .set('Cookie', `jwt=${token}`);
-  //   expect(response).to.have.property('status', 201);
-  //   expect(response).to.have.property('body');
-  // });
+  it('Should like an accommodation', async () => {
+    const response = await chai
+      .request(app)
+      .post(`/api/v1/accomodation/${accomodationId}/like`)
+      .set('Cookie', `jwt=${token}`);
+    expect(response).to.have.property('status', 201);
+    expect(response).to.have.property('body');
+  });
 
-  // it('Should not like a unexistent accommodation', async () => {
-  //   const response = await chai
-  //     .request(app)
-  //     .post('/api/v1/accomodation/767598/like')
-  //     .set('Cookie', `jwt=${token}`);
-  //   expect(response).to.have.property('status', 404);
-  //   expect(response).to.have.property('body');
-  // });
-  // it('Should unlike the accomodation that previously liked', async () => {
-  //   const response = await chai
-  //     .request(app)
-  //     .post(`/api/v1/accomodation/${accomodationId}/like`)
-  //     .set('Cookie', `jwt=${token}`);
-  //   expect(response).to.have.property('status', 200);
-  //   expect(response).to.have.property('body');
-  // });
-  // it('Should get all likes of an accommodation', async () => {
-  //   const response = await chai
-  //     .request(app)
-  //     .get(`/api/v1/accomodation/${accomodationId}/likes`);
-  //   expect(response).to.have.property('status', 200);
-  // });
+  it('Should not like a unexistent accommodation', async () => {
+    const response = await chai
+      .request(app)
+      .post('/api/v1/accomodation/767598/like')
+      .set('Cookie', `jwt=${token}`);
+    expect(response).to.have.property('status', 404);
+    expect(response).to.have.property('body');
+  });
+  it('Should unlike the accomodation that previously liked', async () => {
+    const response = await chai
+      .request(app)
+      .post(`/api/v1/accomodation/${accomodationId}/like`)
+      .set('Cookie', `jwt=${token}`);
+    expect(response).to.have.property('status', 200);
+    expect(response).to.have.property('body');
+  });
+  it('Should get all likes of an accommodation', async () => {
+    const response = await chai.request(app).get(`/api/v1/accomodation/${accomodationId}/likes`);
+    expect(response).to.have.property('status', 200);
+  });
   it('Should not get likes if an accommodations does not exist', async () => {
     const res = await await chai.request(app).get('/api/v1/accomodation/123456/like');
     expect(res).to.have.property('status', 404);
@@ -651,36 +603,36 @@ describe('Like tests ', () => {
     expect(response).to.have.property('body');
   });
 
-  // it('Should dislike an accommodation', async () => {
-  //   const response = await chai
-  //     .request(app)
-  //     .post(`/api/v1/accomodation/${accomodationId}/dislike`)
-  //     .set('Cookie', `jwt=${token}`);
-  //   expect(response).to.have.property('status', 201);
-  //   expect(response).to.have.property('body');
-  // });
+  it('Should dislike an accommodation', async () => {
+    const response = await chai
+      .request(app)
+      .post(`/api/v1/accomodation/${accomodationId}/dislike`)
+      .set('Cookie', `jwt=${token}`);
+    expect(response).to.have.property('status', 201);
+    expect(response).to.have.property('body');
+  });
 
-  // it('Should remove dislike', async () => {
-  //   const response = await chai
-  //     .request(app)
-  //     .post(`/api/v1/accomodation/${accomodationId}/dislike`)
-  //     .set('Cookie', `jwt=${token}`);
-  //   expect(response).to.have.property('status', 200);
-  //   expect(response).to.have.property('body');
-  // });
+  it('Should remove dislike', async () => {
+    const response = await chai
+      .request(app)
+      .post(`/api/v1/accomodation/${accomodationId}/dislike`)
+      .set('Cookie', `jwt=${token}`);
+    expect(response).to.have.property('status', 200);
+    expect(response).to.have.property('body');
+  });
 
-  // it('Should get all dislikes for an accommodation', async () => {
-  //   const response = await chai
-  //     .request(app)
-  //     .get(`/api/v1/accomodation/${accomodationId}/dislikes`)
-  //     .set('Cookie', `jwt=${token}`);
-  //   expect(response).to.have.property('status', 200);
-  // });
-  // it('Should not get dislikes when there is no dislike', async () => {
-  //   const res = await chai.request(app).get(`/api/v1/accomodation/${accomodationId}/dislikes`);
+  it('Should get all dislikes for an accommodation', async () => {
+    const response = await chai
+      .request(app)
+      .get(`/api/v1/accomodation/${accomodationId}/dislikes`)
+      .set('Cookie', `jwt=${token}`);
+    expect(response).to.have.property('status', 200);
+  });
+  it('Should not get dislikes when there is no dislike', async () => {
+    const res = await chai.request(app).get(`/api/v1/accomodation/${accomodationId}/dislikes`);
 
-  //   expect(res).to.have.property('status', 200);
-  // });
+    expect(res).to.have.property('status', 200);
+  });
 });
 
 describe('Delete tests ', () => {
