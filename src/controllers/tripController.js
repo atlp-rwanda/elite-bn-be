@@ -1,4 +1,5 @@
 import models from '../database/models';
+import catchAsync from '../utils/catchAsync';
 import applicationErr from '../utils/errors/applicationError';
 
 export const makeTrip = async (req, res, next) => {
@@ -159,3 +160,44 @@ export const deleteTrip = async (req, res, next) => {
     return next(new applicationErr('Fail to delete a trip request', 500));
   }
 };
+
+export const mostTavelledDestinations = catchAsync(async (req, res, next) => {
+  let allLocationsId = [];
+  let allLocationsIdOccurrence = [];
+  let returnedData = [];
+
+  let trips = await models.tripRequest.findAll({ where: { tripStatus: 'approved' } });
+  trips.map((trip) => allLocationsId.push(trip.to));
+
+  let uniqueArray = allLocationsId.filter(function (item, pos) {
+    return allLocationsId.indexOf(item) == pos;
+  });
+
+  function getOccurrence(array, value) {
+    return array.filter((v) => v === value).length;
+  }
+
+  uniqueArray.sort().map((location) => {
+    allLocationsIdOccurrence.push({
+      locationId: location,
+      locationOccurrence: getOccurrence(allLocationsId, location),
+    });
+  });
+  let mostTravelledDest = allLocationsIdOccurrence.sort((a, b) =>
+    a.locationOccurrence < b.locationOccurrence ? 1 : -1,
+  );
+
+  const mtd = mostTravelledDest.map(async (dest) => {
+    const location = await models.Location.findOne({
+      where: { id: dest.locationId },
+      attributes: {
+        exclude: ['createdAt', 'updatedAt'],
+      },
+    });
+    location.dataValues.occurance = dest.locationOccurrence;
+    returnedData.push(location.dataValues);
+  });
+
+  await Promise.all(mtd);
+  return res.status(200).json({ status: 'success', data: returnedData });
+});
