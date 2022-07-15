@@ -330,6 +330,107 @@ describe('TRIP request TEST... ', () => {
     expect(res).to.have.status(200);
     expect(res.body).to.have.property('message', 'All trip request');
   });
+
+  it('TEST TRIP SEARCH: should find trip request by status', async () => {
+    const res = await chai
+      .request(app)
+      .get('/api/v1/trip/search/byKey?tripStatus=pending')
+      .set('Cookie', `jwt=${travelAdminA}`);
+    expect(res).to.have.status(200);
+    expect(res.body).to.have.property('data');
+    expect(res.type).to.equal('application/json');
+  });
+
+  it('TEST TRIP SEARCH: should not find trip request by unexisting trip status', async () => {
+    const res = await chai
+      .request(app)
+      .get('/api/v1/trip/search/byKey?tripStatus=rejected')
+      .set('Cookie', `jwt=${travelAdminA}`);
+    expect(res).to.have.status(404);
+    expect(res.body).to.have.property('Error');
+    expect(res.type).to.equal('application/json');
+  });
+
+  it('TEST TRIP SEARCH: Travel admin should find trip requests by Departure date', async () => {
+    const res = await chai
+      .request(app)
+      .get('/api/v1/trip/search/byKey?departDate=2022-07-07')
+      .set('Cookie', `jwt=${travelAdminA}`);
+    expect(res).to.have.status(200);
+    expect(res.body).to.have.property('data');
+    expect(res.type).to.equal('application/json');
+  });
+
+  it('TEST TRIP SEARCH: Travel admin should find trip requests by return date', async () => {
+    const res = await chai
+      .request(app)
+      .get('/api/v1/trip/search/byKey?returnDate=2022-08-08')
+      .set('Cookie', `jwt=${travelAdminA}`);
+    expect(res).to.have.status(200);
+    expect(res.body).to.have.property('data');
+    expect(res.type).to.equal('application/json');
+  });
+
+  it('TEST TRIP SEARCH: Travel admin should find trip requests by Destination', async () => {
+    const res = await chai
+      .request(app)
+      .get(`/api/v1/trip/search/byKey?to=${locationId}`)
+      .set('Cookie', `jwt=${travelAdminA}`);
+    expect(res).to.have.status(200);
+    expect(res.body).to.have.property('data');
+    expect(res.type).to.equal('application/json');
+  });
+
+  it('TEST TRIP SEARCH: Travel admin should not find trip requests by Destination when there is not trip request to a certain destination', async () => {
+    const res = await chai
+      .request(app)
+      .get('/api/v1/trip/search/byKey?to=123')
+      .set('Cookie', `jwt=${travelAdminA}`);
+    expect(res).to.have.status(404);
+    expect(res.body).to.have.property('Error');
+    expect(res.type).to.equal('application/json');
+  });
+
+  it('TEST TRIP SEARCH: Travel admin should find trip requests by Departure location', async () => {
+    const res = await chai
+      .request(app)
+      .get('/api/v1/trip/search/byKey?from=Kanombe')
+      .set('Cookie', `jwt=${travelAdminA}`);
+    expect(res).to.have.status(200);
+    expect(res.body).to.have.property('data');
+    expect(res.type).to.equal('application/json');
+  });
+
+  it('TEST TRIP SEARCH: Travel admin should not find trip requests by Departure when there is no trip from that locaton', async () => {
+    const res = await chai
+      .request(app)
+      .get('/api/v1/trip/search/byKey?from=Rubavu')
+      .set('Cookie', `jwt=${travelAdminA}`);
+    expect(res).to.have.status(404);
+    expect(res.body).to.have.property('Error');
+    expect(res.type).to.equal('application/json');
+  });
+
+  it('TEST TRIP SEARCH: Should find trip requests by Departure and Destination', async () => {
+    const res = await chai
+      .request(app)
+      .get(`/api/v1/trip/search/byKey?from=Kanombe&to=${locationId}`)
+      .set('Cookie', `jwt=${travelAdminA}`);
+    expect(res).to.have.status(200);
+    expect(res.body).to.have.property('data');
+    expect(res.type).to.equal('application/json');
+  });
+
+  it('TEST TRIP SEARCH: Should not find trip requests by unexisting Departure or Destination location', async () => {
+    const res = await chai
+      .request(app)
+      .get(`/api/v1/trip/search/byKey?from=kabeza&to=${locationId}`)
+      .set('Cookie', `jwt=${travelAdminA}`);
+    expect(res).to.have.status(404);
+    expect(res.body).to.have.property('Error');
+    expect(res.type).to.equal('application/json');
+  });
+
   it('Manager should be able to reject trip request', async () => {
     const managerLogin = { email: 'rickrob@gmail.com', password: 'rickrob@1234' };
     const result = await chai.request(app).post('/api/v1/user/login').send(managerLogin);

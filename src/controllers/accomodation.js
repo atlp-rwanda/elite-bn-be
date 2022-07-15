@@ -5,8 +5,6 @@ import * as ApplicationError from '../utils/errors/applicatioErrors';
 import { Accommodation } from '../database/models';
 import changeToArray from '../utils/helpers/changeToArray';
 
-
-
 class AccomodationController {
   static createAccommodation = async (req, res, next) => {
     try {
@@ -177,6 +175,6 @@ class AccomodationController {
       ApplicationError.internalServerError({ message: 'can not delete try again' }, res);
     }
   };
-  };
+}
 
 export default AccomodationController;

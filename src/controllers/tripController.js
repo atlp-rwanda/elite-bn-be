@@ -184,7 +184,7 @@ export const mostTavelledDestinations = catchAsync(async (req, res, next) => {
     });
   });
   let mostTravelledDest = allLocationsIdOccurrence.sort((a, b) =>
-    a.locationOccurrence < b.locationOccurrence ? 1 : -1,
+    a.locationOccurrence < b.locationOccurrence ? 1 : -1
   );
 
   const mtd = mostTravelledDest.map(async (dest) => {

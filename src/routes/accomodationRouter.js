@@ -5,7 +5,6 @@ import AccommodationMiddleware from '../middlewares/accomodation';
 import checkAuth from '../middlewares/checkAuth';
 import verifyTravelAdmin from '../middlewares/travelAdminAuth';
 
-
 const accomodationRouter = express.Router();
 const { validateNewAccommodation, validateAccommodationUpdate } = AccommodationMiddleware;
 accomodationRouter.post(

@@ -1,3 +1,1 @@
-export const successResponse = (res, code, data) => {
-  return res.status(code).json({ data });
-};
+export const successResponse = (res, code, data) => res.status(code).json({ data });
