@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import { json } from 'body-parser';
 
 dotenv.config();
-const jwtToken = process.env.JWT_KEY;
+const jwtToken = process.env.JWT_SECRET;
 const refreshTokenKey = process.env.REFRESH_TOKEN_KEY;
 
 const generateAccessToken = async (paramsObject) => {
@@ -26,6 +26,7 @@ const decodeAccessToken = async (accessToken) => {
     const decodedToken = await jwt.verify(accessToken, jwtToken);
     return decodedToken;
   } catch (error) {
+    console.log(error)
     return null;
   }
 };

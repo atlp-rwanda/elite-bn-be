@@ -24,6 +24,14 @@ const findByEmail=async (email)=>{
   return user;
 
 }
+const findById=async (id)=>{
+  const user = await Users.findOne({where: { id } });
+  if(user){
+    delete user.dataValues.password;
+  }
+  return user;
+
+}
 
 const getAllChats = async(chatTab) =>{
   const chats= await models.Chat.findAll({
@@ -97,4 +105,4 @@ const verifyUser = async (id) => {
   }
 };
 export { updateOrCreate };
-export { addUser, findByEmail, updatePasswordResetToken, resetPassword, verifyUser,addMessage,getAllChats };
+export { addUser, findByEmail, updatePasswordResetToken,findById, resetPassword, verifyUser,addMessage,getAllChats };

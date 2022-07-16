@@ -1,31 +1,12 @@
-
-const users= [];
-
-// join user to chat
-
-export const userJoin=(id,username,room)=>{
-
-const user= {id,username,room}
-users.push(user)
-return user
+const rooms={
 }
-
-//get current user 
- export const getCurrentUser=(id) =>{
-    return users.find(user=>user.id===id)
- }
-
- // user leaves the chat
- export const userLeave=(id)=>{
-    const index= users.findIndex(user =>user.id ===id)
-    if(index!==-1){
-        return users.splice(index,1)[0]
-    }
-
- }
-
- // get room users
-
- export const getRoomUsers =(room)=>{
-    return users.filter(user =>user.room ==room)
- }
+export const joinRoom=(room, socket)=>{
+   if(rooms[room])rooms[room]=[...rooms[room], {user:socket.user, socketId: socket.id}]
+   else
+   rooms[room]=[{user:socket.user, socketId: socket.id}]
+   console.log(rooms)
+}
+export const leaveRoom=(room, socket)=>{
+   rooms[room]=rooms[room].filter(usocket=>usocket.socketId!=socket.id)
+}
+export const getUserRoom=(room)=>rooms[room].length&&rooms[room].map(usocket=>usocket.socketId)
