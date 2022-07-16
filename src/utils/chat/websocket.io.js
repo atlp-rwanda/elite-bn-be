@@ -8,30 +8,31 @@ const io=socketio()
 
 
 
-// io.use(async (socket, next) => {
-//   const { token } = socket.handshake.auth;
-//   console.log(`token is ${token}`)
-//   if (token) {
+io.use(async (socket, next) => {
+  const { accessToken } = socket.handshake.auth
+  console.log(`token is ${accessToken}`)
+  if (accessToken) {
 
-//    const currentUser = await decodeAccessToken(token);
-//     if (currentUser) {
-//       return next();
-//     }
-//     return next(new Error('You are not logged in!'));
-//   }
-// });
+   const currentUser = await decodeAccessToken(accessToken);
+    if (currentUser) {
+      return next();
+    }
+    return next(new Error('You are not logged in!'));
+  }
+});
 
 
 
 
 io.on('connection',(socket)=>{ 
-    socket.on('joinRoom',({username,room})=>{
-        const user= userJoin(socket.id,username,room)
+    socket.on('joinRoom',({email,room})=>{
+        const user= userJoin(socket.id,email,room)
+        console.log(user.room)
         socket.join(user.room)
 
 
-    socket.emit('message', formatMessage(`${user.username}`,`Welcome to ${user.room}`));
-    socket.broadcast.to(user.room).emit('message', formatMessage(user.username,`${username} has joined the chat`));
+    socket.emit('message', formatMessage(user.room,`Welcome to ${user.room}`));
+    socket.broadcast.to(user.room).emit('message', formatMessage(user.room,`${email} has joined the chat`));
 
     io.to(user.room).emit('roomUsers',{
       room:user.room,
@@ -45,9 +46,10 @@ io.on('connection',(socket)=>{
         io.to(user.room).emit('message',formatMessage(user.username,msg))
 
         const message = await addMessage({
-          userId:"684e7d05-8572-499b-be8b-96c6ea89c8c9",
+         userId:"684e7d05-8572-499b-be8b-96c6ea89c8c9",
           message: msg
         });
+        
     
         console.log(message);
       
@@ -65,7 +67,7 @@ io.on('connection',(socket)=>{
     socket.on('disconnect',()=>{
         const user=userLeave(socket.id)
         if(user){
-            io.to(user.room).emit('message', formatMessage(user.room,`${user.username} has left the chat`));
+            io.to(user.room).emit('message', formatMessage(user.room,`${user.email} has left the chat`));
 
              //send users and room info
       io.to(user.room).emit('roomUsers',{

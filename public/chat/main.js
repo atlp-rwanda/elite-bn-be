@@ -13,7 +13,7 @@ const { email, password, room } = Qs.parse(location.search, {
     ignoreQueryPrefix: true
 })
 
-//const socket =io();
+const socket =io();
 
 let token = '',
     timeout;
@@ -36,6 +36,14 @@ const signIn = async () => {
     
         localStorage.setItem('accessToken', token);
 
+        socket = io({
+        auth: {
+            token
+        }
+    });
+
+
+
     } else {
         alert('invalid credential,Try again');
         console.log('error,');
@@ -53,18 +61,19 @@ setTimeout(() => {
 
 
 const loadMessages = () => {
-    token = localStorage.getItem('accessToken');
-    const socket = io({
-        auth: {
-            token
-        }
-    });
+    token = localStorage.getItem('accessToken')
+    // socket.auth={accessToken:token}
+    // const socket = io({
+    //     auth: {
+    //         token
+    //     }
+    // });
 
 
 
     //join chat room
-    const username=email
-    socket.emit('joinRoom', { username, room })
+   // const username=email
+    socket.emit('joinRoom', {email, room })
 
     socket.on('roomUsers', ({ room, users }) => {
         console.log(users)
@@ -118,7 +127,7 @@ const loadMessages = () => {
     function outPutMessage(message) {
         const div = document.createElement('div');
         div.classList.add('message');
-        div.innerHTML += `<p class="meta">${message.email} <span>${message.time}</span></p>
+        div.innerHTML += `<p class="meta">${message.username} <span>${message.time}</span></p>
     <p class="text"> ${message.text}</p>`
         document.querySelector('.chat-messages').appendChild(div)
 
@@ -132,7 +141,7 @@ const loadMessages = () => {
     //add user to dom
     function outputUsers(users) {
         userList.innerHTML = `
-    ${users.map(user => `<li>${user.email}</li>`).join('')}
+    ${users.map(user => `<li>${user.username}</li>`).join('')}
     `
     }
 
