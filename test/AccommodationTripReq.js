@@ -16,7 +16,7 @@ let locationId,
   managerAuth,
   requesterAuth;
 const tripId = 1;
-const newTripId = 2;
+const newTripId = 3;
 
 const travelAdmin = {
   email: 'kakamao@gmail.com',
@@ -40,25 +40,6 @@ const tripper = {
 const tripperCred = {
   email: 'tripper@elite.com',
   password: 'testme123',
-};
-const tripRequest = [
-  {
-    leavingFrom: 'musanze',
-    goingTo: 1,
-    travelDate: '2022-10-5',
-    returnDate: '2022-11-6',
-    travelReason: 'picnic',
-    accomodationId: 1,
-  },
-];
-
-const newTrip = {
-  from: 'Huye',
-  to: 1,
-  departDate: '2022-10-05',
-  returnDate: '2022-11-06',
-  tripReasons: 'trip request reason',
-  accommodationId: 1,
 };
 
 describe('/CRUD location, accommodation, rooms...  ', () => {
@@ -961,7 +942,7 @@ describe('TEST A RATING CENTER.', async () => {
         accommodationId: accomodationId,
       });
     expect(re).to.have.status(201);
-    const newNTripId = 3;
+    const newNTripId = 4;
 
     const resu = await chai
       .request(app)
@@ -1003,10 +984,6 @@ describe('Delete tests ', () => {
     expect(res.body).to.have.property('message');
     expect(res.body.message).to.equal('accommodation deleted successfully');
   });
-  const Requester = {
-    email: 'test@gmail.com',
-    password: '12@eLOvr',
-  };
 
   it('It should delete  location ', async () => {
     const res = await chai
