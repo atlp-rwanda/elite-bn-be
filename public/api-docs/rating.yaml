@@ -1,0 +1,36 @@
+definitions:
+  ratings:
+    type: object
+    required:
+      - tripRequestId
+      - serviceRating
+    properties:
+      tripRequestId:
+        type: integer
+      serviceRating:
+        type: integer
+paths:
+  /api/v1/accomodation/rate:
+    post:
+      tags:
+        - Rate an accommodation
+      summary: user should rate an accommodation in center
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/definitions/ratings'
+      responses:
+        '201':
+          description: accommodation rated successfully
+        '400':
+          description: Bad request
+        '402':
+          description: Anauthorized
+        '401':
+          description: Anauthenticated
+        '404':
+          description: trip request Not found
+        '500':
+          description: Internal server error

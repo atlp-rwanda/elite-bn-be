@@ -2,8 +2,10 @@ import AccommodationService from '../services/accomodationService';
 import cloudinary from '../config/cloudinary';
 import LocationService from '../services/locationServices';
 import * as ApplicationError from '../utils/errors/applicatioErrors';
-import { Accommodation } from '../database/models';
+import { models } from '../database/models';
 import changeToArray from '../utils/helpers/changeToArray';
+
+import Rates from '../database/models/rates';
 
 class AccomodationController {
   static createAccommodation = async (req, res, next) => {
