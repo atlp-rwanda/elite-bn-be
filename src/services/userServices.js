@@ -3,19 +3,51 @@ import * as userExist from '../utils/errors/doesNotExistError';
 import { errorResponse } from '../utils/errors/errorResponse';
 import { successResponse } from '../utils/responses/successResponse';
 import redisClient from '../utils/helpers/initRedis';
+import user from '../database/models/user';
+
 
 const { Users } = models;
 const addUser = async (newUser) => {
   const user = await Users.create(newUser);
   return user;
-};
-const findByEmail = async (email) => {
-  const user = await Users.findOne({ where: { email: `${email}` } });
-  if (user) {
+}
+const addMessage = async (newMessage)=>{
+  const message= await models.Chat.create({ ...newMessage });
+
+  return message;
+}
+const findByEmail=async (email)=>{
+  const user = await Users.findOne({where: { email: `${email}` } });
+  if(user){
     delete user.dataValues.password;
   }
   return user;
-};
+
+}
+const findById=async (id)=>{
+  const user = await Users.findOne({where: { id } });
+  if(user){
+    delete user.dataValues.password;
+  }
+  return user;
+
+}
+
+const getAllChats = async(chatTab) =>{
+  const chats= await models.Chat.findAll({
+    where :{chatTab},
+    include :[
+      {
+       model: models.Users,
+       attributes: ['firstName']
+      }
+    ]
+  
+  })
+  return chats;
+
+}
+
 
 const updatePasswordResetToken = async (token) => {
   const passwordResetToken = await redisClient.SET('passwordResetToken', token);
@@ -73,4 +105,4 @@ const verifyUser = async (id) => {
   }
 };
 export { updateOrCreate };
-export { addUser, findByEmail, updatePasswordResetToken, resetPassword, verifyUser };
+export { addUser, findByEmail, updatePasswordResetToken,findById, resetPassword, verifyUser,addMessage,getAllChats };

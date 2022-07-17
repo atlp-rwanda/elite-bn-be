@@ -1,7 +1,9 @@
 import express from 'express';
 import * as userController from '../controllers/userController';
-import { login, logout, getProfile, updateProfile } from '../controllers/userController';
-import checkAuth from '../middlewares/checkAuth';
+import {login,logout, getProfile, updateProfile } from '../controllers/userController';
+import {createMessage,getAllMessages} from '../controllers/chatsController';
+import { chatValidator } from '../validations/chatValidation';
+import checkAuth from "../middlewares/checkAuth";
 
 const userRouter = express.Router();
 
@@ -17,6 +19,8 @@ userRouter.post('/register', (req, res, next) => {
 });
 
 userRouter.post('/login', login);
+userRouter.post('/message',checkAuth,chatValidator, createMessage);
+userRouter.get('/messages',checkAuth, getAllMessages);
 userRouter.get('/profile', checkAuth, getProfile);
 userRouter.patch('/profile', checkAuth, updateProfile);
 userRouter.post('/logout', logout);
