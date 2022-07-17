@@ -9,7 +9,7 @@ import cookieParser from 'cookie-parser';
 import errorHandler from './utils/errors/errorHandle';
 
 const app = express();
-app.use('/chats',express.static(path.join(__dirname,'../public/chat')));
+app.use('/chats', express.static(path.join(__dirname, '../public/chat')));
 app.use(express.json());
 app.use(morgan('dev'));
 app.use(cors());

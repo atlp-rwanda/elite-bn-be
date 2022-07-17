@@ -12,42 +12,41 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       models.Users.hasMany(Chat, {
         foreignKey: 'userId',
-        onDelete: 'CASCADE'
+        onDelete: 'CASCADE',
       });
-     
-      Chat.belongsTo(models.Users,{
-        foreignKey:'userId',
-       
-      })
+
+      Chat.belongsTo(models.Users, {
+        foreignKey: 'userId',
+      });
     }
   }
-  Chat.init({
-    userId:{
-      type: DataTypes.UUID,
-  
+  Chat.init(
+    {
+      userId: {
+        type: DataTypes.UUID,
+      },
+      message: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      chatTab: {
+        type: DataTypes.STRING,
+        defaultValue: 'barefoot namad',
+        allowNull: false,
+      },
+      createdAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+      },
+      updatedAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+      },
     },
-    message:{
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    chatTab:{
-      type: DataTypes.STRING,
-      defaultValue:'barefoot namad',
-      allowNull: false,
-    },
-    createdAt: {
-      allowNull: false,
-      type: DataTypes.DATE
-    },
-    updatedAt: {
-      allowNull: false,
-      type: DataTypes.DATE
+    {
+      sequelize,
+      modelName: 'Chat',
     }
-
-
-  }, {
-    sequelize,
-    modelName: 'Chat',
-  });
+  );
   return Chat;
 };

@@ -6,7 +6,7 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       userId: {
         type: Sequelize.UUID,
@@ -24,20 +24,20 @@ module.exports = {
       },
       chatTab: {
         type: Sequelize.STRING,
-        defaultValue:'barefoot namad',
+        defaultValue: 'barefoot namad',
         allowNull: false,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Chats');
-  }
+  },
 };

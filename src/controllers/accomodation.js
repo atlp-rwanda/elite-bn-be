@@ -32,6 +32,7 @@ class AccomodationController {
       }
       req.body.amenities = changeToArray(req.body.amenities);
       const createdAccommodation = await AccommodationService.createAccommodation(req.body);
+
       return res.status(201).json({
         status: '201',
         message: 'Accommodation added successfully',

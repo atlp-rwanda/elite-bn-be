@@ -1,3 +1,4 @@
+import Op from 'sequelize';
 import models from '../database/models';
 import catchAsync from '../utils/catchAsync';
 import applicationErr from '../utils/errors/applicationError';
@@ -201,3 +202,60 @@ export const mostTavelledDestinations = catchAsync(async (req, res, next) => {
   await Promise.all(mtd);
   return res.status(200).json({ status: 'success', data: returnedData });
 });
+export const createMultiTripRequest = async (req, res, next) => {
+  const userRole = req.user.role;
+  if (userRole !== 'requester') {
+    return res.status(403).json({ message: 'Unauthorized to create trip request' });
+  }
+  const trips = req.body;
+  let tripError;
+  let tripAppError;
+
+  const createTrips = trips.map(async (trip_) => {
+    try {
+      const accomodation = await models.Accomodation.findOne({
+        where: { id: trip_.accommodationId },
+      });
+      let type;
+      if (trip_.returnDate !== '') {
+        type = 'return trip';
+      } else {
+        type = 'one way';
+      }
+      const location = await models.Location.findOne({
+        where: { id: trip_.to },
+      });
+
+      if (!location) {
+        return (tripError = 'Sorry, some locations can not be found!');
+      }
+      if (!accomodation) {
+        return (tripError = 'Sorry, some accomodations can not be found!');
+      }
+
+      const tripReq = {
+        tripperId: req.user.id,
+        from: trip_.from,
+        to: trip_.to,
+        departDate: trip_.departDate,
+        returnDate: trip_.returnDate,
+        tripReasons: trip_.tripReasons,
+        tripType: type,
+        accommodationId: trip_.accommodationId,
+      };
+
+      await models.tripRequest.create(tripReq);
+    } catch (error) {
+      return (tripAppError = error);
+    }
+  });
+
+  await Promise.all(createTrips);
+  if (tripError) return next(new applicationErr(tripError, 404));
+  if (tripAppError) return next(tripAppError);
+  return res.status(201).json({
+    status: 'success',
+    message: 'All of your trips were successfully requested',
+    trips,
+  });
+};
