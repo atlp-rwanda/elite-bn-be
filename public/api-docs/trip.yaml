@@ -20,7 +20,6 @@ definitions:
         type: string
       accommodationId:
         type: integer
-  
 
 paths:
   /api/v1/trip:
@@ -219,7 +218,7 @@ paths:
 /api/v1/trip/dest:
   get:
     tags:
-      - trip request
+      - Travelled Destinantion
     summary: All Most travelled destination.
     responses:
       '200':
@@ -232,10 +231,10 @@ paths:
         description: Unauthenticated
       '400':
         description: Bad request
-/api/v1/user/trip/multi:
+/api/v1/trip/multi:
   post:
     tags:
-      - trip request 
+      - Multi City Request
     summary: Create multi city trip request
     requestBody:
       required: true
@@ -256,4 +255,3 @@ paths:
         description: trip request Not found
       '500':
         description: Internal server error
-  

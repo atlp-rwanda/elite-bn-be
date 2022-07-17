@@ -32,14 +32,12 @@ class AccomodationController {
       }
       req.body.amenities = changeToArray(req.body.amenities);
       const createdAccommodation = await AccommodationService.createAccommodation(req.body);
-     
+
       return res.status(201).json({
         status: '201',
         message: 'Accommodation added successfully',
         payload: createdAccommodation,
       });
-   
-    
     } catch (error) {
       console.log(error);
       ApplicationError.internalServerError(
@@ -48,7 +46,7 @@ class AccomodationController {
       );
     }
   };
-  
+
   static getOneAccommodation = async (req, res, next) => {
     try {
       const { accommodationId } = req.params;

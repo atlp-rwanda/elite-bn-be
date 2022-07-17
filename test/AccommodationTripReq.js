@@ -7,7 +7,14 @@ chai.should();
 
 use(chaiHttp);
 
-let locationId, accomodationId, roomId, travelAdminA, notTravelAdminT, tripperA, managerAuth,requesterAuth;
+let locationId,
+  accomodationId,
+  roomId,
+  travelAdminA,
+  notTravelAdminT,
+  tripperA,
+  managerAuth,
+  requesterAuth;
 const tripId = 1;
 
 const travelAdmin = {
@@ -42,7 +49,6 @@ const tripRequest = [
     accomodationId: 1,
   },
 ];
-
 
 describe('/CRUD location, accommodation, rooms...  ', () => {
   it('should login as travel admin', async () => {
@@ -320,8 +326,8 @@ describe('TRIP request TEST... ', () => {
     expect(res.body).to.have.property('message', 'trip request created');
     expect(res.body).to.have.property('tripReq');
   });
-  
-  const multicity= [
+
+  const multicity = [
     {
       from: 'Kanombe',
       to: 1,
@@ -329,9 +335,9 @@ describe('TRIP request TEST... ', () => {
       returnDate: '2022-08-08',
       tripReasons: 'trip request reason',
       accommodationId: 1,
-    }
-  ]
-  const multicity1= [
+    },
+  ];
+  const multicity1 = [
     {
       from: 'Kanombe',
       to: 1,
@@ -339,9 +345,9 @@ describe('TRIP request TEST... ', () => {
       returnDate: '2022-08-08',
       tripReasons: 'trip request reason',
       accommodationId: 100,
-    }
-  ]
-  const multicity2= [
+    },
+  ];
+  const multicity2 = [
     {
       from: 'Kanombe',
       to: 100,
@@ -349,8 +355,8 @@ describe('TRIP request TEST... ', () => {
       returnDate: '2022-08-08',
       tripReasons: 'trip request reason',
       accommodationId: 1,
-    }
-  ]
+    },
+  ];
 
   it('It should create multi trip request and return 201', async () => {
     const requesterLogin = { email: 'test@gmail.com', password: '12@eLOvr' };
@@ -362,12 +368,12 @@ describe('TRIP request TEST... ', () => {
       .request(app)
       .post('/api/v1/trip/multi')
       .set('Cookie', `jwt=${requesterAuth}`)
-      .send(multicity)
+      .send(multicity);
     expect(res.status).to.equal(201);
     expect(res.type).to.equal('application/json');
     expect(res.body).to.have.property('message');
     expect(res.body.message).to.equal('All of your trips were successfully requested');
-});
+  });
 
   it('It should not create multi trip request and return 404', async () => {
     const requesterLogin = { email: 'test@gmail.com', password: '12@eLOvr' };
@@ -379,12 +385,12 @@ describe('TRIP request TEST... ', () => {
       .request(app)
       .post('/api/v1/trip/multi')
       .set('Cookie', `jwt=${requesterAuth}`)
-      .send(multicity1)
+      .send(multicity1);
     expect(res.status).to.equal(404);
     expect(res.type).to.equal('application/json');
     expect(res.body).to.have.property('message');
     expect(res.body.message).to.equal('Sorry, some accomodations can not be found!');
-});
+  });
 
   it('It should not create multi trip request and return 404', async () => {
     const requesterLogin = { email: 'test@gmail.com', password: '12@eLOvr' };
@@ -396,12 +402,12 @@ describe('TRIP request TEST... ', () => {
       .request(app)
       .post('/api/v1/trip/multi')
       .set('Cookie', `jwt=${requesterAuth}`)
-      .send(multicity2)
+      .send(multicity2);
     expect(res.status).to.equal(404);
     expect(res.type).to.equal('application/json');
     expect(res.body).to.have.property('message');
     expect(res.body.message).to.equal('Sorry, some locations can not be found!');
-});
+  });
 
   it('should get requested trip', async () => {
     const res = await chai.request(app).get('/api/v1/trip').set('Cookie', `jwt=${tripperA}`);

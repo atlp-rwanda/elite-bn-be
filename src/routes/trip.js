@@ -6,7 +6,7 @@ import {
   updateTrip,
   deleteTrip,
   mostTavelledDestinations,
-  createMultiTripRequest
+  createMultiTripRequest,
 } from '../controllers/tripController';
 import { makeTripComment, getTripComment, deleteTripComment } from '../controllers/tripComment';
 import checkAuth from '../middlewares/checkAuth';

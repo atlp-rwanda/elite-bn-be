@@ -1,13 +1,11 @@
+import moment from 'moment';
 
-import moment from 'moment'
-
-function formatMessage(username,text){
-    return {
-        username,
-        text,
-        time:moment().format('h:mm a') 
-    }
-
+function formatMessage(username, text) {
+  return {
+    username,
+    text,
+    time: moment().format('h:mm a'),
+  };
 }
 
- export default formatMessage
+export default formatMessage;

@@ -1,7 +1,7 @@
+import Op from 'sequelize';
 import models from '../database/models';
 import catchAsync from '../utils/catchAsync';
 import applicationErr from '../utils/errors/applicationError';
-import { Op } from 'sequelize';
 
 export const makeTrip = async (req, res, next) => {
   try {
@@ -205,14 +205,12 @@ export const mostTavelledDestinations = catchAsync(async (req, res, next) => {
 export const createMultiTripRequest = async (req, res, next) => {
   const userRole = req.user.role;
   if (userRole !== 'requester') {
-    return res
-      .status(403)
-      .json({ message: 'Unauthorized to create trip request' });
+    return res.status(403).json({ message: 'Unauthorized to create trip request' });
   }
   const trips = req.body;
   let tripError;
   let tripAppError;
-  
+
   const createTrips = trips.map(async (trip_) => {
     try {
       const accomodation = await models.Accomodation.findOne({
@@ -227,7 +225,6 @@ export const createMultiTripRequest = async (req, res, next) => {
       const location = await models.Location.findOne({
         where: { id: trip_.to },
       });
-
 
       if (!location) {
         return (tripError = 'Sorry, some locations can not be found!');
@@ -254,15 +251,11 @@ export const createMultiTripRequest = async (req, res, next) => {
   });
 
   await Promise.all(createTrips);
-  if (tripError)  return next(new applicationErr(tripError, 404));
+  if (tripError) return next(new applicationErr(tripError, 404));
   if (tripAppError) return next(tripAppError);
-  return res
- 
-    .status(201)
-    .json({
-      status: 'success',
-      message: 'All of your trips were successfully requested',
-      trips,
-    });
-    
+  return res.status(201).json({
+    status: 'success',
+    message: 'All of your trips were successfully requested',
+    trips,
+  });
 };
