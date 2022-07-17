@@ -24,7 +24,7 @@ paths:
   /api/v1/trip:
     get:
       tags:
-        - trip request
+        - Trip requests
       summary: Get single specific trip
       responses:
         '200':
@@ -37,7 +37,7 @@ paths:
 /api/v1/trip/allTrips:
   get:
     tags:
-      - trip request
+      - Trip requests
     summary: Get all trip requests you made
     responses:
       '200':
@@ -50,7 +50,7 @@ paths:
 /api/v1/trip/create:
   post:
     tags:
-      - trip request
+      - Trip requests
     summary: Requester make a trip request
     requestBody:
       required: true
@@ -73,7 +73,7 @@ paths:
 /api/v1/trip/update/{tripId}:
   patch:
     tags:
-      - trip request
+      - Trip requests
     summary: Update a pending trip request
     parameters:
       - in: path
@@ -101,7 +101,7 @@ paths:
 /api/v1/request/approve/{tripId}:
   patch:
     tags:
-      - trip request
+      - Trip requests
     summary: approve trip request
     parameters:
       - in: path
@@ -123,7 +123,7 @@ paths:
 /api/v1/request/reject/{tripId}:
   patch:
     tags:
-      - trip request
+      - Trip requests
     summary: reject trip request
     parameters:
       - in: path
@@ -144,7 +144,7 @@ paths:
 /api/v1/trip/delete/{tripId}:
   delete:
     tags:
-      - trip request
+      - Trip requests
     summary: Delete a pending trip request
     parameters:
       - in: path
@@ -206,14 +206,14 @@ paths:
         schema:
           type: integer
         required: true
-        description: number of period        
+        description: number of period
     responses:
-        '200':
-          description: Got number of trips succesfully
-        '404':
-          description: data not found
-        '500':
-          description: Server Error
+      '200':
+        description: Got number of trips succesfully
+      '404':
+        description: data not found
+      '500':
+        description: Server Error
 /api/v1/trip/dest:
   get:
     tags:

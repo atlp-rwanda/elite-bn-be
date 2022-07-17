@@ -1,7 +1,5 @@
 import express from 'express';
 import userRouter from './userRouter';
-import userRoutes from './userRouter';
-import { Router } from 'express';
 import userRoles from './userRoles';
 import socialAuthRouter from './googleFacebook';
 import accomodationRouter from './accomodationRouter';
@@ -14,6 +12,7 @@ import likeRouter from './likeRouter';
 import feedbackRouter from './feedbackRouter';
 import tripStatisticsRouter from './tripStatisticsRouter';
 
+import tripSearchRouter from './searchRouter';
 
 const indexRouter = express.Router();
 
@@ -32,6 +31,7 @@ indexRouter.use('/api/v1', likeRouter);
 indexRouter.use('/api/v1/user', userRouter);
 indexRouter.use('/api/v1/user', userRoles);
 indexRouter.use('/api/v1/trip', trip);
+indexRouter.use('/api/v1', tripSearchRouter);
 indexRouter.use('/api/v1', approveOrRejectRequest);
 indexRouter.use('/api/v1', tripStatisticsRouter);
 

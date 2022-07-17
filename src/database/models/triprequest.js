@@ -1,3 +1,4 @@
+/* eslint-disable require-jsdoc */
 const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) => {
@@ -40,5 +41,6 @@ module.exports = (sequelize, DataTypes) => {
       modelName: 'tripRequest',
     }
   );
+  module.exports = tripRequest;
   return tripRequest;
 };

@@ -1,5 +1,4 @@
 import { Feedback, Users, tripRequest } from '../database/models/index';
-import user from '../database/models/user';
 
 export const getFeedback = async (req, res) => {
   const feedback = await Feedback.findAll();
