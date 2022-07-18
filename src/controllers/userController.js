@@ -17,7 +17,10 @@ import createSendToken from '../utils/helpers/createToken';
 import giveMeProfile from '../utils/helpers/profileInfo';
 import Email from '../utils/email/userReEmail.js';
 import { sendEmail } from '../utils/email';
+import { deleteToken, setToken, getToken } from '../utils/helpers/initRedis';
+
 import user from '../database/models/user.js';
+import redisClient from '../utils/helpers/initRedis.js';
 
 const User = db['users '];
 const { Users } = models;
@@ -206,6 +209,7 @@ export const updateProfile = async (req, res, next) => {
 };
 
 export const logout = (req, res) => {
+  deleteToken('jwt', 'loggedout');
   res.cookie('jwt', 'loggedout', {
     expires: new Date(Date.now() + 10 * 1000),
     httpOnly: true,

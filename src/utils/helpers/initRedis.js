@@ -22,7 +22,9 @@ redisClient.on('connect', () => {
 redisClient.on('end', () => {
   console.log('client disconnected to redis...');
 });
-
+export const setToken = async (key, value) => await redisClient.set(key, value);
+export const deleteToken = async (key) => await redisClient.del(key);
+export const getToken = async (key) => await redisClient.get(key);
 // when we want to stop the redis or quit
 
 process.on('SIGNT', () => {
