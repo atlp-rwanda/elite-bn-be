@@ -19,9 +19,8 @@ import sendEmail from '../utils/email/userReEmail.js';
 import { deleteToken, setToken, getToken } from '../utils/helpers/initRedis';
 
 
-
 const User = db['users '];
-const { Users } = models;
+const { Users, CachedInfo } = models;
 
 const registerNew = async (requestBody, response, next) => {
   try {
@@ -163,12 +162,19 @@ export const login = async (req, res, next) => {
 
     createSendToken(currentUser, 200, res);
   } catch (error) {
+    console.log(error)
     return next(new applicationErr('Opps! something went wrong', 500));
   }
 };
 
 export const getProfile = async (req, res, next) => {
-  const freshUser = await Users.findByPk(req.user.id);
+  const freshUser = await Users.findOne({
+    where: { id: req.user.id },
+    include: [
+      { model: CachedInfo, as: "cachedInfo" }
+    ]
+  })
+
   if (!freshUser) {
     return next(new applicationErr('user not found', 404));
   }
@@ -176,10 +182,13 @@ export const getProfile = async (req, res, next) => {
   if (freshUser.id != req.user.id) {
     return next(new applicationErr("This token doesn't belong to this user", 401));
   }
+
   const user = await Users.findOne({
     where: { id: req.user.id },
-    attributes: { exclude: ['id', 'password', 'createdAt', 'updatedAt'] },
-  });
+    include: [
+      { model: CachedInfo, as: "cachedInfo" }
+    ]
+  })
   res.status(200).json({
     message: 'my profile',
     user,
@@ -217,8 +226,23 @@ export const logout = async (req, res) => {
     expires: new Date(Date.now() + 10 * 1000),
     httpOnly: true,
   });
-  res.status(200).json({
-    status: 'success',
-    message: 'User logged out successfully',
-  });
-}
+  res.status(200).json({ status: 'successfully logged out', data: null });
+};
+
+export const updateRememberInfo = async (req, res, next) => {
+  const userEmail = req.user.email;
+  const user = await Users.findOne({ where: { email: userEmail } });
+  const response = await Users.update(
+    { remember_info: !user.remember_info },
+    { where: { email: userEmail } },
+  );
+  const upuser = await Users.findOne({ where: { email: userEmail } });
+
+  return res
+    .status(200)
+    .json({
+      message: 'remember info option updated successfully',
+      remember_info: upuser.remember_info,
+    });
+};
+

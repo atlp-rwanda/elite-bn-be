@@ -4,6 +4,7 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class tripRequest extends Model {
     static associate(models) {
+
       tripRequest.belongsTo(models.Users, {
         foreignKey: {
           name: 'tripperId',
@@ -35,6 +36,8 @@ module.exports = (sequelize, DataTypes) => {
       tripType: DataTypes.STRING,
       tripStatus: DataTypes.ENUM('pending', 'approved', 'rejected'),
       accommodationId: DataTypes.INTEGER,
+      passportNumber: DataTypes.STRING,
+      passportName: DataTypes.STRING,
     },
     {
       sequelize,

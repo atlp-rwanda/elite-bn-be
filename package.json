@@ -113,6 +113,7 @@
     "swagger-jsdoc": "^6.2.1",
     "swagger-ui-express": "^4.4.0",
     "touch": "^3.1.0"
+    
   },
   "nyc": {
     "all": true,
@@ -128,11 +129,11 @@
     "exclude": [
       "node_modules/*",
       "coverage/*",
-      "src/services/*"
+      "src/utils/*",
+      "src/services/googleFacebook.js"
     ],
     "sourceMap": true,
-    "instrument": true,
-    "sequelize": "^5.21.6",
-    "sequelize-cli": "^5.5.1"
+    "instrument": true
+    
   }
 }

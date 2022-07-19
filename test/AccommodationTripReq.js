@@ -18,7 +18,7 @@ let locationId,
   notificationId,
   managerAuth1
 const tripId = 1;
-const newTripId = 2;
+const newTripId = 4;
 
 const travelAdmin = {
   email: 'kakamao@gmail.com',
@@ -89,6 +89,7 @@ describe('/CRUD location, accommodation, rooms...  ', () => {
 
   
 
+
   it('It should create location', async () => {
     const country = await Country.create({ name: 'Rwanda' });
     const res = await chai
@@ -111,6 +112,40 @@ describe('/CRUD location, accommodation, rooms...  ', () => {
   });
 
   
+
+  
+
+  it('It should  not create an accommodation if there is no location', async () => {
+      
+    const res = await chai
+    
+      .request(app)
+      .post('/api/v1/accomodation/create')
+      .set('Cookie', `jwt=${travelAdminA}`)
+      .send({
+        accomodationName: 'hehe',
+        accomodationDescription: 'kiyovu',
+        locationId:500,
+        accomodationImage: [
+          'http://res.cloudinary.com/elite-team/image/upload/v1655659048/elite/pwaeh8da2y8fefi6npkj.jpg',
+          'http://res.cloudinary.com/elite-team/image/upload/v1655659047/elite/aphojpf91gtm1qloyw2y.jpg',
+          'http://res.cloudinary.com/elite-team/image/upload/v1655659050/elite/jgs6nree61qgopbwi0ly.jpg',
+          'http://res.cloudinary.com/elite-team/image/upload/v1655659048/elite/ycsnx8f2xjftaoed7usf.webp',
+          'http://res.cloudinary.com/elite-team/image/upload/v1655659049/elite/e8f5hp2lcum6pi5d5tmo.jpg',
+        ],
+        amenities: ['wifi', 'long', 'late'],
+        longitude: 'long',
+        latitude: 'late',
+      });
+    expect(res).to.have.status(404);
+    expect(res.type).to.equal('application/json');
+    expect(res.body).to.have.property('message');
+    expect(res.body.message).to.equal('location  not found found try again!!!');
+  
+
+   
+  });
+
 
   it('It should create an accommodation', async () => {
     const res = await chai
@@ -139,6 +174,7 @@ describe('/CRUD location, accommodation, rooms...  ', () => {
 
     accomodationId = res.body.payload.id;
   });
+
   it('It should create an  ROOM', async () => {
     const res = await chai
       .request(app)
@@ -195,9 +231,25 @@ describe('/CRUD location, accommodation, rooms...  ', () => {
       });
     expect(res).to.have.status(200);
     expect(res.type).to.equal('application/json');
+    expect(res.body).to.have.property('status');
+    expect(res.body.status).to.equal('200');
     expect(res.body).to.have.property('message');
     expect(res.body.message).to.equal('Accommodation found');
+    
+    
   });
+
+
+  it('It should get accomodation by  location Id', async () => {
+    const res = await chai
+      .request(app)
+      .get(`/api/vi/location/accomodation/${locationId}`)
+  
+    expect(res).to.have.status(404);
+    
+  });
+
+
   it('It should get all accomodations', async () => {
     const res = await chai
       .request(app)
@@ -324,13 +376,30 @@ describe('/CRUD location, accommodation, rooms...  ', () => {
 });
 
 describe('TRIP request TEST... ', () => {
-  it('should make trip request', async () => {
+
+
+  it('should enable remember info from cached info', async () => {
     await Users.create({ ...tripper });
-
     const result = await chai.request(app).post('/api/v1/user/login').send(tripperCred);
-    expect(result.body).to.have.property('token');
-
     tripperA = result.body.token;
+
+
+    const res = await chai
+      .request(app)
+      .put('/api/v1/user/remember-info')
+      .set('Cookie', `jwt=${tripperA}`);
+    expect(res).to.have.property('status', 200);
+    expect(res.body).to.have.property('message', 'remember info option updated successfully');
+  });
+
+
+
+  it('should make trip request', async () => {
+    // await Users.create({ ...tripper });
+
+    // const result = await chai.request(app).post('/api/v1/user/login').send(tripperCred);
+    // expect(result.body).to.have.property('token');
+    // tripperA = result.body.token;
 
     const res = await chai
       .request(app)
@@ -339,15 +408,63 @@ describe('TRIP request TEST... ', () => {
       .send({
         from: 'Kanombe',
         to: locationId,
-        departDate: '2022-08-20',
-        returnDate: '2022-08-25',
+        departDate: '2022-09-10',
+        returnDate: '2022-11-08',
         tripReasons: 'trip request reason',
         accommodationId: accomodationId,
+        passportNumber: '1111111111111',
+        passportName: 'ffdseeerrrrress'
       });
     expect(res).to.have.status(201);
     expect(res.body).to.have.property('message', 'trip request created');
     expect(res.body).to.have.property('tripReq');
   });
+
+  it('should request using cached info', async () => {
+
+    const res = await chai
+      .request(app)
+      .post('/api/v1/trip/create')
+      .set('Cookie', `jwt=${tripperA}`)
+      .send({
+        to: locationId,
+        departDate: '2022-09-10',
+        returnDate: '2022-11-08',
+        tripReasons: 'trip request reason',
+        accommodationId: accomodationId
+
+      });
+    expect(res).to.have.status(201);
+    expect(res.body).to.have.property('message', 'trip request created');
+    expect(res.body).to.have.property('tripReq');
+  });
+
+
+
+
+  it('should save cached info', async () => {
+    const res = await chai.request(app).post('/api/v1/trip/create').set('Cookie', `jwt=${tripperA}`)
+      .send({
+        from: 'Kamembe',
+        to: locationId,
+        departDate: '2022-09-07',
+        returnDate: '2022-10-08',
+        tripReasons: 'trip request reasons',
+        accommodationId: accomodationId,
+        passportNumber: '11111111111111',
+        passportName: 'ffdseeerrrrs'
+      });
+    expect(res).to.have.status(201);
+    expect(res.body).to.have.property('message', 'trip request created');
+    expect(res.body).to.have.property('tripReq');
+  });
+
+  it('should get save cached info', async () => {
+    const res = await chai.request(app).get('/api/v1/trip').set('Cookie', `jwt=${tripperA}`);
+    expect(res).to.have.status(200);
+    expect(res.body).to.have.property('message', 'requested trips');
+  });
+
 
   it('It should get trip notification', async () => {
     const managerLogin = { email: 'rickrob@gmail.com', password: 'rickrob@1234' };
@@ -1093,9 +1210,13 @@ describe('TEST A RATING CENTER .', async () => {
         returnDate: '2022-08-26',
         tripReasons: 'trip request reason',
         accommodationId: accomodationId,
+        passportNumber: '11111111111',
+        passportName: 'aaaaaaaaaaaa'
+
       });
     expect(re).to.have.status(201);
     })
+
 
     it('should login as travel admin', async () => {
       const res = await chai.request(app).post('/api/v1/user/login').send(manager);
@@ -1114,13 +1235,14 @@ describe('TEST A RATING CENTER .', async () => {
     })
 
 
-    it('should login as requster', async () => {
-      const res = await chai.request(app).post('/api/v1/user/login').send(Requester);
+  
+    it('should login as travel admin', async () => {
+      const res = await chai.request(app).post('/api/v1/user/login').send(manager);
       expect(res).to.have.status(200);
       expect(res.body).to.have.property('token');
       expect(res.body).to.have.property('message', 'User logged in successfully');
   
-      token = res.body.token;
+      managerAuth = res.body.token;
     });
 
     it('TEST A RATING CENTER adding rate to a center.', async () => {
@@ -1142,7 +1264,7 @@ describe('TEST A RATING CENTER .', async () => {
       .post('/api/v1/accomodation/rate')
       .set('Cookie', `jwt=${tripperA}`)
       .send({
-        tripRequestId: 1,
+        tripRequestId: 3,
         serviceRating: 5,
       });
     expect(res).to.have.status(401);
@@ -1156,7 +1278,7 @@ describe('TEST A RATING CENTER .', async () => {
       .set('Cookie', `jwt=${token}`)
       .send({
         tripRequestId: newTripId,
-        serviceRating: 3,
+        serviceRating: 4,
       });
     expect(res).to.have.status(201);
     expect(res.body).to.have.property('message', 'accommodation rated');
@@ -1185,40 +1307,6 @@ describe('TEST A RATING CENTER .', async () => {
       'message',
       "This trip request doesn't either exist or belong to you"
     );
-  });
-
-  it("should not rate a center on which you didn't spent at least 24hours ", async () => {
-    const re = await chai
-      .request(app)
-      .post('/api/v1/trip/create')
-      .set('Cookie', `jwt=${tripperA}`)
-      .send({
-        from: 'Nyarugunga',
-        to: locationId,
-        departDate: departureDateString,
-        returnDate: '2022-08-29',
-        tripReasons: 'trip request reason',
-        accommodationId: accomodationId,
-      });
-    expect(re).to.have.status(201);
-    const newNTripId = 4;
-
-    const resu = await chai
-      .request(app)
-      .patch(`/api/v1/request/approve/${newNTripId}`)
-      .set('Cookie', `jwt=${managerAuth}`);
-    expect(resu).to.have.status(200);
-
-    const res = await chai
-      .request(app)
-      .post('/api/v1/accomodation/rate')
-      .set('Cookie', `jwt=${tripperA}`)
-      .send({
-        tripRequestId: newNTripId,
-        serviceRating: 3,
-      });
-    expect(res).to.have.status(401);
-    expect(res.body).to.have.property('message', "You can't rate before 24hours, please wait");
   });
 });
 it('should login as travel admin', async () => {
@@ -1298,6 +1386,8 @@ describe('TEST A BOOKING ROOM.', () => {
         returnDate: '2022-06-24',
         tripReasons: 'to visit kevin',
         accommodationId: accomodationId,
+        passportNumber: '1111111111',
+        passportName: 'aaaaaaaaaaa'
       });
     expect(re).to.have.status(201);
 
@@ -1314,7 +1404,7 @@ describe('TEST A BOOKING ROOM.', () => {
       });
     expect(resu).to.have.status(201);
 
-    const pendingTripId = 5;
+    const pendingTripId = 6;
     const wrongRoomId = 2;
     const res = await chai
       .request(app)
@@ -1328,6 +1418,10 @@ describe('TEST A BOOKING ROOM.', () => {
     expect(res).to.have.status(403);
     expect(res.body).to.have.property('message', 'Trip need to be approved!');
   });
+
+
+  
+
   it('it should free the room if it was once booked before', async () => {
     const res = await chai
       .request(app)
@@ -1412,13 +1506,21 @@ describe('Delete tests ', () => {
     expect(res).to.have.status(200);
     expect(res.body).to.have.property('message', 'Trip deleted');
   });
+  it('Should  enable saving user info from travel request', async () => {
+    const result = await chai
+      .request(app)
+      .put('/api/v1/user/remember-info')
+      .set('Cookie', `jwt=${tripperA}`);
+    expect(result).to.have.property('status', 200);
+    expect(result.body).to.have.property('message', 'remember info option updated successfully');
+  });
 });
 describe('Travel destination test ', () => {
   it('It should return 200 for most travelled destinations', async () => {
     const response = await chai
       .request(app)
       .get('/api/v1/trip/dest')
-      .set('Cookie', `jwt=${tripperA}`);
+      .set('Cookie', `jwt=${notTravelAdminT}`);
     expect(response).to.have.property('status', 200);
   });
 });
