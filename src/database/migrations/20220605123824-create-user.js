@@ -42,6 +42,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true,
       },
+      remember_info: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
       role: {
         type: Sequelize.ENUM,
         values: ['super admin', 'travel admin', 'manager', 'accommodation supplier', 'requester'],

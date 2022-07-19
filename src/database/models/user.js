@@ -11,6 +11,10 @@ module.exports = (sequelize, DataTypes) => {
       User.hasMany(models.BookingRoom, {
         foreignKey: 'userId',
       });
+      User.hasOne(models.CachedInfo, {
+        foreignKey: 'userId',
+        as: 'cachedInfo',
+      });
     }
   }
   User.init(
@@ -53,6 +57,7 @@ module.exports = (sequelize, DataTypes) => {
         'manager',
         'requester'
       ),
+
       gender: DataTypes.STRING,
       phone: DataTypes.STRING,
       image: DataTypes.STRING,
@@ -63,13 +68,21 @@ module.exports = (sequelize, DataTypes) => {
       department: DataTypes.STRING,
       lineManager: DataTypes.STRING,
       location: DataTypes.STRING,
+
+      remember_info: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
     },
+
+
     {
       sequelize,
       modelName: 'Users',
       tableName: 'Users',
       timestamps: true,
     }
+
   );
   return User;
 };
