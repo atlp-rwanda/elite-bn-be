@@ -3,7 +3,6 @@ import chaiHttp from 'chai-http';
 import app from '../src/app';
 import { Country, Users } from '../src/database/models';
 
-
 chai.should();
 
 use(chaiHttp);
@@ -967,48 +966,48 @@ describe('TEST A RATING CENTER.', async () => {
 describe('TEST A BOOKING ROOM.', () => {
   it('it should book room when trip request is approved', async () => {
     const res = await chai
-        .request(app)
-        .post(`/api/v1/booking/${roomId}`)
-        .set('Cookie', `jwt=${tripperA}`)
-        .send({
-          tripId: newTripId,
-          from: "2022-07-17",
-          to: "2022-07-18"
-        });
-      expect(res).to.have.status(201);
-      expect(res.body).to.have.property('message', "Room booked successfully!");
+      .request(app)
+      .post(`/api/v1/booking/${roomId}`)
+      .set('Cookie', `jwt=${tripperA}`)
+      .send({
+        tripId: newTripId,
+        from: '2022-07-17',
+        to: '2022-07-18',
+      });
+    expect(res).to.have.status(201);
+    expect(res.body).to.have.property('message', 'Room booked successfully!');
   });
 
-  it('it should not book room for unexist room  ROOM DOESN\'T EXIST ', async () => {
+  it("it should not book room if the room does not exist.", async () => {
     const unexistRoom = 49054;
     const res = await chai
-        .request(app)
-        .post(`/api/v1/booking/${unexistRoom}`)
-        .set('Cookie', `jwt=${tripperA}`)
-        .send({
-          tripId: newTripId,
-          from: "2022-07-17",
-          to: "2022-07-18"
-        });
-      expect(res).to.have.status(404);
-      expect(res.body).to.have.property('message', "room does not exist!");
+      .request(app)
+      .post(`/api/v1/booking/${unexistRoom}`)
+      .set('Cookie', `jwt=${tripperA}`)
+      .send({
+        tripId: newTripId,
+        from: '2022-07-17',
+        to: '2022-07-18',
+      });
+    expect(res).to.have.status(404);
+    expect(res.body).to.have.property('message', 'room does not exist!');
   });
 
-  it('it should not book room for unexist room ALREADY BOOKED', async () => {
+  it('it should not book room if the room is already booked', async () => {
     const res = await chai
-        .request(app)
-        .post(`/api/v1/booking/${roomId}`)
-        .set('Cookie', `jwt=${tripperA}`)
-        .send({
-          tripId: newTripId,
-          from: "2022-07-17",
-          to: "2022-07-18"
-        });
-      expect(res).to.have.status(400);
-      expect(res.body).to.have.property('message', "Room has been already booked!");
+      .request(app)
+      .post(`/api/v1/booking/${roomId}`)
+      .set('Cookie', `jwt=${tripperA}`)
+      .send({
+        tripId: newTripId,
+        from: '2022-07-17',
+        to: '2022-07-18',
+      });
+    expect(res).to.have.status(400);
+    expect(res.body).to.have.property('message', 'Room has been already booked!');
   });
 
-  it('it should not book room for unexist room NEED TO BE APPROVED', async () => {
+  it('it should not book room if the trip was not approved by the manager', async () => {
     const re = await chai
       .request(app)
       .post('/api/v1/trip/create')
@@ -1024,35 +1023,33 @@ describe('TEST A BOOKING ROOM.', () => {
     expect(re).to.have.status(201);
 
     const resu = await chai
-    .request(app)
-    .post('/api/v1/room/create')
-    .set('Cookie', `jwt=${travelAdminA}`)
-    .send({
-      accomodationId,
-      roomNumber: '190',
-      bedType: 'queen size bed ',
-      currency: 'Rwf',
-      cost: 15000,
-    });
-  expect(resu).to.have.status(201);
+      .request(app)
+      .post('/api/v1/room/create')
+      .set('Cookie', `jwt=${travelAdminA}`)
+      .send({
+        accomodationId,
+        roomNumber: '190',
+        bedType: 'queen size bed ',
+        currency: 'Rwf',
+        cost: 15000,
+      });
+    expect(resu).to.have.status(201);
 
     const pendingTripId = 5;
     const wrongRoomId = 2;
     const res = await chai
-        .request(app)
-        .post(`/api/v1/booking/${wrongRoomId}`)
-        .set('Cookie', `jwt=${tripperA}`)
-        .send({
-          tripId: pendingTripId,
-          from: "2022-04-14",
-          to: "2022-06-24"
-        });
-      expect(res).to.have.status(403);
-      expect(res.body).to.have.property('message', "Trip need to be approved!");
+      .request(app)
+      .post(`/api/v1/booking/${wrongRoomId}`)
+      .set('Cookie', `jwt=${tripperA}`)
+      .send({
+        tripId: pendingTripId,
+        from: '2022-04-14',
+        to: '2022-06-24',
+      });
+    expect(res).to.have.status(403);
+    expect(res.body).to.have.property('message', 'Trip need to be approved!');
   });
-
 });
-
 
 describe('Delete tests ', () => {
   it('It should delete  room ', async () => {
