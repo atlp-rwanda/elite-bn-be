@@ -1,7 +1,7 @@
 import { Op } from 'sequelize';
 import models from '../database/models';
 
-const { tripRequest, Accomodation, Users } = models;
+const { tripRequest, Users } = models;
 
 export const countTrips = async (userId, start, end, userRole) => {
   try {

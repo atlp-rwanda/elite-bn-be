@@ -1,7 +1,15 @@
-import { Room } from '../database/models';
+import models from '../database/models';
+// import tripRequest from '../database/models/triprequest'
 import roomService from '../services/roomService';
 import * as ApplicationError from '../utils/errors/applicatioErrors';
 import AccommodationService from '../services/accomodationService';
+import {
+  notFoundResponse,
+  successResponse,
+  createdResponse,
+  confictResponse,
+} from '../utils/response';
+
 class roomController {
   static createRoom = async (req, res) => {
     try {

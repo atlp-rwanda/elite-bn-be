@@ -14,6 +14,7 @@ import tripStatisticsRouter from './tripStatisticsRouter';
 import ratingRouter from './ratingRouter';
 
 import tripSearchRouter from './searchRouter';
+import bookingRouter from './bookingRouter';
 
 const indexRouter = express.Router();
 
@@ -37,5 +38,7 @@ indexRouter.use('/api/v1', approveOrRejectRequest);
 indexRouter.use('/api/v1', tripStatisticsRouter);
 indexRouter.use('/api/v1/accomodation/feedback', feedbackRouter);
 indexRouter.use('/api/v1/accomodation', ratingRouter);
+indexRouter.use('/api/v1/accomodation/feedback', feedbackRouter);
+indexRouter.use('/api/v1/booking', bookingRouter);
 
 export default indexRouter;

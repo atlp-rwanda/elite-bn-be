@@ -1,4 +1,7 @@
 import { Room } from '../database/models';
+import models from '../database/models';
+
+const { Accomodation, Rooms, Bookings } = models;
 
 class RoomServices {
   static createRoom = async (room) => {

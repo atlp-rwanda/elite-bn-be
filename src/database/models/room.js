@@ -7,6 +7,9 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: 'accomodationId',
         timestamp: true,
       });
+      Room.hasMany(models.BookingRoom, {
+        foreignKey: 'roomId',
+      });
     }
   }
   Room.init(
@@ -38,6 +41,10 @@ module.exports = (sequelize, DataTypes) => {
       cost: {
         type: DataTypes.DECIMAL,
         allowNull: false,
+      },
+      isBooked: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
       },
     },
     {

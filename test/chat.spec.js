@@ -20,7 +20,7 @@ const chat = {
   message: 'hello',
 };
 
-describe('/CREATE A MESAAGE', () => {
+describe('/CREATE A MESSAGE', () => {
   it('should login before sending messge and return 200 is successful', async () => {
     const result = await chai.request(app).post('/api/v1/user/login').send(credentials);
     expect(result).to.have.status(200);
