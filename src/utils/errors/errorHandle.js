@@ -21,7 +21,6 @@ const sendErrorProd = (err, res, req) => {
       message: err.message,
     });
   } else {
-    console.error('ERROR', err);
     res.status(500).json({
       status: 'error',
       message: 'Opps!! something went very wrong.',

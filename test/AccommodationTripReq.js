@@ -319,6 +319,67 @@ describe('TRIP request TEST... ', () => {
     expect(res.body).to.have.property('tripReq');
   });
 
+  it('It should get trip notification', async () => {
+    const managerLogin = { email: 'rickrob@gmail.com', password: 'rickrob@1234' };
+    const result = await chai.request(app).post('/api/v1/user/login').send(managerLogin);
+    expect(result.body).to.have.property('token');
+
+    managerAuth = result.body.token;
+
+    const res = await chai
+      .request(app)
+      .get('/api/v1/notifications')
+      .set('Cookie', `jwt=${managerAuth}`);
+    expect(res).to.have.status(200);
+    expect(res.body).to.have.property('data');
+    expect(res.type).to.equal('application/json');
+    
+  });
+  it('It should get trip notification by Id', async () => {
+    const requesterLogin = { email: 'test@gmail.com', password: '12@eLOvr' };
+    const result = await chai.request(app).post('/api/v1/user/login').send(requesterLogin);
+    expect(result.body).to.have.property('token');
+
+    requesterAuth = result.body.token;
+    const res = await chai
+      .request(app)
+      .get('/api/v1/1/notifications')
+      .set('Cookie', `jwt=${requesterAuth}`)
+    expect(res.status).to.equal(200);
+    expect(res.type).to.equal('application/json');
+  });
+
+  it('It should unblock application notifications', async () => {
+    const requesterLogin = { email: 'test@gmail.com', password: '12@eLOvr' };
+    const result = await chai.request(app).post('/api/v1/user/login').send(requesterLogin);
+    expect(result.body).to.have.property('token');
+
+    requesterAuth = result.body.token;
+    const res = await chai
+      .request(app)
+      .post(`/api/v1/notifications/status`)
+      .set('Cookie', `jwt=${requesterAuth}`)
+      .send({ type: 'application', status: 'true' });
+    expect(res).to.have.status(200);
+    expect(res.body.data).to.have.property('data');
+    expect(res.type).to.equal('application/json');
+  });
+  it('It should block application notifications', async () => {
+    const requesterLogin = { email: 'test@gmail.com', password: '12@eLOvr' };
+    const result = await chai.request(app).post('/api/v1/user/login').send(requesterLogin);
+    expect(result.body).to.have.property('token');
+
+    requesterAuth = result.body.token;
+    const res = await chai
+      .request(app)
+      .post(`/api/v1/notifications/status`)
+      .set('Cookie', `jwt=${requesterAuth}`)
+      .send({ type: 'application', status: 'false' });
+    expect(res).to.have.status(200);
+    expect(res.body.data).to.have.property('data');
+    expect(res.type).to.equal('application/json');
+  });
+
   const multicity = [
     {
       from: 'Kanombe',
@@ -927,40 +988,6 @@ describe('TEST A RATING CENTER.', async () => {
       "This trip request doesn't either exist or belong to you"
     );
   });
-
-  it("should not rate a center on which you didn't spent at least 24hours ", async () => {
-    const re = await chai
-      .request(app)
-      .post('/api/v1/trip/create')
-      .set('Cookie', `jwt=${tripperA}`)
-      .send({
-        from: 'Nyarugunga',
-        to: locationId,
-        departDate: departureDateString,
-        returnDate: '2022-07-20',
-        tripReasons: 'trip request reason',
-        accommodationId: accomodationId,
-      });
-    expect(re).to.have.status(201);
-    const newNTripId = 4;
-
-    const resu = await chai
-      .request(app)
-      .patch(`/api/v1/request/approve/${newNTripId}`)
-      .set('Cookie', `jwt=${managerAuth}`);
-    expect(resu).to.have.status(200);
-
-    const res = await chai
-      .request(app)
-      .post('/api/v1/accomodation/rate')
-      .set('Cookie', `jwt=${tripperA}`)
-      .send({
-        tripRequestId: newNTripId,
-        serviceRating: 3,
-      });
-    expect(res).to.have.status(401);
-    expect(res.body).to.have.property('message', "You can't rate before 24hours, please wait");
-  });
 });
 
 describe('TEST A BOOKING ROOM.', () => {
@@ -1020,7 +1047,7 @@ describe('TEST A BOOKING ROOM.', () => {
     expect(res.body).to.have.property('message', 'Room has been already booked!');
   });
 
-  it('it should not book room if the trip was not approved by the manager', async () => {
+  it('it should not book room if the trip was not approved ', async () => {
     const re = await chai
       .request(app)
       .post('/api/v1/trip/create')
@@ -1048,7 +1075,7 @@ describe('TEST A BOOKING ROOM.', () => {
       });
     expect(resu).to.have.status(201);
 
-    const pendingTripId = 5;
+    const pendingTripId = 4;
     const wrongRoomId = 2;
     const res = await chai
       .request(app)
