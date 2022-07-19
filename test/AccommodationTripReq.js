@@ -964,6 +964,19 @@ describe('TEST A RATING CENTER.', async () => {
 });
 
 describe('TEST A BOOKING ROOM.', () => {
+  it('it should not book room if you will not spend 24hrs in accommodation', async () => {
+    const res = await chai
+      .request(app)
+      .post(`/api/v1/booking/${roomId}`)
+      .set('Cookie', `jwt=${tripperA}`)
+      .send({
+        tripId: newTripId,
+        from: '07-072022',
+        to: '07-07-2022',
+      });
+    expect(res).to.have.status(400);
+    expect(res.body).to.have.property('message', 'take care on dates');
+  });
   it('it should book room when trip request is approved', async () => {
     const res = await chai
       .request(app)

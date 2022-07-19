@@ -102,5 +102,5 @@ class roomController {
       ApplicationError.internalServerError({ message: error }, res);
     }
   };
-    };
+}
 export default roomController;
