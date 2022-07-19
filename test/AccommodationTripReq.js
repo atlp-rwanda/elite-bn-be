@@ -978,7 +978,7 @@ describe('TEST A BOOKING ROOM.', () => {
     expect(res.body).to.have.property('message', 'Room booked successfully!');
   });
 
-  it("it should not book room if the room does not exist.", async () => {
+  it('it should not book room if the room does not exist.', async () => {
     const unexistRoom = 49054;
     const res = await chai
       .request(app)
@@ -1048,6 +1048,46 @@ describe('TEST A BOOKING ROOM.', () => {
       });
     expect(res).to.have.status(403);
     expect(res.body).to.have.property('message', 'Trip need to be approved!');
+  });
+  it('it should free the room if it was once booked before', async () => {
+    const res = await chai
+      .request(app)
+      .post(`/api/v1/booking/freeRoom/${roomId}`)
+      .set('Cookie', `jwt=${tripperA}`)
+      .send({
+        tripId: newTripId,
+        from: '2022-07-17',
+        to: '2022-07-18',
+      });
+    expect(res).to.have.status(200);
+    expect(res.body).to.have.property('message', 'This room is set to free now.');
+  });
+  it('it should not free the room if the room does not exist.', async () => {
+    const unexistRoom = 49054;
+    const res = await chai
+      .request(app)
+      .post(`/api/v1/booking/freeRoom/${unexistRoom}`)
+      .set('Cookie', `jwt=${tripperA}`)
+      .send({
+        tripId: newTripId,
+        from: '2022-07-17',
+        to: '2022-07-18',
+      });
+    expect(res).to.have.status(404);
+    expect(res.body).to.have.property('message', "This room doesn't exist!");
+  });
+  it('it should not free room if the room is available.', async () => {
+    const res = await chai
+      .request(app)
+      .post(`/api/v1/booking/freeRoom/${roomId}`)
+      .set('Cookie', `jwt=${tripperA}`)
+      .send({
+        tripId: newTripId,
+        from: '2022-07-17',
+        to: '2022-07-18',
+      });
+    expect(res).to.have.status(200);
+    expect(res.body).to.have.property('message', 'This room is available, no need to free it.');
   });
 });
 
