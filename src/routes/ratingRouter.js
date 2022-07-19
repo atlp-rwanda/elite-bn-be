@@ -5,6 +5,5 @@ import rateValidator from '../validations/rateAccommValidation';
 const rateRouter = express.Router();
 
 rateRouter.post('/rate', checkAuth, rateValidator, createRate);
-// rateRouter.patch('/rate/:accommodationId', checkAuth, rateValidator, updateRate);
 
 export default rateRouter;
