@@ -207,11 +207,23 @@ export const updateProfile = async (req, res, next) => {
     .catch((error) => res.status(500).json({ error: 'internal sever error', error }));
 };
 
-export const logout = (req, res) => {
-  deleteToken('jwt', 'loggedout');
+
+
+export const logout = async (req, res) => {
+
+  const foundToken = await getToken("token");
+  console.log(foundToken)
+
+  if (!foundToken) {
+    return res.status(401).json({ message: 'token not found!!' });
+  }
+  await deleteToken("token");
   res.cookie('jwt', 'loggedout', {
     expires: new Date(Date.now() + 10 * 1000),
     httpOnly: true,
   });
-  res.status(200).json({ status: 'successfully logged out', data: null });
-};
+  res.status(200).json({
+    status: 'success',
+    message: 'User logged out successfully',
+  });
+}
