@@ -313,6 +313,8 @@ describe('TRIP request TEST... ', () => {
         returnDate: '2022-08-08',
         tripReasons: 'trip request reason',
         accommodationId: accomodationId,
+        passportNumber: '1111111111111',
+        passportName: 'ffdseeerrrr'
       });
     expect(res).to.have.status(201);
     expect(res.body).to.have.property('message', 'trip request created');

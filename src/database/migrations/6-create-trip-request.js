@@ -62,11 +62,11 @@ module.exports = {
         onUpdate: 'cascade',
       },
       passportNumber: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.STRING,
       },
       passportName: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.STRING,
       },
       createdAt: {
