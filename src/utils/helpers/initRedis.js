@@ -1,3 +1,5 @@
+
+
 import { createClient } from 'redis';
 import { config } from 'dotenv';
 config();
@@ -17,7 +19,7 @@ redisClient.on('end', () => {
   await redisClient.connect();
 })();
 
-export const setToken = async (key, value) => await redisClient.set(key, value);
+export const setToken = async (key, value) => await redisClient.set(key, value,'EX', 60 * 60 * 24);
 export const deleteToken = async (key) => await redisClient.del(key);
 export const getToken = async (key) => await redisClient.get(key);
 

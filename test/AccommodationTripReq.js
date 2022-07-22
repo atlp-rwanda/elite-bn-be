@@ -1142,7 +1142,7 @@ describe('TEST A RATING CENTER .', async () => {
       .post('/api/v1/accomodation/rate')
       .set('Cookie', `jwt=${tripperA}`)
       .send({
-        tripRequestId: 3,
+        tripRequestId: 1,
         serviceRating: 5,
       });
     expect(res).to.have.status(401);
@@ -1153,7 +1153,7 @@ describe('TEST A RATING CENTER .', async () => {
     const res = await chai
       .request(app)
       .post('/api/v1/accomodation/rate')
-      .set('Cookie', `jwt=${tripperA}`)
+      .set('Cookie', `jwt=${token}`)
       .send({
         tripRequestId: newTripId,
         serviceRating: 3,
@@ -1185,6 +1185,40 @@ describe('TEST A RATING CENTER .', async () => {
       'message',
       "This trip request doesn't either exist or belong to you"
     );
+  });
+
+  it("should not rate a center on which you didn't spent at least 24hours ", async () => {
+    const re = await chai
+      .request(app)
+      .post('/api/v1/trip/create')
+      .set('Cookie', `jwt=${tripperA}`)
+      .send({
+        from: 'Nyarugunga',
+        to: locationId,
+        departDate: departureDateString,
+        returnDate: '2022-08-29',
+        tripReasons: 'trip request reason',
+        accommodationId: accomodationId,
+      });
+    expect(re).to.have.status(201);
+    const newNTripId = 4;
+
+    const resu = await chai
+      .request(app)
+      .patch(`/api/v1/request/approve/${newNTripId}`)
+      .set('Cookie', `jwt=${managerAuth}`);
+    expect(resu).to.have.status(200);
+
+    const res = await chai
+      .request(app)
+      .post('/api/v1/accomodation/rate')
+      .set('Cookie', `jwt=${tripperA}`)
+      .send({
+        tripRequestId: newNTripId,
+        serviceRating: 3,
+      });
+    expect(res).to.have.status(401);
+    expect(res.body).to.have.property('message', "You can't rate before 24hours, please wait");
   });
 });
 it('should login as travel admin', async () => {
@@ -1280,7 +1314,7 @@ describe('TEST A BOOKING ROOM.', () => {
       });
     expect(resu).to.have.status(201);
 
-    const pendingTripId = 4;
+    const pendingTripId = 5;
     const wrongRoomId = 2;
     const res = await chai
       .request(app)
@@ -1384,7 +1418,7 @@ describe('Travel destination test ', () => {
     const response = await chai
       .request(app)
       .get('/api/v1/trip/dest')
-      .set('Cookie', `jwt=${notTravelAdminT}`);
+      .set('Cookie', `jwt=${tripperA}`);
     expect(response).to.have.property('status', 200);
   });
 });

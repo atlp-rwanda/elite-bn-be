@@ -126,7 +126,8 @@
     ],
     "exclude": [
       "node_modules/*",
-      "coverage/*"
+      "coverage/*",
+      "src/services/*"
     ],
     "sourceMap": true,
     "instrument": true,

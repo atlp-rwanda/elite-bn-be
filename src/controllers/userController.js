@@ -18,9 +18,8 @@ import giveMeProfile from '../utils/helpers/profileInfo';
 import Email from '../utils/email/userReEmail.js';
 import { sendEmail } from '../utils/email';
 import { deleteToken, setToken, getToken } from '../utils/helpers/initRedis';
-
 import user from '../database/models/user.js';
-import redisClient from '../utils/helpers/initRedis.js';
+
 
 const User = db['users '];
 const { Users } = models;
@@ -208,14 +207,15 @@ export const updateProfile = async (req, res, next) => {
 };
 
 
-export const logout = async (req, res) => {
 
-  const foundToken = await getToken("token");
+export const logout = async (req, res) => {
+console.log(req.user)
+  const foundToken = await getToken(`token-${req.user.email}`);
 
   if (!foundToken) {
     return res.status(401).json({ message: 'token not found!!' });
   }
-  await deleteToken("token");
+  await deleteToken(`token-${req.user.email}`) ;
   res.cookie('jwt', 'loggedout', {
     expires: new Date(Date.now() + 10 * 1000),
     httpOnly: true,

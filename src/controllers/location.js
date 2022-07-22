@@ -1,6 +1,7 @@
 import CountryService from '../services/countryService';
 import LocationService from '../services/locationServices';
-import ApplicationError from '../utils/errors/applicatioErrors';
+import {internalServerError} from '../utils/errors/applicatioErrors';
+
 
 class LocationControllers {
   static createLocation = async (req, res) => {
@@ -101,7 +102,8 @@ class LocationControllers {
       const accommodations = await location.getAccommodations();
       res.json(accommodations);
     } catch (error) {
-      ApplicationError.internalServerError({ message: error }, res);
+      internalServerError({message: error},res)
+    
     }
   };
 

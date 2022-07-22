@@ -6,6 +6,7 @@ import { deleteToken, setToken, getToken } from '../utils/helpers/initRedis';
 const { Users } = models;
 
 const checkAuth = async (req, res, next) => {
+  
   try {
     let token;
     if (req.headers.jwt) {
@@ -14,8 +15,9 @@ const checkAuth = async (req, res, next) => {
       token = req.cookies.jwt;
     } else if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
       token = req.headers.authorization.split(' ')[ 1 ];
+    } else { 
+      token = await getToken(`token-${req.user.email}`) 
     }
- { token = await getToken("token") }
 
     if (!token) {
       return next(new AppError('Your token is invalid or expired', 401));
