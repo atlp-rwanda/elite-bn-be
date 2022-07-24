@@ -72,7 +72,7 @@ export const makeTrip = async (req, res, next) => {
       passportName: req.body.passportName ? req.body.passportName : freshUser.cachedInfo.passportName ? freshUser.cachedInfo.passportName : "",
       passportNumber: req.body.passportNumber ? req.body.passportNumber : freshUser.cachedInfo.passportNumber ? freshUser.cachedInfo.passportNumber : "",
     };
-
+    await models.tripRequest.create(tripReq);
     return res.status(201).json({
       message: 'trip request created',
       tripReq,

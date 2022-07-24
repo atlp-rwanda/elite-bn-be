@@ -867,6 +867,9 @@ describe('TEST A RATING CENTER.', async () => {
         returnDate: '2022-07-26',
         tripReasons: 'trip request reason',
         accommodationId: accomodationId,
+        passportNumber: '11111111111',
+        passportName: 'aaaaaaaaaaaa'
+
       });
     expect(re).to.have.status(201);
 
@@ -939,9 +942,12 @@ describe('TEST A RATING CENTER.', async () => {
         from: 'Nyarugunga',
         to: locationId,
         departDate: departureDateString,
-        returnDate: '2022-07-20',
+        returnDate: '2022-07-29',
         tripReasons: 'trip request reason',
         accommodationId: accomodationId,
+        passportNumber: '11111111111',
+        passportName: 'aaaaaaaaaaaa'
+
       });
     expect(re).to.have.status(201);
     const newNTripId = 4;
@@ -1034,6 +1040,8 @@ describe('TEST A BOOKING ROOM.', () => {
         returnDate: '2022-06-24',
         tripReasons: 'to visit kevin',
         accommodationId: accomodationId,
+        passportNumber: '1111111111',
+        passportName: 'aaaaaaaaaaa'
       });
     expect(re).to.have.status(201);
 
