@@ -61,6 +61,14 @@ module.exports = {
         onDelete: 'cascade',
         onUpdate: 'cascade',
       },
+      passportNumber: {
+        allowNull: true,
+        type: Sequelize.STRING,
+      },
+      passportName: {
+        allowNull: true,
+        type: Sequelize.STRING,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
