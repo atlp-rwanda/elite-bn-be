@@ -65,8 +65,8 @@ describe('TEST USER LOGOUT. ', () => {
     expect(result.body).to.have.property('token');
   });
   it('Should  successfully logout', async () => {
-    const result = await chai.request(app).post('/api/v1/user/logout');
+    const result = await chai.request(app).get('/api/v1/user/logout');
     expect(result).to.have.property('status', 200);
-    expect(result.body).to.have.property('status', 'successfully logged out');
+    expect(result.body).to.have.property('status', 'success');
   });
 });

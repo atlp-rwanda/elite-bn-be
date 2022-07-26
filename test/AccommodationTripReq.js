@@ -988,6 +988,40 @@ describe('TEST A RATING CENTER.', async () => {
       "This trip request doesn't either exist or belong to you"
     );
   });
+
+  it("should not rate a center on which you didn't spent at least 24hours ", async () => {
+    const re = await chai
+      .request(app)
+      .post('/api/v1/trip/create')
+      .set('Cookie', `jwt=${tripperA}`)
+      .send({
+        from: 'Nyarugunga',
+        to: locationId,
+        departDate: departureDateString,
+        returnDate: '2022-07-29',
+        tripReasons: 'trip request reason',
+        accommodationId: accomodationId,
+      });
+    expect(re).to.have.status(201);
+    const newNTripId = 4;
+
+    const resu = await chai
+      .request(app)
+      .patch(`/api/v1/request/approve/${newNTripId}`)
+      .set('Cookie', `jwt=${managerAuth}`);
+    expect(resu).to.have.status(200);
+
+    const res = await chai
+      .request(app)
+      .post('/api/v1/accomodation/rate')
+      .set('Cookie', `jwt=${tripperA}`)
+      .send({
+        tripRequestId: newNTripId,
+        serviceRating: 3,
+      });
+    expect(res).to.have.status(401);
+    expect(res.body).to.have.property('message', "You can't rate before 24hours, please wait");
+  });
 });
 
 describe('TEST A BOOKING ROOM.', () => {

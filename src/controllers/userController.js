@@ -212,7 +212,6 @@ export const updateProfile = async (req, res, next) => {
 export const logout = async (req, res) => {
 
   const foundToken = await getToken("token");
-  console.log(foundToken)
 
   if (!foundToken) {
     return res.status(401).json({ message: 'token not found!!' });
