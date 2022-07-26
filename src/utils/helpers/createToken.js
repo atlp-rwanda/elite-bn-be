@@ -19,6 +19,7 @@ export default (user, statusCode, res) => {
     secure: false,
     httpOnly: true,
   };
+
   res.cookie('jwt', token, cookieOptions);
 
   user.password = undefined;
