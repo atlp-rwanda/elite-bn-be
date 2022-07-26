@@ -13,10 +13,11 @@ const checkAuth = async (req, res, next) => {
     } else if (req.cookies) {
       token = req.cookies.jwt;
     } else if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-      token = req.headers.authorization.split(' ')[1];
+      token = req.headers.authorization.split(' ')[ 1 ];
     }
-    const foundToken = await getToken(token);
-    if (!foundToken) {
+    else { token = await getToken("token") }
+
+    if (!token) {
       return next(new AppError('Your token is invalid or expired', 401));
     }
     const decoded = jwt.verify(token, process.env.JWT_SECRET);

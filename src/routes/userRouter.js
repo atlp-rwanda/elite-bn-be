@@ -23,7 +23,7 @@ userRouter.post('/message', checkAuth, chatValidator, createMessage);
 userRouter.get('/messages', checkAuth, getAllMessages);
 userRouter.get('/profile', checkAuth, getProfile);
 userRouter.patch('/profile', checkAuth, updateProfile);
-userRouter.post('/logout', logout);
+userRouter.get('/logout', logout);
 
 userRouter.get('/verify/:id', (req, res, next) => {
   try {

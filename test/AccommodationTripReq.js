@@ -937,7 +937,7 @@ describe('TEST A RATING CENTER.', async () => {
         from: 'Nyarugunga',
         to: locationId,
         departDate: departureDateString,
-        returnDate: '2022-07-20',
+        returnDate: '2022-07-29',
         tripReasons: 'trip request reason',
         accommodationId: accomodationId,
       });

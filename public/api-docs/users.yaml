@@ -139,7 +139,7 @@ paths:
         description: Internal server error
 
 /api/v1/user/logout:
-  post:
+  get:
     tags:
       - Users
     summary: Logout to barefoot
