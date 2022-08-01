@@ -66,7 +66,6 @@ const registerNew = async (requestBody, response, next) => {
       ApplicationError.validationError(validate.error.details[0].context.label, response);
     }
   } catch (error) {
-    console.log(error);
     ApplicationError.internalServerError(`${error}`, response);
     next(error);
   }
@@ -108,7 +107,7 @@ export const forgotPassword = async (req, res) => {
       ' reset password',
       sendEmailOnResetPassword(user.firstName, resetURL)
     );
-    console.log(user.email);
+
 
     res.status(200).json({
       success: true,

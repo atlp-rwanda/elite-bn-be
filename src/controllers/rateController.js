@@ -61,7 +61,6 @@ export const createRate = async (req, res, next) => {
       return res.status(201).json({ message: 'rates added to accomodation!', data: userRates });
     }
   } catch (error) {
-    console.log(error);
     return next(new applicationErr('Fail to rate an accommodation', 500));
   }
 };

@@ -8,7 +8,6 @@ export const getFeedback = async (req, res) => {
 };
 
 export const sendFeedback = async (req, res) => {
-  console.log('feedback');
   const { feedback, accomodationId } = req.body;
   const { id } = req.user;
   const tripRequets = await tripRequest.findAll({

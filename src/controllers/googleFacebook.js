@@ -63,7 +63,7 @@ export const googleLogin = async (token, tokenSecret, profile, done) => {
 export const facebookLogin = async (accessToken, refreshToken, profile, done) => {
   try {
     const facebookId = { facebookId: profile._json.id };
-    console.log(facebookId);
+
 
     const update = {
       firstName: profile._json.last_name,

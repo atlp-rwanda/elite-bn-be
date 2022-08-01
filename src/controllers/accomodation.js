@@ -41,7 +41,9 @@ class AccomodationController {
         payload: createdAccommodation,
       });
     } catch (error) {
-      console.log(error);
+
+
+      
       ApplicationError.internalServerError(
         { message: 'can not created accommodation Try again!!!' },
         res
