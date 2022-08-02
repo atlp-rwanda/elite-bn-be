@@ -1,5 +1,6 @@
 import * as ApplicationError from '../utils/errors/applicatioErrors';
 import models from '../database/models';
+import * as notification from '../services/notificationService';
 
 const { tripRequest, User } = models;
 
@@ -21,16 +22,24 @@ class approveOrRejectController {
       if (SingleTrip.tripStatus === 'rejected') {
         return res.status(401).json({ response: 'you can not approve rejected trip' });
       }
-      await tripRequest
-        .update(changeStatus, {
-          where: {
-            id: id,
-            tripStatus: 'pending',
-          },
-        })
-        .then((data) => {
-          res.status(200).json({ response: 'request approved successfully' });
-        });
+      await tripRequest.update(changeStatus, {
+        where: {
+          id: id,
+          tripStatus: 'pending',
+        },
+      });
+      /** raise a notification on trip request status changed */
+      const updatingStatus = {
+        title: 'Trip Request Status Changed',
+        message: 'Your Trip Request is Approved',
+        type: 'application',
+        tripId: req.params.id,
+        addedBy: req.user.id,
+        category: 'status',
+      };
+      await notification.addTripStatusNotification(updatingStatus).then((data) => {
+        res.status(200).json({ response: 'request approved successfully' });
+      });
     } catch (error) {
       ApplicationError.internalServerError({ message: error }, res);
     }
@@ -53,19 +62,27 @@ class approveOrRejectController {
       if (SingleTrip.tripStatus === 'approved') {
         return res.status(401).json({ response: 'you can not reject approved trip' });
       }
-      await tripRequest
-        .update(changeStatus, {
-          where: {
-            id: id,
-            tripStatus: 'pending',
-            id,
-          },
-        })
-        .then((data) => {
-          res.status(200).json({ response: 'request rejected successfully' });
-        });
+      await tripRequest.update(changeStatus, {
+        where: {
+          id: id,
+          tripStatus: 'pending',
+          id,
+        },
+      });
+      /** raise a notification on trip request status changed */
+      const updatingStatus = {
+        title: 'Trip Request Status Changed',
+        message: 'Your Trip Request is Rejected',
+        type: 'application',
+        tripId: req.params.id,
+        addedBy: req.user.id,
+        category: 'status',
+      };
+      await notification.addTripStatusNotification(updatingStatus).then((data) => {
+        res.status(200).json({ response: 'request rejected successfully' });
+      });
     } catch (error) {
-      console.log(error);
+      
       return ApplicationError.internalServerError({ message: error }, res);
     }
   };

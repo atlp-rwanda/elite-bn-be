@@ -1,3 +1,4 @@
+/* eslint-disable  */
 import nodemailer from 'nodemailer';
 import ejs from 'ejs';
 import path from 'path';
@@ -41,7 +42,6 @@ class Email {
     // 1) Render HTML based on a ejs template
     const html = await ejs.renderFile(path.join(__dirname, `./../views/email/${template}.ejs`), {
       firstName: this.firstName,
-      url: this.url,
     });
     // 2) Define email options
     const mailOptions = {

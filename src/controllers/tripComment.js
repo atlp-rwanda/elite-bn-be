@@ -1,5 +1,6 @@
 import tripCommentService from '../services/tripCommentService';
 import applicationErr from '../utils/errors/applicationError';
+import * as notification from '../services/notificationService';
 
 export const makeTripComment = async (req, res, next) => {
   try {
@@ -28,7 +29,18 @@ export const makeTripComment = async (req, res, next) => {
         tripperId: req.user.id,
         comment: req.body.comment,
       };
+
       const tripComment = await tripCommentService.makeComment(commentOnTrip);
+      /** raise a notification */
+      const newNotification = {
+        title: 'New Comment To A trip You Made',
+        message: req.body.comment,
+        type: 'application',
+        tripId: req.params.tripId,
+        addedBy: req.user.id,
+        category: 'comment',
+      };
+      await notification.addTripCommentNotification(newNotification);
       return res.status(201).json({ message: 'Comment saved successfully', tripComment });
     } else if (tripperCommentOn !== null && tripperCommentOn.tripperId !== freshUser.id) {
       return next(new applicationErr('You are unauthorized on this comment section', 401));
@@ -43,6 +55,7 @@ export const makeTripComment = async (req, res, next) => {
         comment: req.body.comment,
       };
       const tripComment = await tripCommentService.makeComment(commentOnTrip);
+
       return res.status(201).json({ message: 'Comment saved successfully', tripComment });
     }
   } catch (error) {

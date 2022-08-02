@@ -26,7 +26,6 @@ const decodeAccessToken = async (accessToken) => {
     const decodedToken = await jwt.verify(accessToken, jwtToken);
     return decodedToken;
   } catch (error) {
-    console.log(error);
     return null;
   }
 };

@@ -2,6 +2,10 @@ import Op from 'sequelize';
 import models from '../database/models';
 import catchAsync from '../utils/catchAsync';
 import applicationErr from '../utils/errors/applicationError';
+import * as notification from '../services/notificationService';
+import { sendEmail } from '../utils/email';
+import { sendEmailNotification } from '../views/emailNotification';
+import { sendEmailUpdateNotification } from '../views/email/emailNotificationUpdate';
 
 export const makeTrip = async (req, res, next) => {
   try {
@@ -34,8 +38,25 @@ export const makeTrip = async (req, res, next) => {
       tripType: type,
       accommodationId: req.body.accommodationId,
     };
+    const trip = await models.tripRequest.create(tripReq);
+    const newNotification = {
+      title: 'Create Trip Request was successful',
+      message: 'A new Trip Made in Your Accomodation facility',
+      type: 'application',
+      tripId: trip.id,
+      addedBy: req.user.id,
+      category: 'created',
+    };
+    await notification.addTripStatusNotification(newNotification);
+    await models.Users.findOne({ where: { email: `${req.user.email}` } });
+    await models.Users.findOne({ where: { username: `${req.user.username}` } });
 
-    await models.tripRequest.create(tripReq);
+    sendEmail(
+      req.user.email,
+      process.env.SENDGRID_USERNAME,
+      'Email Notification',
+      sendEmailNotification(req.user.username)
+    );
     return res.status(201).json({
       message: 'trip request created',
       tripReq,
@@ -133,6 +154,25 @@ export const updateTrip = async (req, res, next) => {
         tripStatus: 'pending',
       },
     });
+    /** raise a notification for updating trip trequest */
+    const newUpdating = {
+      title: 'Trip Request Updated',
+      message: 'Check for An Update To A Trip Made in Your Accomodation',
+      type: 'application',
+      tripId: req.params.tripId,
+      addedBy: req.user.id,
+      category: 'updated',
+    };
+    await notification.addTripStatusNotification(newUpdating);
+    await models.Users.findOne({ where: { email: `${req.user.email}` } });
+    await models.Users.findOne({ where: { username: `${req.user.username}` } });
+
+    sendEmail(
+      req.user.email,
+      process.env.SENDGRID_USERNAME,
+      'Email Trip Update Notification',
+      sendEmailUpdateNotification(req.user.username)
+    );
     res.status(200).json({
       message: 'Trip updated successfully',
       updateTrip,
