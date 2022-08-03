@@ -14,7 +14,8 @@ let locationId,
   notTravelAdminT,
   tripperA,
   managerAuth,
-  requesterAuth;
+  requesterAuth,
+  notificationId
 const tripId = 1;
 const newTripId = 3;
 
@@ -333,7 +334,7 @@ describe('TRIP request TEST... ', () => {
     expect(res).to.have.status(200);
     expect(res.body).to.have.property('data');
     expect(res.type).to.equal('application/json');
-    
+    notificationId = res.body.data.data[0].id;
   });
   it('It should get trip notification by Id', async () => {
     const requesterLogin = { email: 'test@gmail.com', password: '12@eLOvr' };
@@ -379,7 +380,51 @@ describe('TRIP request TEST... ', () => {
     expect(res.body.data).to.have.property('data');
     expect(res.type).to.equal('application/json');
   });
+  it('The user logged in can mark notification as read', async () => {
+    const requesterLogin = { email: 'test@gmail.com', password: '12@eLOvr' };
+    const result = await chai.request(app).post('/api/v1/user/login').send(requesterLogin);
+    expect(result.body).to.have.property('token');
 
+    requesterAuth = result.body.token;
+    const res = await chai
+      .request(app)
+        .post(`/api/v1/${notificationId}/read/notifications`)
+        .set('Cookie', `jwt=${requesterAuth}`)
+      expect(res).to.have.property('status', 200);
+      expect(res.body.data).to.have.property(
+        'message',
+        `Notification marked as read succesfully`
+      );
+    });
+    it('The Notification read can not be read again', async () => {
+      const requesterLogin = { email: 'test@gmail.com', password: '12@eLOvr' };
+    const result = await chai.request(app).post('/api/v1/user/login').send(requesterLogin);
+    expect(result.body).to.have.property('token');
+
+    requesterAuth = result.body.token;
+    const res = await chai
+      .request(app)
+        .post(`/api/v1/${notificationId}/read/notifications`)
+        .set('Cookie', `jwt=${requesterAuth}`)
+      expect(res).to.have.property('status', 200);
+      expect(res.body.data).to.have.property(
+        'message',
+        `The notification is already read`
+      );
+    });
+    it('If user has no notification can not mark them', async () => {
+      const requesterLogin = { email: 'test@gmail.com', password: '12@eLOvr' };
+      const result = await chai.request(app).post('/api/v1/user/login').send(requesterLogin);
+      expect(result.body).to.have.property('token');
+  
+      requesterAuth = result.body.token;
+      const res = await chai
+        .request(app)
+        .post(`/api/v1/read/notifications`)
+        .set('Cookie', `jwt=${requesterAuth}`)
+        expect(res.status).to.equal(200);
+        expect(res.type).to.equal('application/json');
+    });
   const multicity = [
     {
       from: 'Kanombe',
