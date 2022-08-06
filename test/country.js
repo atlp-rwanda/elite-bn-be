@@ -51,6 +51,15 @@ describe('/country end points  ', () => {
     expect(res.body).to.have.property('message');
   });
 
+
+  it('Should not login as travel admin', async () => {
+    const res = await chai.request(app).post('/api/v1/user/login').send(notTravelAdmin);
+    expect(res).to.have.status(200);
+    expect(res.body).to.have.property('token');
+    expect(res.body).to.have.property('message', 'User logged in successfully');
+  
+    notTravelAdminT = res.body.token;
+  });
   it('it should not allow to create a country', async () => {
     const res = await chai
       .request(app)

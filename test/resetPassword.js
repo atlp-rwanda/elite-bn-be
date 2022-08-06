@@ -64,7 +64,7 @@ describe('reset password', () => {
     expect(res.body.data).to.have.property('message');
   });
 
-  it('it should return 400 if  password is invalid', async () => {
+  it('it 00 if  password is invalid', async () => {
     const res = await request(server)
       .put(`/api/v1/user/resetPassword/${id}/${resetToken}`)
       .send(invalidResetPassword);
