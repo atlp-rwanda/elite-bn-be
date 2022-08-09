@@ -90,9 +90,9 @@ const verifyUser = async (id) => {
     const verified = Users.update(
       { isVerified: true },
       { where: { id: `${id}` } }
-      // { where: id }
+    
     );
-    // console.log(verified);
+   
     return verified;
   } catch (error) {
     return error.json();

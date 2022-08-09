@@ -72,13 +72,6 @@ describe('USER PROFILE TEST ', () => {
     expect(res.body).to.have.property('message', 'my profile');
   });
 
-  it('Should  successfully logout', async () => {
-    const result = await chai.request(app).post('/api/v1/user/logout');
-    expect(result).to.have.property('status', 200);
-    expect(result.body).to.have.property('status', 'success');
-  });
-
-  
   it('should not get others Profile', async () => {
     
     
@@ -105,12 +98,7 @@ describe('USER PROFILE TEST ', () => {
     expect(profileRes).to.have.status(200);
   });
 
-  it('Should  successfully logout', async () => {
-    const result = await chai.request(app).post('/api/v1/user/logout');
-    expect(result).to.have.property('status', 200);
-    expect(result.body).to.have.property('status', 'success');
-  });
-
+ 
   it('should not update others Profile', async () => {
     const res = await chai.request(app).post('/api/v1/user/login').send(othersCred);
     othersToken = res.body.token; 

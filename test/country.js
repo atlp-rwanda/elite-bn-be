@@ -17,8 +17,8 @@ const travelAdmin = {
 };
 
 const notTravelAdmin = {
-  email: 'kikolulu@gmail.com',
-  password: 'kikolulu@123',
+  email: 'rickrob@gmail.com',
+  password: 'rickrob@1234',
 };
 
 it('should login as travel admin', async () => {
@@ -30,14 +30,7 @@ it('should login as travel admin', async () => {
   travelAdminA = res.body.token;
 });
 
-it('Should not login as travel admin', async () => {
-  const res = await chai.request(app).post('/api/v1/user/login').send(notTravelAdmin);
-  expect(res).to.have.status(200);
-  expect(res.body).to.have.property('token');
-  expect(res.body).to.have.property('message', 'User logged in successfully');
 
-  notTravelAdminT = res.body.token;
-});
 
 describe('/country end points  ', () => {
   it('it should create a country', async () => {
@@ -51,15 +44,15 @@ describe('/country end points  ', () => {
     expect(res.body).to.have.property('message');
   });
 
-
   it('Should not login as travel admin', async () => {
-    const res = await chai.request(app).post('/api/v1/user/login').send(notTravelAdmin);
-    expect(res).to.have.status(200);
-    expect(res.body).to.have.property('token');
-    expect(res.body).to.have.property('message', 'User logged in successfully');
-  
-    notTravelAdminT = res.body.token;
-  });
+  const res = await chai.request(app).post('/api/v1/user/login').send(notTravelAdmin);
+  expect(res).to.have.status(200);
+  expect(res.body).to.have.property('token');
+  expect(res.body).to.have.property('message', 'User logged in successfully');
+
+  notTravelAdminT = res.body.token;
+});
+
   it('it should not allow to create a country', async () => {
     const res = await chai
       .request(app)

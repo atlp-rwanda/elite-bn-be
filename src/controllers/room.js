@@ -1,5 +1,4 @@
 import models from '../database/models';
-// import tripRequest from '../database/models/triprequest'
 import roomService from '../services/roomService';
 import * as ApplicationError from '../utils/errors/applicatioErrors';
 import AccommodationService from '../services/accomodationService';

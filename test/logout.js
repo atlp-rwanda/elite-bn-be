@@ -15,6 +15,7 @@ describe('TEST USER LOGOUT. ', () => {
     await Users.destroy({ where: { email: 'usertestme@gmail.com' } });
   });
 
+  let token;
   const userToTest = {
     firstName: 'useme',
     lastName: 'fortest',
@@ -63,10 +64,12 @@ describe('TEST USER LOGOUT. ', () => {
     expect(result.body).to.have.property('status', 'success');
     expect(result.body).to.have.property('message', 'User logged in successfully');
     expect(result.body).to.have.property('token');
+
+    token = result.body.token;
   });
-  it('Should  successfully logout', async () => {
-    const result = await chai.request(app).post('/api/v1/user/logout');
-    expect(result).to.have.property('status', 200);
-    expect(result.body).to.have.property('status', 'success');
-  });
+
+ 
+
+
+ 
 });
