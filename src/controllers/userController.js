@@ -18,7 +18,7 @@ import giveMeProfile from '../utils/helpers/profileInfo';
 import Email from '../utils/email/userReEmail.js';
 import { sendEmail } from '../utils/email';
 import { deleteToken, setToken, getToken } from '../utils/helpers/initRedis';
-import user from '../database/models/user.js';
+
 
 
 const User = db['users '];
@@ -209,7 +209,7 @@ export const updateProfile = async (req, res, next) => {
 
 
 export const logout = async (req, res) => {
-console.log(req.user)
+
   const foundToken = await getToken(`token-${req.user.email}`);
 
   if (!foundToken) {
