@@ -37,9 +37,26 @@ describe('/CREATE A MESSAGE', () => {
     expect(res.body).to.have.property('success', true);
   });
 
+  it('Should  successfully logout', async () => {
+    const result = await chai.request(app).post('/api/v1/user/logout');
+    expect(result).to.have.property('status', 200);
+    expect(result.body).to.have.property('status', 'success');
+  });
+
   it('should  return 401 if not logged in', async () => {
-    const res = await chai.request(app).post('/api/v1/user/message');
+    const res = await chai
+    .request(app)
+    .post('/api/v1/user/message')
+    .send({ ...chat });
+    
     expect(res).to.have.status(401);
+  });
+
+  
+  it('should login before sending messge and return 200 is successful', async () => {
+    const result = await chai.request(app).post('/api/v1/user/login').send(credentials);
+    expect(result).to.have.status(200);
+    accessToken = result.body.token;
   });
 
   it('should  return 400 if no message provided', async () => {

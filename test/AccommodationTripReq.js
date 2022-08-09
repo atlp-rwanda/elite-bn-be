@@ -15,9 +15,10 @@ let locationId,
   tripperA,
   managerAuth,
   requesterAuth,
-  notificationId
+  notificationId,
+  managerAuth1
 const tripId = 1;
-const newTripId = 3;
+const newTripId = 2;
 
 const travelAdmin = {
   email: 'kakamao@gmail.com',
@@ -28,7 +29,10 @@ const notTravelAdmin = {
   email: 'kikolulu@gmail.com',
   password: 'kikolulu@123',
 };
-
+const manager ={
+  email: 'rickrob@gmail.com',
+  password: 'rickrob@1234'
+}
 const tripper = {
   id: 'b92ce142-f8e7-4792-8e45-9949468f772e',
   firstName: 'useme',
@@ -42,16 +46,11 @@ const tripperCred = {
   email: 'tripper@elite.com',
   password: 'testme123',
 };
+const superAdmin={
+
+}
 
 describe('/CRUD location, accommodation, rooms...  ', () => {
-  it('should login as travel admin', async () => {
-    const res = await chai.request(app).post('/api/v1/user/login').send(travelAdmin);
-    expect(res).to.have.status(200);
-    expect(res.body).to.have.property('token');
-    expect(res.body).to.have.property('message', 'User logged in successfully');
-
-    travelAdminA = res.body.token;
-  });
 
   it('Should not login as travel admin', async () => {
     const res = await chai.request(app).post('/api/v1/user/login').send(notTravelAdmin);
@@ -61,6 +60,34 @@ describe('/CRUD location, accommodation, rooms...  ', () => {
 
     notTravelAdminT = res.body.token;
   });
+  it('It should not create location', async () => {
+    const country = await Country.create({ name: 'Swatini' });
+    const res = await chai
+      .request(app)
+      .post('/api/v1/location/create')
+      .set('Cookie', `jwt=${notTravelAdminT}`)
+      .send({
+        locationName: 'kigali',
+        locationDescription: 'branch',
+        countryId: country.id,
+        currency: 'Rwf',
+        link: 'link',
+      });
+    expect(res).to.have.status(401);
+    expect(res.type).to.equal('application/json');
+    expect(res.body).to.have.property('error');
+  });
+
+  it('should login as travel admin', async () => {
+    const res = await chai.request(app).post('/api/v1/user/login').send(travelAdmin);
+    expect(res).to.have.status(200);
+    expect(res.body).to.have.property('token');
+    expect(res.body).to.have.property('message', 'User logged in successfully');
+
+    travelAdminA = res.body.token;
+  });
+
+  
 
   it('It should create location', async () => {
     const country = await Country.create({ name: 'Rwanda' });
@@ -83,23 +110,7 @@ describe('/CRUD location, accommodation, rooms...  ', () => {
     locationId = res.body.payload.id;
   });
 
-  it('It should not create location', async () => {
-    const country = await Country.create({ name: 'Swatini' });
-    const res = await chai
-      .request(app)
-      .post('/api/v1/location/create')
-      .set('Cookie', `jwt=${notTravelAdminT}`)
-      .send({
-        locationName: 'kigali',
-        locationDescription: 'branch',
-        countryId: country.id,
-        currency: 'Rwf',
-        link: 'link',
-      });
-    expect(res).to.have.status(401);
-    expect(res.type).to.equal('application/json');
-    expect(res.body).to.have.property('error');
-  });
+  
 
   it('It should create an accommodation', async () => {
     const res = await chai
@@ -247,7 +258,17 @@ describe('/CRUD location, accommodation, rooms...  ', () => {
     expect(res.body).to.have.property('message');
     expect(res.body.message).to.equal('Room updated successfully');
   });
+  it('Should not login as travel admin', async () => {
+    const res = await chai.request(app).post('/api/v1/user/login').send(notTravelAdmin);
+    expect(res).to.have.status(200);
+    expect(res.body).to.have.property('token');
+    expect(res.body).to.have.property('message', 'User logged in successfully');
+
+    notTravelAdminT = res.body.token;
+  });
+
   it('It should not update room ', async () => {
+
     const res = await chai
       .request(app)
       .patch(`/api/v1/room/update/${roomId}`)
@@ -255,6 +276,14 @@ describe('/CRUD location, accommodation, rooms...  ', () => {
     expect(res).to.have.status(401);
     expect(res.type).to.equal('application/json');
     expect(res.body).to.have.property('error');
+  });
+  it('should login as travel admin', async () => {
+    const res = await chai.request(app).post('/api/v1/user/login').send(travelAdmin);
+    expect(res).to.have.status(200);
+    expect(res.body).to.have.property('token');
+    expect(res.body).to.have.property('message', 'User logged in successfully');
+
+    travelAdminA = res.body.token;
   });
   it('It should update Accomodation ', async () => {
     const res = await chai
@@ -513,20 +542,35 @@ describe('TRIP request TEST... ', () => {
     expect(res.body).to.have.property('message', 'requested trips');
   });
 
+  
+  it('should login as travel admin', async () => {
+    const res = await chai.request(app).post('/api/v1/user/login').send(manager);
+    expect(res).to.have.status(200);
+    expect(res.body).to.have.property('token');
+    expect(res.body).to.have.property('message', 'User logged in successfully');
+
+    managerAuth1 = res.body.token;
+  });
+
   it('should get all requested trip as manager', async () => {
-    const managerLogin = { email: 'rickrob@gmail.com', password: 'rickrob@1234' };
-    const result = await chai.request(app).post('/api/v1/user/login').send(managerLogin);
-    expect(result.body).to.have.property('token');
-
-    managerAuth = result.body.token;
-
-    const res = await chai
+  
+   const res = await chai
       .request(app)
       .get('/api/v1/trip/allTrips')
       .set('Cookie', `jwt=${managerAuth}`);
     expect(res).to.have.status(200);
     expect(res.body).to.have.property('message', 'All trip request');
   });
+
+  it('should login as travel admin', async () => {
+    const res = await chai.request(app).post('/api/v1/user/login').send(travelAdmin);
+    expect(res).to.have.status(200);
+    expect(res.body).to.have.property('token');
+    expect(res.body).to.have.property('message', 'User logged in successfully');
+
+    travelAdminA = res.body.token;
+  });
+
 
   it('TEST TRIP SEARCH: should find trip request by status', async () => {
     const res = await chai
@@ -749,6 +793,16 @@ describe('TEST comment on Trip Request... ', () => {
     expect(res.body).to.have.property('tripComment');
   });
 
+  it('should login as travel admin', async () => {
+    const res = await chai.request(app).post('/api/v1/user/login').send(travelAdmin);
+    expect(res).to.have.status(200);
+    expect(res.body).to.have.property('token');
+    expect(res.body).to.have.property('message', 'User logged in successfully');
+
+    travelAdminA = res.body.token;
+  });
+
+
   it('should not be allowed to comment on others trip except Manager or Super Admin', async () => {
     const res = await chai
       .request(app)
@@ -758,17 +812,36 @@ describe('TEST comment on Trip Request... ', () => {
     expect(res).to.have.status(401);
     expect(res.body).to.have.property('message', 'You are unauthorized on this comment section');
   });
+  
+  it('should login as travel admin', async () => {
+    const res = await chai.request(app).post('/api/v1/user/login').send(manager);
+    expect(res).to.have.status(200);
+    expect(res.body).to.have.property('token');
+    expect(res.body).to.have.property('message', 'User logged in successfully');
+
+    managerAuth = res.body.token;
+  });
+  
 
   it('should get all comments on trip request', async () => {
     const res = await chai
       .request(app)
       .get(`/api/v1/trip/${tripId}/comments`)
-      .set('Cookie', `jwt=${tripperA}`);
+      .set('Cookie', `jwt=${managerAuth}`);
     expect(res).to.have.status(200);
     expect(res.body).to.have.property('message', 'All comment on this trip request');
     expect(res.body).to.have.property('tripComment');
   });
 
+  it('should login as travel admin', async () => {
+    const res = await chai.request(app).post('/api/v1/user/login').send(manager);
+    expect(res).to.have.status(200);
+    expect(res.body).to.have.property('token');
+    expect(res.body).to.have.property('message', 'User logged in successfully');
+
+    managerAuth = res.body.token;
+  });
+  
   it('should get all comments and replies as Manager or Super Admin', async () => {
     const res = await chai
       .request(app)
@@ -779,6 +852,16 @@ describe('TEST comment on Trip Request... ', () => {
     expect(res.body).to.have.property('tripComment');
   });
 
+
+  it('should login as travel admin', async () => {
+    const res = await chai.request(app).post('/api/v1/user/login').send(travelAdmin);
+    expect(res).to.have.status(200);
+    expect(res.body).to.have.property('token');
+    expect(res.body).to.have.property('message', 'User logged in successfully');
+
+    travelAdminA = res.body.token;
+  });
+  
   it('should not be allowed to get others comments except Manager or Super Admin', async () => {
     const res = await chai
       .request(app)
@@ -796,6 +879,14 @@ describe('TEST comment on Trip Request... ', () => {
     expect(res).to.have.status(404);
     expect(res.body).to.have.property('message', 'Commnet on trip request Not found');
   });
+  it('should login as travel admin', async () => {
+    const res = await chai.request(app).post('/api/v1/user/login').send(manager);
+    expect(res).to.have.status(200);
+    expect(res.body).to.have.property('token');
+    expect(res.body).to.have.property('message', 'User logged in successfully');
+
+    managerAuth = res.body.token;
+  });
 
   it('should be allowed to delete any comment as Manager or Super Admin', async () => {
     const res = await chai
@@ -807,14 +898,34 @@ describe('TEST comment on Trip Request... ', () => {
     expect(res.body).to.have.property('deleteComm');
   });
 
-  it('should not be allowed to delete others comments except Manager or Super Admin', async () => {
+  it('should login as travel admin', async () => {
+    const res = await chai.request(app).post('/api/v1/user/login').send(manager);
+    expect(res).to.have.status(200);
+    expect(res.body).to.have.property('token');
+    expect(res.body).to.have.property('message', 'User logged in successfully');
+
+    managerAuth = res.body.token;
+  });
+
+  it('should comment on travel request', async () => {
     const result = await chai
       .request(app)
       .post(`/api/v1/trip/${tripId}/comment`)
-      .set('Cookie', `jwt=${tripperA}`)
+      .set('Cookie', `jwt=${managerAuth}`)
       .send({ comment: 'Hi this is my second comment' });
     expect(result).to.have.status(201);
 
+  })
+  it('should login as travel admin', async () => {
+    const res = await chai.request(app).post('/api/v1/user/login').send(travelAdmin);
+    expect(res).to.have.status(200);
+    expect(res.body).to.have.property('token');
+    expect(res.body).to.have.property('message', 'User logged in successfully');
+
+    travelAdminA = res.body.token;
+  });
+
+  it('should not be allowed to delete others comments except Manager or Super Admin', async () => {
     const res = await chai
       .request(app)
       .delete(`/api/v1/trip/comment/${commentIdTwo}`)
@@ -822,19 +933,22 @@ describe('TEST comment on Trip Request... ', () => {
     expect(res).to.have.status(401);
     expect(res.body).to.have.property('message', "You're Unauthorized to delete this comment");
   });
+  it('should login as travel admin', async () => {
+    const res = await chai.request(app).post('/api/v1/user/login').send(manager);
+    expect(res).to.have.status(200);
+    expect(res.body).to.have.property('token');
+    expect(res.body).to.have.property('message', 'User logged in successfully');
+
+    managerAuth = res.body.token;
+  });
 
   it('should be allowed to delete his/her own comments', async () => {
-    const result = await chai
-      .request(app)
-      .post(`/api/v1/trip/${tripId}/comment`)
-      .set('Cookie', `jwt=${tripperA}`)
-      .send({ comment: 'Hi this is my third comment' });
-    expect(result).to.have.status(201);
+    
 
     const res = await chai
       .request(app)
       .delete(`/api/v1/trip/comment/${commentIdThree}`)
-      .set('Cookie', `jwt=${tripperA}`);
+      .set('Cookie', `jwt=${managerAuth}`);
     expect(res).to.have.status(200);
     expect(res.body).to.have.property('message', 'comment on trip deleted');
     expect(res.body).to.have.property('deleteComm');
@@ -958,32 +1072,62 @@ const date = new Date();
 const departureDate = date.toISOString().split('T')[0];
 const departureDateString = String(departureDate);
 
-describe('TEST A RATING CENTER.', async () => {
-  it('should rate a center', async () => {
+describe('TEST A RATING CENTER .', async () => {
+  it('should login as requster', async () => {
+    const res = await chai.request(app).post('/api/v1/user/login').send(Requester);
+    expect(res).to.have.status(200);
+    expect(res.body).to.have.property('token');
+    expect(res.body).to.have.property('message', 'User logged in successfully');
+
+    token = res.body.token;
+  });
+  it('should rate a center create a trip', async () => {
     const re = await chai
       .request(app)
       .post('/api/v1/trip/create')
-      .set('Cookie', `jwt=${tripperA}`)
+      .set('Cookie', `jwt=${token}`)
       .send({
         from: 'Huye',
         to: locationId,
-        departDate: '2022-07-15',
-        returnDate: '2022-07-26',
+        departDate: '2022-08-15',
+        returnDate: '2022-08-26',
         tripReasons: 'trip request reason',
         accommodationId: accomodationId,
       });
     expect(re).to.have.status(201);
+    })
 
+    it('should login as travel admin', async () => {
+      const res = await chai.request(app).post('/api/v1/user/login').send(manager);
+      expect(res).to.have.status(200);
+      expect(res.body).to.have.property('token');
+      expect(res.body).to.have.property('message', 'User logged in successfully');
+  
+      managerAuth1 = res.body.token;
+    });
+    it('TEST A RATING CENTER manager approve.', async () => {
     const resu = await chai
       .request(app)
       .patch(`/api/v1/request/approve/${newTripId}`)
       .set('Cookie', `jwt=${managerAuth}`);
     expect(resu).to.have.status(200);
+    })
 
+
+    it('should login as requster', async () => {
+      const res = await chai.request(app).post('/api/v1/user/login').send(Requester);
+      expect(res).to.have.status(200);
+      expect(res.body).to.have.property('token');
+      expect(res.body).to.have.property('message', 'User logged in successfully');
+  
+      token = res.body.token;
+    });
+
+    it('TEST A RATING CENTER adding rate to a center.', async () => {
     const res = await chai
       .request(app)
       .post('/api/v1/accomodation/rate')
-      .set('Cookie', `jwt=${tripperA}`)
+      .set('Cookie', `jwt=${token}`)
       .send({
         tripRequestId: newTripId,
         serviceRating: 5,
@@ -998,7 +1142,7 @@ describe('TEST A RATING CENTER.', async () => {
       .post('/api/v1/accomodation/rate')
       .set('Cookie', `jwt=${tripperA}`)
       .send({
-        tripRequestId: tripId,
+        tripRequestId: 3,
         serviceRating: 5,
       });
     expect(res).to.have.status(401);
@@ -1018,6 +1162,15 @@ describe('TEST A RATING CENTER.', async () => {
     expect(res.body).to.have.property('message', 'accommodation rated');
   });
 
+  it('should login as travel admin', async () => {
+    const res = await chai.request(app).post('/api/v1/user/login').send(travelAdmin);
+    expect(res).to.have.status(200);
+    expect(res.body).to.have.property('token');
+    expect(res.body).to.have.property('message', 'User logged in successfully');
+
+    travelAdminA = res.body.token;
+  });
+
   it('should rate a center of existing trip and belongs to current loggedin user', async () => {
     const res = await chai
       .request(app)
@@ -1034,6 +1187,13 @@ describe('TEST A RATING CENTER.', async () => {
     );
   });
 });
+it('should login as travel admin', async () => {
+  const res = await chai.request(app).post('/api/v1/user/login').send(travelAdmin);
+  expect(res).to.have.status(200);
+  expect(res.body).to.have.property('token');
+  expect(res.body).to.have.property('message', 'User logged in successfully');
+
+  managerAuth1 = res.body.token;})
 
 describe('TEST A BOOKING ROOM.', () => {
   it('it should not book room if you will not spend 24hrs in accommodation', async () => {

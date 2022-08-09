@@ -45,6 +45,9 @@ const profileInfo = {
   lineManager: 'kalisa',
   location: 'Kigali-Rwanda',
 };
+
+
+
 describe('USER PROFILE TEST ', () => {
   after(async () => {
     await Users.destroy({ where: { email: 'maojulish@you.com' } });
@@ -68,12 +71,20 @@ describe('USER PROFILE TEST ', () => {
     expect(res).to.have.property('status', 200);
     expect(res.body).to.have.property('message', 'my profile');
   });
-  it('should not get others Profile', async () => {
-    await Users.create(otherUser);
-    const result = await chai.request(app).post('/api/v1/user/login').send(othersCred);
+
+  it('Should  successfully logout', async () => {
+    const result = await chai.request(app).post('/api/v1/user/logout');
     expect(result).to.have.property('status', 200);
     expect(result.body).to.have.property('status', 'success');
-    expect(result.body).to.have.property('token');
+  });
+
+  
+  it('should not get others Profile', async () => {
+    
+    
+    const result = await chai.request(app).post('/api/v1/user/login').send(othersCred);
+   
+    othersToken = result.body.token;
 
     const profileRes = await chai
       .request(app)
@@ -84,6 +95,8 @@ describe('USER PROFILE TEST ', () => {
   });
 
   it('should update Profile', async () => {
+    const result = await chai.request(app).post('/api/v1/user/login').send(credential);
+    userToken = result.body.token;
     const profileRes = await chai
       .request(app)
       .patch('/api/v1/user/profile')
@@ -92,7 +105,17 @@ describe('USER PROFILE TEST ', () => {
     expect(profileRes).to.have.status(200);
   });
 
+  it('Should  successfully logout', async () => {
+    const result = await chai.request(app).post('/api/v1/user/logout');
+    expect(result).to.have.property('status', 200);
+    expect(result.body).to.have.property('status', 'success');
+  });
+
   it('should not update others Profile', async () => {
+    const res = await chai.request(app).post('/api/v1/user/login').send(othersCred);
+    othersToken = res.body.token; 
+
+
     const profileRes = await chai
       .request(app)
       .patch('/api/v1/user/profile')
@@ -101,3 +124,4 @@ describe('USER PROFILE TEST ', () => {
     expect(profileRes).to.have.status(401);
   });
 });
+
