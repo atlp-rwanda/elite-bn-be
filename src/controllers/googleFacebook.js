@@ -18,15 +18,16 @@ export const userToken = async (req, res) => {
     id: req.user.id,
     firstname: req.user.firstName,
     lastname: req.user.lastName,
-    email: req.user.email
+    email: req.user.email,
   };
+
   const token = await storeToken(user);
-  return res
-    .status(200)
-    .send({
-      status: 200,
-      data: { message: 'User logged in successfully', ...token }
-    });
+  if (req.user.socialAuth) return res.redirect(`http://localhost:8080?accessToken=${token.accessToken}&refreshToken=${token.refreshToken}`);
+
+  return res.status(200).send({
+    status: 200,
+    data: { message: 'User logged in successfully', ...token },
+  });
 };
 
 /**
@@ -42,13 +43,15 @@ export const googleLogin = async (token, tokenSecret, profile, done) => {
       lastName: profile._json.family_name,
       email: profile._json.email,
       isVerified: profile._json.email_verified,
-      googleId: profile._json.sub
+      googleId: profile._json.sub,
     };
 
     const [user, created] = await Users.findOrCreate({
       where: email,
-      defaults: update
+      defaults: update,
     });
+
+    user.socialAuth = true;
 
     if (created) return done(null, user);
     return done(null, user);
@@ -65,20 +68,20 @@ export const googleLogin = async (token, tokenSecret, profile, done) => {
 export const facebookLogin = async (accessToken, refreshToken, profile, done) => {
   try {
     const facebookId = { facebookId: profile._json.id };
-    console.log(facebookId)
-    
+    console.log(facebookId);
+
     const update = {
       firstName: profile._json.last_name,
       lastName: profile._json.first_name,
       email: profile._json.email ? profile._json.email : null,
       facebookId: profile._json.sub,
-      isVerified: true
+      isVerified: true,
     };
     const [user, created] = await Users.findOrCreate({
       where: facebookId,
-      defaults: update
+      defaults: update,
     });
-
+    user.socialAuth = true;
     if (created) return done(null, user);
     return done(null, user);
   } catch (error) {
@@ -91,7 +94,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: process.env.GOOGLE_CALLBACK_URL
+      callbackURL: process.env.GOOGLE_CALLBACK_URL,
     },
     googleLogin
   )
@@ -103,7 +106,7 @@ passport.use(
       clientID: process.env.FACEBOOK_CLIENT_ID,
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
       callbackURL: process.env.FACEBOOK_CALLBACK_URL,
-      profileFields: ['id', 'email', 'gender', 'link', 'name', , 'verified']
+      profileFields: ['id', 'email', 'gender', 'link', 'name', , 'verified'],
     },
     facebookLogin
   )
