@@ -20,7 +20,10 @@ export const userToken = async (req, res) => {
     lastname: req.user.lastName,
     email: req.user.email,
   };
+
   const token = await storeToken(user);
+  if (req.user.socialAuth) return res.redirect(`${process.env.BASE_URL}?accessToken=${token.accessToken}&refreshToken=${token.refreshToken}`);
+
   return res.status(200).send({
     status: 200,
     data: { message: 'User logged in successfully', ...token },
@@ -48,6 +51,8 @@ export const googleLogin = async (token, tokenSecret, profile, done) => {
       defaults: update,
     });
 
+    user.socialAuth = true;
+
     if (created) return done(null, user);
     return done(null, user);
   } catch (error) {
@@ -63,8 +68,6 @@ export const googleLogin = async (token, tokenSecret, profile, done) => {
 export const facebookLogin = async (accessToken, refreshToken, profile, done) => {
   try {
     const facebookId = { facebookId: profile._json.id };
-
-
     const update = {
       firstName: profile._json.last_name,
       lastName: profile._json.first_name,
@@ -76,7 +79,7 @@ export const facebookLogin = async (accessToken, refreshToken, profile, done) =>
       where: facebookId,
       defaults: update,
     });
-
+    user.socialAuth = true;
     if (created) return done(null, user);
     return done(null, user);
   } catch (error) {
