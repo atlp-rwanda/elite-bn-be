@@ -17,6 +17,7 @@ const checkAuth = async (req, res, next) => {
       token = req.headers.authorization.split(' ')[ 1 ];
     } else { 
       token = await getToken(`token-${req.user.email}`) 
+      
     }
 
     if (!token) {

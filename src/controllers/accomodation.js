@@ -42,12 +42,11 @@ class AccomodationController {
       });
     } catch (error) {
 
-console.log(error)
-      
-      ApplicationError.internalServerError(
+    ApplicationError.internalServerError(
         { message: 'can not created accommodation Try again!!!' },
         res
       );
+     
     }
   };
 
