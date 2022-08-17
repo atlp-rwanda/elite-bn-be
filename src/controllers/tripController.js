@@ -3,7 +3,7 @@ import models from '../database/models';
 import catchAsync from '../utils/catchAsync';
 import applicationErr from '../utils/errors/applicationError';
 import * as notification from '../services/notificationService';
-import { sendEmail } from '../utils/email';
+import sendEmail  from '../utils/email/notificationEmail';
 import { sendEmailNotification } from '../views/emailNotification';
 import { sendEmailUpdateNotification } from '../views/email/emailNotificationUpdate';
 
@@ -53,15 +53,17 @@ export const makeTrip = async (req, res, next) => {
 
     sendEmail(
       req.user.email,
-      process.env.SENDGRID_USERNAME,
+      process.env.EMAIL_FROM,
       'Email Notification',
       sendEmailNotification(req.user.username)
     );
+  
     return res.status(201).json({
       message: 'trip request created',
       tripReq,
     });
   } catch (err) {
+   
     return next(new applicationErr('failed to make trip request', 500));
   }
 };

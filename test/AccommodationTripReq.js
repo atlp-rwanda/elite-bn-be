@@ -339,8 +339,8 @@ describe('TRIP request TEST... ', () => {
       .send({
         from: 'Kanombe',
         to: locationId,
-        departDate: '2022-07-07',
-        returnDate: '2022-08-08',
+        departDate: '2022-08-20',
+        returnDate: '2022-08-25',
         tripReasons: 'trip request reason',
         accommodationId: accomodationId,
       });

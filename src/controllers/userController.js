@@ -15,8 +15,7 @@ import applicationErr from '../utils/errors/applicationError';
 import models from '../database/models';
 import createSendToken from '../utils/helpers/createToken';
 import giveMeProfile from '../utils/helpers/profileInfo';
-import Email from '../utils/email/userReEmail.js';
-import { sendEmail } from '../utils/email';
+import sendEmail from '../utils/email/userReEmail.js';
 import { deleteToken, setToken, getToken } from '../utils/helpers/initRedis';
 
 
@@ -47,9 +46,10 @@ const registerNew = async (requestBody, response, next) => {
         await user.save();
         const token = await tokenGenerator.generateAccessToken({ email: user.email, id: user.id });
         if (token) {
+       
           sendEmail(
             requestBody.email,
-            process.env.SENDGRID_USERNAME,
+            process.env.EMAIL_FROM,
             'Confirmation Email',
             sendEmailOnRegistration(
               requestBody.username,
@@ -102,7 +102,7 @@ export const forgotPassword = async (req, res) => {
 
     sendEmail(
       req.body.email,
-      process.env.SENDGRID_USERNAME,
+      process.env.EMAIL_FROM,
       ' reset password',
       sendEmailOnResetPassword(user.firstName, resetURL)
     );
