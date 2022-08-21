@@ -48,7 +48,14 @@ const updatePasswordResetToken = async (token) => {
   return passwordResetToken;
 };
 
-const resetPassword = async (token, newPassword, userId, res) => {
+const resetPassword = async (token, newPassword,confirm_password, userId, res) => {
+  
+  if(newPassword !=confirm_password) {
+   return res.status(404).json({
+    success:false,
+    Error:'password do not match'
+   })
+  }
   const result = await redisClient.get('passwordResetToken');
 
   if (result === token) {

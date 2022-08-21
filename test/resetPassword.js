@@ -18,8 +18,9 @@ const registerdUser = {
   password: '$2a$12$OkrGEhmd4qXHgY694JQPe.pp0ZaxIwshuJ.0bQS/z3SxmXtQxGNVy',
 };
 
-const validPassword = {
+const validCredentials = {
   password: 'testing@1',
+  confirm_password:'testing@1'
 };
 
 const invalidResetPassword = 'testing';
@@ -49,25 +50,25 @@ describe('reset password', () => {
     const res = await request(server).post('/api/v1/user/forgotPassword').send(invaliduserrEmail);
     expect(res).to.have.status(404);
   });
-  it('it should return 404 if no token provided', async () => {
-    const res = await request(server).put(
-      `/api/v1/user/resetPassword?passwordResetToken=${resetToken}`
-    );
-    expect(res).to.have.status(404);
+  it('it should return 400 if did not confirm password', async () => {
+    const res = await request(server)
+    .put(`/api/v1/user/resetPassword?token=${resetToken }`)
+    .send(invalidResetPassword)
+    expect(res).to.have.status(400);
   });
 
   it('it should return 200 if  password reset sucessful', async () => {
     const res = await request(server)
-      .put(`/api/v1/user/resetPassword/${id}/${resetToken}`)
-      .send({ ...validPassword });
+      .put(`/api/v1/user/resetPassword?token=${resetToken }`)
+      .send({ ...validCredentials });
     expect(res).to.have.status(200);
     expect(res.body.data).to.have.property('message');
   });
 
-  it('it 00 if  password is invalid', async () => {
+  it('it should return 404 ', async () => {
     const res = await request(server)
-      .put(`/api/v1/user/resetPassword/${id}/${resetToken}`)
+      .put(`/api/v1/user/resetPassword/${resetToken}`)
       .send(invalidResetPassword);
-    expect(res).to.have.status(400);
+    expect(res).to.have.status(404);
   });
 });
