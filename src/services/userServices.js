@@ -51,7 +51,7 @@ const updatePasswordResetToken = async (token) => {
 const resetPassword = async (token, newPassword,confirm_password, userId, res) => {
   
   if(newPassword !=confirm_password) {
-   return res.status(404).json({
+   return res.status(400).json({
     success:false,
     Error:'password do not match'
    })

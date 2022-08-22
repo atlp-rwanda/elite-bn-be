@@ -23,6 +23,10 @@ const validCredentials = {
   confirm_password:'testing@1'
 };
 
+const InvalidCredentials = {
+  password: 'testing@123',
+  confirm_password:'testing@1'
+};
 const invalidResetPassword = 'testing';
 const invaliduserrEmail = 'shema@gmail.com';
 let id, resetToken;
@@ -69,6 +73,13 @@ describe('reset password', () => {
     const res = await request(server)
       .put(`/api/v1/user/resetPassword/${resetToken}`)
       .send(invalidResetPassword);
-    expect(res).to.have.status(404);
+      expect(res).to.have.status(404);
+  });
+  it('it should return 400 if password do not match ', async () => {
+    const res = await request(server)
+    .put(`/api/v1/user/resetPassword?token=${resetToken }`)
+      .send({...InvalidCredentials});
+     expect(res).to.have.status(400);
+     expect(res.body).to.have.property('success',false);
   });
 });
