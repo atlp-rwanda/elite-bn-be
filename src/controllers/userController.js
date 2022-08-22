@@ -96,17 +96,14 @@ export const forgotPassword = async (req, res) => {
 
     //send token too a user email
 
-    const resetURL = `${req.protocol}://${req.get('host')}/process.env.BASE_URL/resetpassword/${
-      user.id
-    }$/{user.passwordResetToken}`;
-
+    const resetURL = `${process.env.BASE_URL}/reset-password?token=${resetToken }`;
     sendEmail(
       req.body.email,
       process.env.EMAIL_FROM,
       ' reset password',
       sendEmailOnResetPassword(user.firstName, resetURL)
     );
-
+    
 
     res.status(200).json({
       success: true,
@@ -125,16 +122,17 @@ export const resetPassword = async (req, res, next) => {
     const validate = validations.userSchema.resetAuthSchema.validate(req.body);
 
     if (!validate.error) {
-      const token = req.params.passwordResetToken;
+      const token = req.query.token;
 
-      await tokenGenerator.decodeAccessToken(token);
+    const user=  await tokenGenerator.decodeAccessToken(token);
 
-      const { password } = req.body;
-      const userId = req.params.id;
-
+      const { password ,confirm_password} = req.body;
+      const userId = user.id;
       const salt = await bcrypt.genSalt(10);
       const newPassword = await bcrypt.hash(password, salt);
-      await userService.resetPassword(token, newPassword, userId, res);
+      const confirmed_password = await bcrypt.hash(confirm_password, salt);
+
+      await userService.resetPassword(token, newPassword,confirmed_password, userId, res);
     } else {
       ApplicationError.validationError(validate.error.details[0].context.label, res);
     }
@@ -143,7 +141,6 @@ export const resetPassword = async (req, res, next) => {
     next(error);
   }
 };
-
 export const login = async (req, res, next) => {
   if (!req.body.password || !req.body.email) {
     return next(new applicationErr('Please fill empty fields!', 400));
