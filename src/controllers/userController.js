@@ -96,7 +96,7 @@ export const forgotPassword = async (req, res) => {
 
     //send token too a user email
 
-    const resetURL = `${process.env.BASE_URL}/reset-password?token=${resetToken }`;
+    const resetURL = `${process.env.RESET_URL}/reset-password?token=${resetToken }`;
     sendEmail(
       req.body.email,
       process.env.EMAIL_FROM,
