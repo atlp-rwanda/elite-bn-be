@@ -39,10 +39,10 @@ describe('/POST  register endpoint', () => {
     await Users.destroy({ where: { email: `${user.email}` } });
   });
 
-  it('It should register a new user', async () => {
+  it('It should register a new user in the system', async () => {
     const res = await request(server).post('/api/v1/user/register').send(user);
-    expect(res).to.have.status(201);
-    expect(res.body).to.have.property('accessToken');
+    expect(res).to.have.status(200);
+    expect(res.body).to.have.property('token');
   });
 
   it('It should return email already exists', async () => {
