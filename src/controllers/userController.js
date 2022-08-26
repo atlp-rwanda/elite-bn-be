@@ -44,10 +44,7 @@ const registerNew = async (requestBody, response, next) => {
         const salt = await bcrypt.genSalt(10);
         user.password = await bcrypt.hash(user.password, salt);
         await user.save();
-        const token = createSendToken(user, 200, response);
-        if (token) {
-       
-          sendEmail(
+        sendEmail(
             requestBody.email,
             process.env.EMAIL_FROM,
             'Confirmation Email',
@@ -56,10 +53,8 @@ const registerNew = async (requestBody, response, next) => {
               `${process.env.BASE_URL}/api/v1/user/verify/${user.id}`
             )
           );
+        createSendToken(user, 200, response);
        
-        } else {
-          ApplicationError.internalServerError(`An error occured failed`, response);
-        }
       }
     } else {
       ApplicationError.validationError(validate.error.details[0].context.label, response);
