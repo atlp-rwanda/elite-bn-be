@@ -22,7 +22,8 @@ export const userToken = async (req, res) => {
   };
 
   const token = await storeToken(user);
-  if (req.user.socialAuth) return res.redirect(`${process.env.BASE_URL}?accessToken=${token.accessToken}&refreshToken=${token.refreshToken}`);
+  // if (req.user.socialAuth) return res.redirect(`${process.env.FRONTEND_URL}?auth/${user.id}`);
+  if (req.user.socialAuth) return res.redirect(`${process.env.FRONTEND_URL}?accessToken=${token.accessToken}&refreshToken=${token.refreshToken}`);
 
   return res.status(200).send({
     status: 200,
