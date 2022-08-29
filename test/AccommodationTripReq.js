@@ -1186,40 +1186,6 @@ describe('TEST A RATING CENTER .', async () => {
       "This trip request doesn't either exist or belong to you"
     );
   });
-
-  it("should not rate a center on which you didn't spent at least 24hours ", async () => {
-    const re = await chai
-      .request(app)
-      .post('/api/v1/trip/create')
-      .set('Cookie', `jwt=${tripperA}`)
-      .send({
-        from: 'Nyarugunga',
-        to: locationId,
-        departDate: departureDateString,
-        returnDate: '2022-08-29',
-        tripReasons: 'trip request reason',
-        accommodationId: accomodationId,
-      });
-    expect(re).to.have.status(201);
-    const newNTripId = 4;
-
-    const resu = await chai
-      .request(app)
-      .patch(`/api/v1/request/approve/${newNTripId}`)
-      .set('Cookie', `jwt=${managerAuth}`);
-    expect(resu).to.have.status(200);
-
-    const res = await chai
-      .request(app)
-      .post('/api/v1/accomodation/rate')
-      .set('Cookie', `jwt=${tripperA}`)
-      .send({
-        tripRequestId: newNTripId,
-        serviceRating: 3,
-      });
-    expect(res).to.have.status(401);
-    expect(res.body).to.have.property('message', "You can't rate before 24hours, please wait");
-  });
 });
 it('should login as travel admin', async () => {
   const res = await chai.request(app).post('/api/v1/user/login').send(travelAdmin);
@@ -1286,7 +1252,7 @@ describe('TEST A BOOKING ROOM.', () => {
     expect(res.body).to.have.property('message', 'Room has been already booked!');
   });
 
-  it('it should not book room if the trip was not approved ', async () => {
+  it('it should not book room if the room has been booked already', async () => {
     const re = await chai
       .request(app)
       .post('/api/v1/trip/create')
@@ -1295,7 +1261,7 @@ describe('TEST A BOOKING ROOM.', () => {
         from: 'Nyarutarama',
         to: locationId,
         departDate: '2022-04-14',
-        returnDate: '2022-06-24',
+        returnDate: '2022-09-24',
         tripReasons: 'to visit kevin',
         accommodationId: accomodationId,
       });
@@ -1325,8 +1291,8 @@ describe('TEST A BOOKING ROOM.', () => {
         from: '2022-04-14',
         to: '2022-06-24',
       });
-    expect(res).to.have.status(403);
-    expect(res.body).to.have.property('message', 'Trip need to be approved!');
+    expect(res).to.have.status(400);
+    expect(res.body).to.have.property('message', 'Room has been already booked!');
   });
   it('it should free the room if it was once booked before', async () => {
     const res = await chai
