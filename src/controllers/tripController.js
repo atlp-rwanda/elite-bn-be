@@ -63,7 +63,6 @@ export const makeTrip = async (req, res, next) => {
       tripReq,
     });
   } catch (err) {
-   
     return next(new applicationErr('failed to make trip request', 500));
   }
 };
@@ -74,12 +73,12 @@ export const getRequestedTrips = async (req, res, next) => {
     const getTrip = await models.tripRequest.findAll({
       where: { tripperId: freshUser.id },
       include: [
-        { model: models.Users, as: 'requester', attributes: ['firstName', 'lastName', 'email'] },
+        { model: models.Users, as: 'requester', attributes: ['firstName', 'lastName', 'username']},
         { model: models.Location, as: 'destination', attributes: ['locationName'] },
-        { model: models.Accomodation, as: 'accommodation', attributes: ['accomodationName'] },
+        { model: models.Accomodation, as: 'accommodation', attributes: ['accomodationName', 'accomodationImage', 'amenities'] },
       ],
       attributes: {
-        exclude: ['tripperId', 'to', 'accommodationId', 'createdAt', 'updatedAt'],
+        exclude: ['createdAt', 'updatedAt'],
       },
     });
     res.status(200).json({
@@ -95,12 +94,12 @@ export const allTrips = async (req, res, next) => {
   try {
     const getAlltrips = await models.tripRequest.findAll({
       include: [
-        { model: models.Users, as: 'requester', attributes: ['firstName', 'lastName', 'email'] },
+        { model: models.Users, as: 'requester', attributes: ['firstName', 'lastName', 'username']},
         { model: models.Location, as: 'destination', attributes: ['locationName'] },
-        { model: models.Accomodation, as: 'accommodation', attributes: ['accomodationName'] },
+        { model: models.Accomodation, as: 'accommodation', attributes: ['accomodationName', 'accomodationImage', 'accomodationDescription', 'amenities'] },
       ],
       attributes: {
-        exclude: ['id', 'tripperId', 'to', 'accommodationId', 'createdAt', 'updatedAt'],
+        exclude: ['createdAt', 'updatedAt'],
       },
     });
     res.status(200).json({
@@ -301,3 +300,4 @@ export const createMultiTripRequest = async (req, res, next) => {
     trips,
   });
 };
+
