@@ -3,7 +3,7 @@ import models from '../database/models';
 import catchAsync from '../utils/catchAsync';
 import applicationErr from '../utils/errors/applicationError';
 import * as notification from '../services/notificationService';
-import sendEmail  from '../utils/email/notificationEmail';
+import sendEmail from '../utils/email/notificationEmail';
 import { sendEmailNotification } from '../views/emailNotification';
 import { sendEmailUpdateNotification } from '../views/email/emailNotificationUpdate';
 
@@ -57,7 +57,6 @@ export const makeTrip = async (req, res, next) => {
       'Email Notification',
       sendEmailNotification(req.user.username)
     );
-  
     return res.status(201).json({
       message: 'trip request created',
       tripReq,
@@ -73,7 +72,7 @@ export const getRequestedTrips = async (req, res, next) => {
     const getTrip = await models.tripRequest.findAll({
       where: { tripperId: freshUser.id },
       include: [
-        { model: models.Users, as: 'requester', attributes: ['firstName', 'lastName', 'username']},
+        { model: models.Users, as: 'requester', attributes: ['firstName', 'lastName', 'username'] },
         { model: models.Location, as: 'destination', attributes: ['locationName'] },
         { model: models.Accomodation, as: 'accommodation', attributes: ['accomodationName', 'accomodationImage', 'amenities'] },
       ],
@@ -94,7 +93,7 @@ export const allTrips = async (req, res, next) => {
   try {
     const getAlltrips = await models.tripRequest.findAll({
       include: [
-        { model: models.Users, as: 'requester', attributes: ['firstName', 'lastName', 'username']},
+        { model: models.Users, as: 'requester', attributes: ['firstName', 'lastName', 'username'] },
         { model: models.Location, as: 'destination', attributes: ['locationName'] },
         { model: models.Accomodation, as: 'accommodation', attributes: ['accomodationName', 'accomodationImage', 'accomodationDescription', 'amenities'] },
       ],
@@ -300,4 +299,3 @@ export const createMultiTripRequest = async (req, res, next) => {
     trips,
   });
 };
-
