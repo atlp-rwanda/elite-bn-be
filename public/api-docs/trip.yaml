@@ -7,6 +7,8 @@ definitions:
       - departDate
       - returnDate
       - tripReasons
+      - passportNumber
+      - passportName
     properties:
       from:
         type: string
@@ -20,12 +22,15 @@ definitions:
         type: string
       accommodationId:
         type: integer
-
+      passportNumber:
+        type: string
+      passportName:
+        type: string
 paths:
   /api/v1/trip:
     get:
       tags:
-        - Trip requests
+        - trip request
       summary: Get single specific trip
       responses:
         '200':
@@ -38,7 +43,7 @@ paths:
 /api/v1/trip/allTrips:
   get:
     tags:
-      - Trip requests
+      - trip request
     summary: Get all trip requests you made
     responses:
       '200':
@@ -51,7 +56,7 @@ paths:
 /api/v1/trip/create:
   post:
     tags:
-      - Trip requests
+      - trip request
     summary: Requester make a trip request
     requestBody:
       required: true
@@ -74,7 +79,7 @@ paths:
 /api/v1/trip/update/{tripId}:
   patch:
     tags:
-      - Trip requests
+      - trip request
     summary: Update a pending trip request
     parameters:
       - in: path
@@ -102,7 +107,7 @@ paths:
 /api/v1/request/approve/{tripId}:
   patch:
     tags:
-      - Trip requests
+      - trip request
     summary: approve trip request
     parameters:
       - in: path
@@ -124,7 +129,7 @@ paths:
 /api/v1/request/reject/{tripId}:
   patch:
     tags:
-      - Trip requests
+      - trip request
     summary: reject trip request
     parameters:
       - in: path
@@ -145,7 +150,7 @@ paths:
 /api/v1/trip/delete/{tripId}:
   delete:
     tags:
-      - Trip requests
+      - trip request
     summary: Delete a pending trip request
     parameters:
       - in: path
@@ -215,10 +220,11 @@ paths:
         description: data not found
       '500':
         description: Server Error
+
 /api/v1/trip/dest:
   get:
     tags:
-      - Travelled Destinantion
+      - trip request
     summary: All Most travelled destination.
     responses:
       '200':

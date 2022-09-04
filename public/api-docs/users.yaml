@@ -152,3 +152,24 @@ paths:
 
       '500':
         description: Opps! something went wrongs
+
+
+/api/v1/user/remember-info:
+  put:
+    tags:
+      - Users
+    summary: enable saving  profile info from past trip request
+
+    responses:
+      '200':
+        description: User logged out  successfully
+      '400':
+        description: Bad request
+
+      '500':
+        description: Opps! something went wrong
+
+
+
+
+

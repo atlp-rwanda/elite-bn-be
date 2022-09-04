@@ -64,4 +64,5 @@ describe('TEST USER LOGIN. ', () => {
     expect(result.body).to.have.property('message', 'User logged in successfully');
     expect(result.body).to.have.property('token');
   });
+
 });

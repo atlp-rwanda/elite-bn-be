@@ -1,6 +1,6 @@
 import express from 'express';
 import * as userController from '../controllers/userController';
-import { login, logout, getProfile, updateProfile } from '../controllers/userController';
+import { login, logout, getProfile, updateProfile, updateRememberInfo } from '../controllers/userController';
 import { createMessage, getAllMessages } from '../controllers/chatsController';
 import { chatValidator } from '../validations/chatValidation';
 import checkAuth from '../middlewares/checkAuth';
@@ -38,5 +38,7 @@ userRouter.get('/verify/:id', (req, res, next) => {
 
 userRouter.post('/forgotPassword', userController.forgotPassword);
 userRouter.put('/resetPassword', userController.resetPassword);
+
+userRouter.put('/remember-info', checkAuth, updateRememberInfo);
 
 export default userRouter;

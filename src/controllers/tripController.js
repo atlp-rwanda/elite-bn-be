@@ -1,5 +1,5 @@
-import Op from 'sequelize';
 import models from '../database/models';
+import { Users, CachedInfo } from "../database/models";
 import catchAsync from '../utils/catchAsync';
 import applicationErr from '../utils/errors/applicationError';
 import * as notification from '../services/notificationService';
@@ -28,15 +28,53 @@ export const makeTrip = async (req, res, next) => {
       return res.status(404).json({ message: 'Accommodation not found' });
     }
 
+    const freshUser = await Users.findOne({
+      where: { id: req.user.id },
+      include: [
+        { model: CachedInfo, as: "cachedInfo" }
+      ]
+    })
+    if (freshUser.remember_info) {
+      try {
+        if (freshUser.cachedInfo) {
+          await CachedInfo.update({
+            passportNumber: req.body.passportNumber,
+            passportName: req.body.passportName,
+            from: req.body.from,
+            userId: req.user.id
+          }, {
+            where: {
+              id: freshUser.cachedInfo.id
+            }
+          })
+        } else {
+          await CachedInfo.create({
+            passportNumber: req.body.passportNumber,
+            passportName: req.body.passportName,
+            from: req.body.from,
+            userId: req.user.id
+          })
+        }
+
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+
+
     const tripReq = {
       tripperId: req.user.id,
-      from: req.body.from,
+
+      from: req.body.from ? req.body.from : freshUser.cachedInfo.from ? freshUser.cachedInfo.from : "",
       to: req.body.to,
       departDate: req.body.departDate,
       returnDate: req.body.returnDate,
       tripReasons: req.body.tripReasons,
       tripType: type,
       accommodationId: req.body.accommodationId,
+      passportName: req.body.passportName ? req.body.passportName : freshUser.cachedInfo.passportName ? freshUser.cachedInfo.passportName : "",
+      passportNumber: req.body.passportNumber ? req.body.passportNumber : freshUser.cachedInfo.passportNumber ? freshUser.cachedInfo.passportNumber : "",
     };
     const trip = await models.tripRequest.create(tripReq);
     const newNotification = {
@@ -88,6 +126,8 @@ export const getRequestedTrips = async (req, res, next) => {
     return next(new applicationErr('Fail to get trip request', 500));
   }
 };
+
+
 
 export const allTrips = async (req, res, next) => {
   try {
@@ -225,7 +265,7 @@ export const mostTavelledDestinations = catchAsync(async (req, res, next) => {
     });
   });
   let mostTravelledDest = allLocationsIdOccurrence.sort((a, b) =>
-    a.locationOccurrence < b.locationOccurrence ? 1 : -1
+    a.locationOccurrence < b.locationOccurrence ? 1 : -1,
   );
 
   const mtd = mostTravelledDest.map(async (dest) => {
@@ -299,3 +339,47 @@ export const createMultiTripRequest = async (req, res, next) => {
     trips,
   });
 };
+
+
+
+
+
+export const checkRememberInfo = async (req, res, next) => {
+  const userId = req.user.id;
+  const requester = await Users.findOne({ where: { id: userId } });
+
+  if (requester.remember_info === true) {
+    const prevRequest = await models.tripRequest.findOne({
+      where: { tripperId: userId },
+    });
+
+    if (prevRequest !== null) {
+      if (
+        (prevRequest.dataValues.passportName !== null &&
+          !req.body.passportName) ||
+        req.body.passportName === ''
+      ) {
+        req.body.passportName = prevRequest.dataValues.passportName;
+      }
+
+      if (
+        (prevRequest.dataValues.passportNumber !== null &&
+          !req.body.passportNumber) ||
+        req.body.passportNumber === ''
+      ) {
+        req.body.passportNumber = prevRequest.dataValues.passportNumber;
+      }
+
+      if (
+        (prevRequest.dataValues.from !== null &&
+          !req.body.from) ||
+        req.body.from === ''
+      ) {
+        req.body.from = prevRequest.dataValues.from;
+      }
+    }
+  }
+  next();
+};
+
+

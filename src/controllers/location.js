@@ -2,6 +2,7 @@ import CountryService from '../services/countryService';
 import LocationService from '../services/locationServices';
 import {internalServerError} from '../utils/errors/applicatioErrors';
 
+import ApplicationError from '../utils/errors/applicationError';
 
 class LocationControllers {
   static createLocation = async (req, res) => {
@@ -99,11 +100,22 @@ class LocationControllers {
   static getAccommodations = async (req, res) => {
     try {
       const location = await LocationService.getSingleLocation(req.params.locationId);
-      const accommodations = await location.getAccommodations();
-      res.json(accommodations);
+      if(!location){
+        return res.status(404).json({status:404,error:"location not found"})
+      }
+      else{
+      const accommodations = await location.Accomodations;
+
+      res.json({accommodations,status:200,message:"These are the accommodations in specified location"});
+      }
+
     } catch (error) {
       internalServerError({message: error},res)
     
+      return res.status(500).json({
+        status: 500,
+        error: error.message,
+      });
     }
   };
 
